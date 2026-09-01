@@ -71,7 +71,10 @@
 .ds-pastille--panneau svg{--ds-icon-size:1.5rem}
 
 /* ---------- actions: Button ---------- */
-.ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;min-height:var(--control-md);padding:0.8125rem 1.375rem;font-family:var(--font-body);font-size:var(--text-control);font-weight:var(--weight-semibold);line-height:1;border:none;border-radius:var(--radius-md);cursor:pointer;text-decoration:none;white-space:nowrap;box-sizing:border-box;outline:none;transition:transform var(--duration-fast) var(--ease-standard),box-shadow var(--duration-base) var(--ease-standard),background var(--duration-base) var(--ease-standard),border-color var(--duration-base) var(--ease-standard),filter var(--duration-base) var(--ease-standard)}
+/* COMPAGNONS IA — traitement de marque : boutons PILL (arrondi complet), .ds-btn et
+   .ds-icon-btn. Autre RÈGLE, pas autre valeur : les champs, selects et barres d'onglets
+   restent sur leur rayon de socle — seul ce qui se presse est pill. */
+.ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;min-height:var(--control-md);padding:0.8125rem 1.375rem;font-family:var(--font-body);font-size:var(--text-control);font-weight:var(--weight-semibold);line-height:1;border:none;border-radius:var(--radius-pill);cursor:pointer;text-decoration:none;white-space:nowrap;box-sizing:border-box;outline:none;transition:transform var(--duration-fast) var(--ease-standard),box-shadow var(--duration-base) var(--ease-standard),background var(--duration-base) var(--ease-standard),border-color var(--duration-base) var(--ease-standard),filter var(--duration-base) var(--ease-standard)}
 .ds-btn--sm{gap:0.4375rem;min-height:var(--control-sm);padding:0.5625rem 1rem;font-size:var(--text-body-sm)}
 .ds-btn--lg{gap:0.5625rem;min-height:var(--control-lg);padding:0.9375rem 1.625rem;font-size:var(--text-body)}
 .ds-btn--block{width:100%}
@@ -113,7 +116,7 @@
 @keyframes ds-spin{to{transform:rotate(360deg)}}
 
 /* ---------- actions: IconButton ---------- */
-.ds-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:var(--icon-control-md);height:var(--icon-control-md);padding:0;border:1.5px solid var(--border);background:var(--secondary);color:var(--foreground);border-radius:var(--radius-md);cursor:pointer;box-sizing:border-box;outline:none;transition:background var(--duration-base) var(--ease-standard),border-color var(--duration-base) var(--ease-standard),color var(--duration-base) var(--ease-standard),box-shadow var(--duration-base) var(--ease-standard)}
+.ds-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:var(--icon-control-md);height:var(--icon-control-md);padding:0;border:1.5px solid var(--border);background:var(--secondary);color:var(--foreground);border-radius:var(--radius-pill);cursor:pointer;box-sizing:border-box;outline:none;transition:background var(--duration-base) var(--ease-standard),border-color var(--duration-base) var(--ease-standard),color var(--duration-base) var(--ease-standard),box-shadow var(--duration-base) var(--ease-standard)}
 .ds-icon-btn--sm{width:var(--icon-control-sm);height:var(--icon-control-sm)}
 .ds-icon-btn--lg{width:var(--icon-control-lg);height:var(--icon-control-lg)}
 .ds-icon-btn--secondary:hover:not(:disabled),.ds-icon-btn--secondary.is-hover,.ds-icon-btn--ghost:hover:not(:disabled),.ds-icon-btn--ghost.is-hover{background:var(--surface-alt)}

@@ -16,8 +16,8 @@
     "noEmit": true,
     "types": ["node", "react", "react-dom", "vite/client"],
     "paths": {
-      "@acme/ds": ["../src/index.ts"],
-      "@acme/ds/brand-content": ["../src/brand-content.tsx"]
+      "@compagnons-ia/ds": ["../src/index.ts"],
+      "@compagnons-ia/ds/brand-content": ["../src/brand-content.tsx"]
     }
   },
   "include": ["src", "vite.config.ts"]

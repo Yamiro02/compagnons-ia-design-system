@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { Card } from '@acme/ds';
+import { Card } from '@compagnons-ia/ds';
 
 /* Échafaudage de la vitrine — assemblé uniquement avec les composants du DS et
    les utilitaires du preset (qui ne résolvent que vers des var(--…)). */

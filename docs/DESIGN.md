@@ -1,213 +1,130 @@
-# Charte — ✏️ À REMPLIR
-
-Le document qu'on remplit **avant** de toucher au CSS.
-
-Une décision écrite en une phrase se discute. La même décision, noyée dans 200 lignes de
-CSS, ne se discute plus — elle se subit. Ce fichier existe pour que les arbitrages soient
-lisibles par quelqu'un qui n'écrit pas de code.
-
-Il se remplit en 20 minutes. Les sections marquées ★ sont celles qui portent le plus :
-sans elles, un système devient bruyant au bout de trois mois et personne ne sait dire
-pourquoi.
-
----
+# Charte — Compagnons IA
 
 ## 1. La marque en cinq lignes ★
 
-**Nom :**
-**Ce que c'est :** _(exemple : un outil interne de suivi de production, pour trois personnes)_
-**Pour qui :** _(qui l'ouvre, combien de fois par jour, sur quel écran)_
-**Trois adjectifs :** _(exemple : dense · calme · rapide — ils doivent s'opposer à trois autres qu'on refuse)_
-**Ce qu'on refuse :** _(exemple : ludique, coloré, animé)_
+**Nom :** Compagnons IA (nom provisoire)
+**Ce que c'est :** une PWA de conversation avec des personas IA — une app de rencontre sérieuse, chaleureuse, avec une pointe de séduction élégante.
+**Pour qui :** hommes francophones 45-65 ans, plusieurs fois par jour, sur téléphone.
+**Trois adjectifs :** chaleureux · épuré · rassurant — contre kitsch · criard · froid.
+**Ce qu'on refuse :** kitsch, érotique/nightclub, criard, gen-Z friendly.
 
-**La règle qui décide** — une seule phrase, celle qu'on cite quand deux options se valent :
-> _(exemple : « à densité égale, on choisit toujours le plus calme. »)_
-
----
+**La règle qui décide :**
+> « à élégance égale, on choisit toujours le plus chaleureux. »
 
 ## 2. Support et contexte
 
-**Où ça vit :** _(app web · site public · e-mails · slides · exports)_
-**Thème principal :** _(clair · sombre · les deux, à parité)_
-**Densité :** _(confortable · compacte — une app de saisie et un site vitrine ne veulent pas la même)_
-**Écran de référence :** _(exemple : 1440, desktop ; le mobile est secondaire)_
+**Où ça vit :** PWA mobile-first (installable), web.
+**Thème principal :** clair. Le sombre est livré à parité et garde la chaleur du clair — bruns-charbon, jamais nightclub.
+**Densité :** confortable — texte généreux, contrastes forts, cibles tactiles larges (le rail 44 px du socle est conservé).
+**Écran de référence :** mobile 390 px ; le desktop est secondaire.
 
-Le système livre un **thème clair en `:root`** et un **thème sombre en `.dark`**, jamais un
-media query : on veut pouvoir poser une section sombre au milieu d'une page claire. Si un
-seul thème t'intéresse, remplis quand même l'autre — les composants le lisent.
-
----
-
-## 3. Couleur → ton `src/styles/brand-<toi>.css` ★
-
-Le fichier que `npm run rebrand` a créé pour toi. Le contrat commenté, à garder ouvert à
-côté, est `src/styles/brand.template.css`.
+## 3. Couleur → `src/styles/brand-compagnons-ia.css` ★
 
 ### Surfaces
 
-| Jeton | Valeur | Rôle |
-|---|---|---|
-| `--background` | | le fond de page |
-| `--card` | | **doit se détacher de `--background`**, sinon les cartes disparaissent |
-| `--secondary` | | la surface des CONTRÔLES posés à même la page — navbar, onglets, champs, bouton secondaire. Jamais un fond de page |
-| `--accent` | | teinte de marque très diluée, pour un badge ou un bandeau |
-| `--surface-alt` | | UN CRAN de séparation : survol, rail de progression, squelette. Même écart de luminance dans les deux thèmes |
-| `--border` · `--input` | | frontières |
+| Jeton | Clair | Sombre | Rôle |
+|---|---|---|---|
+| `--background` | `#faf5ec` crème chaud | `#171210` brun-charbon | fond de page |
+| `--card` | `#ffffff` | `#251e1a` | la carte se détache (1,09 / 1,07 mesurés) |
+| `--secondary` | `#fdf8ef` | `#372c24` | contrôles posés sur la page |
+| `--accent` | `#f6e3e6` lavis rosé | `#45242c` | plaque de marque, jamais rose bonbon |
+| `--surface-alt` | `#f7f0e2` | `#2f2620` | un cran de séparation, même écart dans les deux thèmes |
+| `--border` · `--input` | `#e8dcc8` · `#dbc9ae` | `#41352c` · `#56463a` | frontières chaudes |
 
 ### Texte
 
-Quatre niveaux, pas sept. Au-delà, plus personne ne sait lequel choisir.
-
-| Jeton | Valeur | Rôle |
-|---|---|---|
-| `--foreground` | | titres et corps |
-| `--text-secondary` | | libellés |
-| `--text-muted` | | méta — **c'est le couple qui casse le contraste sur `--card`** |
-| `--text-inverted` | | texte posé sur une surface sombre |
+| Jeton | Clair | Sombre | Rôle |
+|---|---|---|---|
+| `--foreground` | `#2b2420` noir chaud | `#f3e9df` | titres et corps |
+| `--text-secondary` | `#4a3f37` | `#d7c8bb` | libellés |
+| `--text-muted` | `#6b5d51` (6,3:1 sur carte) | `#a8968a` (5,8:1) | méta |
+| `--text-inverted` | `#faf5ec` | `#171210` | sur surface sombre |
 
 ### Marque ★
 
-| Jeton | Valeur | Rôle |
-|---|---|---|
-| `--primary` | | LA couleur d'action. Un REMPLISSAGE, jamais une couleur de texte |
-| `--primary-readable` | | le même accent, rendu LISIBLE : ≥ 4,5:1 sur les six surfaces. C'est lui que prennent les liens, les icônes, les libellés actifs |
-| `--destructive` / `--destructive-readable` | | même paire, pour le danger |
-| `--brand-from/via/to` | | les trois arrêts du dégradé signature. Pas de dégradé ? mets la même valeur dans les trois : tout continue de fonctionner, en aplat |
+| Jeton | Clair | Sombre | Rôle |
+|---|---|---|---|
+| `--primary` | grenat clair `#a03b58` | grenat éclairci `#b95370` | LA couleur d'action, remplissage seulement |
+| `--primary-readable` | bordeaux `#8f2d42` | rose `#e79db2` | liens, icônes, libellés actifs — ≥4,5:1 sur les six surfaces |
+| `--destructive` / `--destructive-readable` | `#c2452a` / `#9d3417` | `#c34e31` / `#f0a08b` | rouge-orangé brûlé, jamais confondu avec le grenat |
+| `--brand-from/via/to` | `#a03b58 → #98344d → #8f2d42` | `#b95370 → #ac4762 → #9f3b54` | dégradé signature discret, même teinte ; s'il tire vers le kitsch → aplat (même valeur ×3) |
 
-**Où l'accent a le droit d'apparaître** — une liste FERMÉE. C'est elle qui empêche le
-système de devenir bruyant :
+**Où l'accent a le droit d'apparaître** — liste FERMÉE :
 
 1. le logo
 2. un mot par titre
 3. le sur-titre
 4. le CTA primaire, un seul par vue
 5. le halo
-6. _(à compléter, ou à raccourcir)_
 
-**Où il n'a jamais le droit :** _(exemple : un fond de page, un grand aplat, une bordure de carte)_
+**Où il n'a jamais le droit :** un fond de page, un grand aplat, une bordure de carte, un fond de bulle de conversation entière.
 
-**Vérification :** `node check-contrast.mjs` sort en `✓`, ou chaque écart est déclaré dans
-ton fichier avec sa raison.
+**Vérification :** `TOKENS=src/styles/brand-compagnons-ia.css node check-contrast.mjs` — les écarts assumés (contours doux) sont déclarés dans le fichier de marque avec leur raison.
 
----
+## 4. Typographie → fichier de marque
 
-## 4. Typographie → ton fichier de marque
+| Jeton | Valeur |
+|---|---|
+| `--font-display` | Nunito Sans |
+| `--font-body` | Nunito Sans |
+| `--font-mono` | DM Mono |
+| `--heading-transform` | `none` |
+| `--heading-weight` | `var(--weight-bold)` |
 
-| Jeton | Valeur | Rôle |
-|---|---|---|
-| `--font-display` | | titres |
-| `--font-body` | | texte et UI |
-| `--font-mono` | | code, méta technique |
-| `--heading-transform` | | `uppercase` ou `none` |
-| `--heading-weight` | | `var(--weight-regular)` ou `var(--weight-bold)` |
+Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule famille display/body : l'épure passe par la hiérarchie de graisse, pas par un contraste de faces.
 
-Les deux derniers **découlent de la face display** :
-
-- condensée à capitales (Anton, Oswald, Bebas…) → `uppercase` + `var(--weight-regular)`
-- grotesque classique (Inter, Geist, DM Sans…) → `none` + `var(--weight-bold)`
-
-Ils gouvernent `h1`→`h4`, `.display`, `.display-xl`, `.ds-card__title` et `.ds-logo` —
-exactement les règles en `--font-display`, et rien d'autre.
-
-**Les PALIERS ne se substituent pas.** `tokens/typography.css` porte l'échelle, les
-interlettrages et les interlignes : ils sont structurels et valent pour n'importe quelle
-famille. Tu choisis les faces, pas les tailles.
-
-**Graisses à charger :** _(ne charge que celles que tu affiches réellement — chaque .woff2
-inutile est du poids payé au premier rendu)_
-
----
+**Graisses à charger :** 400 · 500 · 600 · 700 (rien d'autre). ⚠ Import Google Fonts PROVISOIRE — déposer les .woff2 dans `src/styles/assets/fonts/` et basculer sur les `@font-face` commentés en tête du fichier de marque.
 
 ## 5. Espacement, rayons, rail
 
-**Le socle ne s'ouvre pas — aucun de ses fichiers.** Les rayons se REDÉCLARENT dans ton
-fichier de marque : le § 4.1 de `brand.template.css` liste les sept paliers avec leurs
-défauts en commentaire. `tokens/scales.css` porte ces défauts et ne se touche pas. Le
-reste non plus : l'échelle d'espacement (base 4), le rail de hauteur des contrôles et
-les largeurs de contenu par rôle sont ce qui fait que deux design systems nés de ce
-template se ressemblent en **structure** tout en n'ayant rien en commun.
-
-**Rayons :** _(tels quels · divisés par ~2, technique et dense · multipliés par ~1.4, grand
-public)_ — garde la progression : un élément imbriqué a toujours un rayon plus petit que son
-contenant.
-
-**Densité :** _(le rail de contrôles vaut 3rem, 2.75rem sous 64rem. Le changer touche
-boutons, champs, selects et barres d'onglets ensemble — c'est voulu, ils s'alignent)_
-
----
+**Rayons :** tels quels — le socle rend déjà les gros rayons voulus (cartes 20, panneaux 24, modales 28). Aucune redéclaration.
+**Boutons pill :** autre RÈGLE, pas autre valeur → `patterns.css` (`.ds-btn` / `.ds-icon-btn` → `var(--radius-pill)`). Champs, selects, barres d'onglets restent sur le rayon du socle : seul ce qui se presse est pill.
+**Densité :** rail du socle conservé (48 px, 44 px sous 64rem) — la cible l'exige.
 
 ## 6. Motifs signature
 
-Ce qui fait qu'on reconnaît le système sans lire le logo.
+**Le halo :** radial grenat très léger, ancré en bas, jamais plein écran.
+**Le dégradé :** CTA + un mot de titre + sur-titre. Grenat → bordeaux, même teinte : il se lit comme une profondeur, pas comme un arc-en-ciel.
+**La lueur :** `--shadow-glow*` grenat très douce, CTA uniquement.
+**L'ombre :** trois niveaux teintés de `--tone-dark` (noir chaud), jamais du noir pur.
 
-**Le halo :** _(radial chaud ancré en bas · aucun · autre chose)_
-**Le dégradé :** _(sur le CTA · sur un mot de titre · nulle part)_
-**La lueur :** `--shadow-glow*` — _(un CTA qui rayonne · rien : mets `none`, les jetons doivent EXISTER)_
-**L'ombre :** _(trois niveaux teintés de `--tone-dark`, jamais du noir pur — la géométrie est au socle, la teinte suit ton encre)_
-
-**Un motif qu'on refuse :** _(exemple : pas de glassmorphism ailleurs que la navbar au scroll)_
-
----
+**Un motif qu'on refuse :** aucun aplat grenat plein écran, aucun rose bonbon, aucun néon/nightclub en sombre.
 
 ## 7. Logo → `src/brand.ts` + `.ds-logo`
 
-`npm run rebrand` a déjà rempli `BRAND_NAME`, `BRAND_MONOGRAM` et `BRAND_WORDMARK_LINES`.
+À lancer : `npm run rebrand -- "@compagnons-ia/ds" "Compagnons IA"` (monogramme suggéré : `--monogram CI`).
 
-**Mark en CSS ou en SVG :** _(le mark CSS ne coûte aucune requête et s'inverse tout seul ;
-un SVG remplace le corps de `Logo.tsx`, en gardant l'API `variant` / `letters` / `height`)_
-**La pastille :** _(le carré en dégradé par défaut · `dot={false}` · un nœud à toi)_
-**Casse du mot-marque :** _(elle suit `--heading-transform`. Si ton mot-marque est en casse
-mixte alors que ton titrage est en capitales : `.ds-logo{text-transform:none}` dans ton
-fichier de marque)_
-
----
+**Mark en CSS ou en SVG :** CSS (mot-marque Nunito Sans bold + point carré arrondi en dégradé grenat).
+**La pastille :** le carré en dégradé par défaut.
+**Casse du mot-marque :** casse mixte, suit `--heading-transform:none` — rien à surcharger.
+**Contenu vitrine :** `demo/src/identity.ts` — prénom d'exemple « Bernard », lieu « Lyon · France ».
 
 ## 8. Périmètre du design system
 
-**Ce qui entre :** structure, comportements, états, les composants sans métier.
-**Ce qui n'entre pas :** tout ce qui a besoin de savoir ce que fait ton produit.
-
-L'arbre de décision complet est dans [`GOVERNANCE.md`](../GOVERNANCE.md). La règle courte :
-**en cas de doute, ça reste dans l'app.** Un design system pollué coûte plus cher qu'un
-design system incomplet.
-
-**Extension métier :** _(importes-tu `brand-content.css` ? La plupart des apps : non)_
-
----
+**Ce qui entre :** les 37 composants du socle, sans ajout ni retrait au portage.
+**Ce qui n'entre pas :** tout ce qui connaît le métier (carte persona, bulle de conversation, paywall) — ça vit dans l'app.
+**Extension métier :** `brand-content.css` NON importé, ses trois jetons non déclarés.
 
 ## 9. Interdits — la liste courte ★
 
-Celle qu'on relit avant une PR. Cinq à dix lignes, pas plus.
-
 1. Aucune valeur littérale hors des fichiers de jetons et de marque.
 2. Toute dimension en `rem`, sauf la liste d'exceptions de `scales.css`.
-3. `--primary` et `--destructive` ne sont jamais une `color:` — le contenu prend les jumeaux
-   lisibles.
-4. Jamais un rayon pill sur un bouton, un champ ou une barre d'onglets.
+3. `--primary` et `--destructive` ne sont jamais une `color:` — le contenu prend les jumeaux lisibles.
+4. Le rayon pill appartient aux BOUTONS (traitement de marque) et aux badges — jamais aux champs ni aux barres d'onglets.
 5. Jamais la couleur seule pour porter un sens — toujours + icône + texte.
-6. L'entrée d'**accueil** porte `house`. `layout-dashboard` — les quatre tuiles — est réservée
-   à un vrai **tableau de bord de widgets** : elle annonce une grille, pas une destination.
-7. Jamais un utilitaire de couleur, de fond, de `background-clip` ou de dimension sur le nœud
-   qui porte `.accent` ou `.eyebrow`. Le socle vit en `layer(base)`, les utilitaires en
-   `layer(utilities)` : **ils gagnent toujours**, et la panne est muette — un `text-*` de
-   couleur écrase `color: transparent` (le mot passe en aplat), un `w-*` écrase
-   `width: fit-content` (le dégradé se peint sur la boîte, les lettres n'en montrent qu'une
-   tranche). La typographie (`font-*`, paliers, `leading-*`) ne touche aucune des quatre
-   déclarations et est sans risque ; la mise en page, elle, va sur un span externe.
-8. Jamais un **défaut de design** écrit en style inline — inline est le seul endroit du
-   langage que la cascade n'atteint pas, et la panne est muette. Un style inline n'est
-   légitime que si la valeur vient de l'appelant à chaque rendu (`Skeleton`, `Avatar`).
-   Le réflexe de revue, sur toute valeur d'un composant : **l'appelant peut-il la
-   reprendre ?** Si non, elle est mal placée, quel que soit le moyen.
-9. _(à compléter)_
-
----
+6. `house` pour l'accueil ; `layout-dashboard` réservé à un vrai tableau de bord de widgets.
+7. Jamais un utilitaire de couleur, de fond, de `background-clip` ou de dimension sur le nœud qui porte `.accent` ou `.eyebrow`.
+8. Jamais un défaut de design en style inline.
+9. Le grenat n'est jamais un fond de page ni un grand aplat ; le destructif n'est jamais grenat.
+10. Jamais de gris froids — tout neutre est chaud (beige, brun).
 
 ## 10. Journal des décisions
 
-Les arbitrages qu'on ne veut pas rejouer dans six mois. Une ligne suffit ; c'est le
-« pourquoi » qui compte, pas le « quoi ».
-
 | Date | Décision | Pourquoi |
 |---|---|---|
-| | | |
+| 2026-09-01 | Carte = blanc pur, contrôles de page à `#fdf8ef` sous elle | maquettes validées carte blanche ; l'échelle mesurée exige card ≠ popover/secondary |
+| 2026-09-01 | Boutons pill via `patterns.css`, pas via `--radius-md` | pill sur `--radius-md` aurait emporté champs et selects ; seul ce qui se presse est pill |
+| 2026-09-01 | Destructif rouge-orangé brûlé `#c2452a` | ne jamais confondre danger et marque (grenat) |
+| 2026-09-01 | Une seule famille (Nunito Sans) display + body | épuré ; la hiérarchie passe par la graisse |
+| 2026-09-01 | Sombre : bruns-charbon, grenat éclairci, label CTA blanc conservé | garder la chaleur, éviter nightclub ; 4,6:1 mesuré sur l'arrêt le plus clair |
+| 2026-09-01 | Import Google Fonts provisoire | .woff2 à déposer dans `src/styles/assets/fonts/`, @font-face prêts en commentaire |

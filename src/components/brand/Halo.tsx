@@ -9,7 +9,7 @@ import { cn } from '../../lib/cn';
  * tokens/base.css — aucune valeur n'est réécrite ici.
  *
  * Le mode `hot` N'EST PLUS ICI : c'est un halo de MINIATURE, pas d'interface. Il vit dans
- * l'extension métier, sous `HaloHot`, sur `@acme/ds/brand-content`.
+ * l'extension métier, sous `HaloHot`, sur `@compagnons-ia/ds/brand-content`.
  */
 export interface HaloProps extends HTMLAttributes<HTMLSpanElement> {
   placement?: 'bottom' | 'top' | 'center';

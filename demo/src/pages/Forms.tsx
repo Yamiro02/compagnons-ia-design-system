@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { IDENTITY } from '../identity';
-import { Calendar, Checkbox, DatePicker, FormField, Icon, Input, Radio, Select, Switch, Textarea } from '@acme/ds';
+import { Calendar, Checkbox, DatePicker, FormField, Icon, Input, Radio, Select, Switch, Textarea } from '@compagnons-ia/ds';
 import { Block, Grid, Row, Section, Stack } from '../ui';
 
 const SERIES = [

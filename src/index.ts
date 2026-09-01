@@ -1,12 +1,12 @@
 /**
- * @acme/ds — le TEMPLATE de design system, et sa marque d'exemple.
+ * @compagnons-ia/ds — le TEMPLATE de design system, et sa marque d'exemple.
  *
  * Les styles sont un import séparé, en JS :
- *   import '@acme/ds/core.css';
- *   import '@acme/ds/brand-example.css';
+ *   import '@compagnons-ia/ds/core.css';
+ *   import '@compagnons-ia/ds/brand-compagnons-ia.css';
  *
  * La couche Tailwind v4 s'importe depuis le CSS de l'app, jamais en JS :
- *   @import '@acme/ds/theme.css';
+ *   @import '@compagnons-ia/ds/theme.css';
  */
 
 /* icons */
@@ -102,7 +102,7 @@ export { Halo } from './components/brand/Halo';
 export type { HaloProps } from './components/brand/Halo';
 /* HaloHot et ContentIcon ne sont PAS exportés ici : ce sont des outils de MINIATURE et de
    MOTION, pas d'interface. Ils vivent sur le sous-chemin optionnel
-   `@acme/ds/brand-content`, avec `brand-content.css` en face. */
+   `@compagnons-ia/ds/brand-content`, avec `brand-content.css` en face. */
 export { Avatar } from './components/brand/Avatar';
 export type { AvatarProps } from './components/brand/Avatar';
 

@@ -1,7 +1,7 @@
 {
-  "name": "@acme/ds",
-  "version": "0.6.0",
-  "description": "Design system Acme — jetons, couche Tailwind v4 et primitives React.",
+  "name": "@compagnons-ia/ds",
+  "version": "0.1.0",
+  "description": "Design system Compagnons IA — jetons, couche Tailwind v4 et primitives React.",
   "license": "UNLICENSED",
   "private": false,
   "type": "module",
@@ -24,7 +24,7 @@
       "require": "./dist/index.cjs"
     },
     "./core.css": "./src/styles/core.css",
-    "./brand-example.css": "./src/styles/brand-example.css",
+    "./brand-compagnons-ia.css": "./src/styles/brand-compagnons-ia.css",
     "./brand.template.css": "./src/styles/brand.template.css",
     "./brand-content.css": "./src/styles/brand-content.css",
     "./brand-content": {

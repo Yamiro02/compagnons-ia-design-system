@@ -9,7 +9,7 @@
 
    Ce fichier s’importe DEPUIS LE CSS de l’app (celui que traite @tailwindcss/vite),
    jamais par un import JS :
-     @import "@acme/ds/theme.css";
+     @import "@compagnons-ia/ds/theme.css";
    Il porte lui-même les `@import "tailwindcss/…"` : l’app ne doit PAS écrire
    `@import "tailwindcss";` de son côté, elle chargerait Tailwind deux fois.
 

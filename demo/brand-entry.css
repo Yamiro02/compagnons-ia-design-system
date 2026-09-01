@@ -3,4 +3,4 @@
    C'est LA LIGNE À CHANGER quand vous écrivez la marque du projet : remplacez
    `brand-example.css` par votre `brand-<projet>.css`. Rien d'autre ne bouge. */
 @import '../src/styles/core.css';
-@import './../src/styles/brand-example.css';
+@import '../src/styles/brand-compagnons-ia.css';

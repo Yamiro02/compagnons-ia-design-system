@@ -16,7 +16,7 @@
         pendant qu'on remplit — il n'est pas le point de départ à recopier.
      3. Montez-le à côté du socle, partout où le design system est chargé :
 
-            @import "@acme/ds/core.css";     <- la structure, invariante
+            @import "@compagnons-ia/ds/core.css";     <- la structure, invariante
             @import "./brand-<vous>.css";               <- la vôtre
 
         Il n'existe pas d'entrée qui monte une marque toute seule. Deux imports, toujours :
@@ -194,7 +194,7 @@
      cartes motion, visuels d'export. Une app d'INTERFACE ne les déclare pas et n'importe
      pas l'extension — elle ne perd rien, il n'y a pas un écran là-dedans.
      Le contrat des trois est écrit en tête de `src/styles/brand-content.css`.
-     Le pendant JavaScript est sur `@acme/ds/brand-content` :
+     Le pendant JavaScript est sur `@compagnons-ia/ds/brand-content` :
      `HaloHot`, `ContentIcon`. */
   /* --tone-deep:; --gradient-thumbnail:; --shadow-accent-hot:; */
 }

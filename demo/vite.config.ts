@@ -15,12 +15,12 @@ export default defineConfig({
          Pour essayer une autre marque sans toucher au socle, repointez l'import de
          `brand-entry.css` — c'est la seule ligne concernée. */
       'virtual:ds-entry': fileURLToPath(new URL('./brand-entry.css', import.meta.url)),
-      '@acme/ds/core.css': fileURLToPath(new URL('../src/styles/core.css', import.meta.url)),
-      '@acme/ds/brand-example.css': fileURLToPath(new URL('../src/styles/brand-example.css', import.meta.url)),
-      '@acme/ds/brand-content.css': fileURLToPath(new URL('../src/styles/brand-content.css', import.meta.url)),
-      '@acme/ds/brand-content': fileURLToPath(new URL('../src/brand-content.tsx', import.meta.url)),
-      '@acme/ds/theme.css': fileURLToPath(new URL('../src/styles/theme.css', import.meta.url)),
-      '@acme/ds': fileURLToPath(new URL('../src/index.ts', import.meta.url)),
+      '@compagnons-ia/ds/core.css': fileURLToPath(new URL('../src/styles/core.css', import.meta.url)),
+      '@compagnons-ia/ds/brand-compagnons-ia.css': fileURLToPath(new URL('../src/styles/brand-compagnons-ia.css', import.meta.url)),
+      '@compagnons-ia/ds/brand-content.css': fileURLToPath(new URL('../src/styles/brand-content.css', import.meta.url)),
+      '@compagnons-ia/ds/brand-content': fileURLToPath(new URL('../src/brand-content.tsx', import.meta.url)),
+      '@compagnons-ia/ds/theme.css': fileURLToPath(new URL('../src/styles/theme.css', import.meta.url)),
+      '@compagnons-ia/ds': fileURLToPath(new URL('../src/index.ts', import.meta.url)),
     },
   },
   server: {

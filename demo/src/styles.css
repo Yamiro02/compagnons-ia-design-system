@@ -9,13 +9,13 @@
    theme.css porte lui-même les @import de Tailwind : il ne faut surtout PAS
    ajouter un @import "tailwindcss" ici, Tailwind serait chargé deux fois.
    Aucune règle de design n’est écrite dans ce fichier : c’est la règle de la vitrine. */
-@import '@acme/ds/theme.css';
+@import '@compagnons-ia/ds/theme.css';
 
 /* L'EXTENSION MÉTIER, importée EXPLICITEMENT — la vitrine rend la page Marque, qui montre
    la grille fine et les halos de miniature. Une app d'interface ne l'importe pas, et ne
    perd rien : elle porte des motifs de vignette et de motion, pas d'écran. C'est aussi
    pour ça qu'elle est importée ici et pas par le socle : opt-in, jamais par défaut. */
-@import '@acme/ds/brand-content.css';
+@import '@compagnons-ia/ds/brand-content.css';
 
 /* Tailwind v4 ne détecte les sources qu’à partir de la racine de la démo. Celles du
    design system vivent un cran au-dessus : on les déclare, comme le faisait la liste

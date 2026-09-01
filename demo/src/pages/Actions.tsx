@@ -1,5 +1,5 @@
-import { Button, Icon, IconButton } from '@acme/ds';
-import { ContentIcon } from '@acme/ds/brand-content';
+import { Button, Icon, IconButton } from '@compagnons-ia/ds';
+import { ContentIcon } from '@compagnons-ia/ds/brand-content';
 import { Block, Row, Section } from '../ui';
 
 const VARIANTS = ['primary', 'secondary', 'ghost', 'danger'] as const;

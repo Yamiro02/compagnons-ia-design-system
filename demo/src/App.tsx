@@ -4,7 +4,7 @@ import { IDENTITY } from './identity';
 /* Le titre de l'onglet fait partie de la vitrine : si la marque montée change, il doit
    changer aussi. */
 document.title = IDENTITY.titre;
-import { Logo, Switch, Tabs } from '@acme/ds';
+import { Logo, Switch, Tabs } from '@compagnons-ia/ds';
 /* Le contenu VERBATIM du module opt-in, injecté à la demande par l'interrupteur
    « Échelle d'app ». La vitrine ne l'importe jamais en dur : c'est justement la
    règle du module (jamais le site public, les e-mails ou les slides). */

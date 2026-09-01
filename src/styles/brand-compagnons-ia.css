@@ -1,0 +1,151 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MARQUE — COMPAGNONS IA (nom provisoire)
+   PWA de conversation avec des personas IA · hommes francophones 45-65 ans · mobile 390.
+   chaleureux · épuré · rassurant — « à élégance égale, on choisit toujours le plus chaleureux. »
+   Copie de brand-example.css, chaque valeur repeinte. Contrat : src/styles/brand.template.css.
+   Vérification :  TOKENS=src/styles/brand-compagnons-ia.css node check-contrast.mjs
+                   node check-dark-substitution.mjs · node check-contract.mjs
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ---------- 1 · POLICES ----------
+   Auto-hébergées — graisses réellement affichées uniquement : 400 · 500 · 600 · 700. */
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:400;font-display:swap;src:url('./assets/fonts/NunitoSans-Regular.woff2') format('woff2')}
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:500;font-display:swap;src:url('./assets/fonts/NunitoSans-Medium.woff2') format('woff2')}
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:600;font-display:swap;src:url('./assets/fonts/NunitoSans-SemiBold.woff2') format('woff2')}
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:700;font-display:swap;src:url('./assets/fonts/NunitoSans-Bold.woff2') format('woff2')}
+@font-face{font-family:'DM Mono';font-style:normal;font-weight:400;font-display:swap;src:url('./assets/fonts/DMMono-Regular.woff2') format('woff2')}
+
+/* ---------- 2 · ÉCARTS D'ACCESSIBILITÉ ASSUMÉS ----------
+   Un bloc par écart (le garde lit un @a11y-assume PAR commentaire). Clés exactes de
+   check-contrast.mjs ; chaque écart est repris dans docs/accessibilite.md. */
+
+/* @a11y-assume: .ds-input — bordure --input vs page
+   Contours doux voulus — la chaleur passe par des frontières discrètes ; le champ reste
+   trouvable par son label et son remplissage propre. */
+
+/* @a11y-assume: .ds-input — bordure --input vs remplissage
+   Même choix de contours doux : la bordure #dbc9ae reste perceptible sans être dure. */
+
+/* @a11y-assume: .ds-input — remplissage vs page
+   Champs quasi affleurants sur le crème, assumés : le champ se lit par sa bordure douce,
+   son label et son placeholder — jamais par le seul aplat. */
+
+/* @a11y-assume: .ds-input.is-error — bordure --destructive
+   2,88:1 en sombre, au ras du seuil : l'état d'erreur n'est jamais porté par la seule
+   bordure — message d'erreur en --destructive-readable et label l'accompagnent. */
+
+/* @a11y-assume: .ds-card — bordure --border vs page
+   Cartes blanches sur crème : la carte se lit par sa surface et son ombre douce, le
+   filet n'est qu'un renfort. */
+
+/* @a11y-assume: .ds-sep — filet --border sur --card
+   Filet discret voulu, jamais seul porteur d'information. */
+
+/* @a11y-assume: .eyebrow / .accent — dégradé clippé en texte
+   4,01:1 en sombre sur l'arrêt le plus sombre du dégradé : propriété de la technique de
+   clip ; l'accent est rationné (sur-titres courts, jamais seul porteur de sens). */
+
+/* ---------- 3 · JETONS ---------- */
+:root{
+  /* Surfaces & neutres — chauds, jamais de gris froids. L'ÉCHELLE CLAIRE :
+       muted #f1e8d8 → background #faf5ec (crème) → secondary/popover #fdf8ef → card #ffffff.
+     La carte est le sommet (blanc pur, maquettes validées) ; les contrôles posés sur la
+     page (#fdf8ef) restent SOUS elle — l'écart card/secondary et card/popover est mesuré
+     (≥1,05), le dropdown au-dessus d'une carte se porte par --shadow-lg. */
+  --background:#faf5ec; --foreground:#2b2420;
+  --card:#ffffff; --card-foreground:#2b2420;
+  --popover:#fdf8ef; --popover-foreground:#2b2420;
+  --secondary:#fdf8ef; --secondary-foreground:#2b2420;
+  --muted:#f1e8d8; --muted-foreground:#6b5d51;
+  --accent:#f6e3e6; --accent-foreground:#2b2420;
+  --border:#e8dcc8; --input:#dbc9ae;
+
+  /* Un cran de séparation sous la porteuse (survol, rail de progression, squelette). */
+  --surface-alt:#f7f0e2;
+
+  /* Neutres nommés — encre noir chaud, papier crème. */
+  --tone-dark:#2b2420; --tone-dark-soft:#4a3f37; --tone-light:#faf5ec; --tone-light-alt:#ffffff;
+  --text-secondary:#4a3f37; --text-muted:#6b5d51; --text-inverted:#faf5ec;
+
+  /* Marque — remplissages. Grenat clair → bordeaux, même teinte, dégradé discret. */
+  --primary:#a03b58; --primary-foreground:#ffffff;
+  --destructive:#c2452a; --destructive-foreground:#ffffff;   /* rouge-orangé brûlé, jamais le grenat */
+  --ring:#a03b58;
+  --brand-from:#a03b58; --brand-via:#98344d; --brand-to:#8f2d42;
+  --grad-soft:linear-gradient(135deg,rgba(160,59,88,.09),rgba(143,45,66,.06)); /* @kind color */
+  --gradient-halo:radial-gradient(60% 45% at 50% 100%, rgba(160,59,88,.16) 0%, rgba(143,45,66,.07) 45%, transparent 75%); /* @kind color */
+  --gradient-halo-top:radial-gradient(60% 45% at 50% 0%, rgba(160,59,88,.16) 0%, rgba(143,45,66,.07) 45%, transparent 75%); /* @kind color */
+  --gradient-halo-center:radial-gradient(55% 55% at 50% 50%, rgba(160,59,88,.16) 0%, rgba(143,45,66,.07) 45%, transparent 75%); /* @kind color */
+
+  /* Les jumeaux lisibles — le bordeaux tient ≥4,5:1 sur les six surfaces claires. */
+  --primary-readable:#8f2d42;
+  --destructive-readable:#9d3417;
+
+  /* Sémantique — les six pilules. Fonds translucides, textes sombres et chauds. */
+  --pill-coral-fg:#8f2d42;
+  --pill-amber-fg:#7d4a1f;
+  --pill-danger-bg:rgba(194,69,42,0.13);  --pill-danger-fg:#9d3417;
+  --pill-warning-bg:rgba(158,113,22,0.15); --pill-warning-fg:#6d4e0e;
+  --pill-success-fg:#2c5e3e;
+  --pill-neutral-fg:#5c5148;
+  --success:#3e7d52;   /* vert sauge, chaud */
+
+  /* Familles — Nunito Sans en display ET en texte ; mono sobre. */
+  --font-display:'Nunito Sans','Segoe UI',system-ui,sans-serif; /* @kind font */
+  --font-body:'Nunito Sans','Segoe UI',system-ui,sans-serif;    /* @kind font */
+  --font-mono:'DM Mono','Courier New',monospace;                /* @kind font */
+
+  /* Grotesque classique → casse d'origine, gras. */
+  --heading-transform:none;
+  --heading-weight:var(--weight-bold);
+
+  /* Relief de marque — lueur grenat très douce, réservée au CTA et au point du logo. */
+  --shadow-glow:0 6px 18px rgba(160,59,88,.22), 0 2px 6px rgba(143,45,66,.16);
+  --shadow-glow-lg:0 10px 28px rgba(160,59,88,.30), 0 4px 12px rgba(143,45,66,.20);
+  --shadow-glow-sm:0 2px 8px rgba(160,59,88,.20);
+  --shadow-logo-dot:0 0 12px rgba(160,59,88,.45);
+
+  /* MÉTIER — non déclaré : app d'interface, brand-content.css n'est pas importé. */
+}
+.dark{
+  /* L'ÉCHELLE SOMBRE — bruns-charbon chauds, jamais de noir pur ni de gris bleutés :
+       page #171210 → muted #1e1815 → card #251e1a → popover #2a221e
+       → surface-alt #2f2620 → secondary #372c24
+     Mêmes écarts de luminance que le clair (~1,05-1,09 par cran, mesurés). */
+  --background:#171210; --foreground:#f3e9df;
+  --card:#251e1a; --card-foreground:#f3e9df;
+  --popover:#2a221e; --popover-foreground:#f3e9df;
+  --secondary:#372c24; --secondary-foreground:#f3e9df;
+  --muted:#1e1815; --muted-foreground:#a8968a;
+  --accent:#45242c; --accent-foreground:#f3e9df;
+  --border:#41352c; --input:#56463a; --ring:#d98ca0;
+  --surface-alt:#2f2620;
+  --text-secondary:#d7c8bb; --text-muted:#a8968a; --text-inverted:#171210;
+  /* Le grenat s'éclaircit d'un cran pour rester lisible (label blanc conservé : 4,6:1
+     sur l'arrêt le plus clair) et tenir ≥3:1 sur --surface-alt (barre de progression). */
+  --primary:#b95370; --primary-foreground:#ffffff;
+  --destructive:#c34e31; --destructive-foreground:#ffffff;
+  --primary-readable:#e79db2;
+  --destructive-readable:#f0a08b;
+  /* Les trois arrêts s'éclaircissent avec --primary : les dégradés dérivés en dépendent. */
+  --brand-from:#b95370; --brand-via:#ac4762; --brand-to:#9f3b54;
+  --shadow-glow:0 6px 18px rgba(185,83,112,.28), 0 2px 6px rgba(159,59,84,.20);
+  --shadow-glow-lg:0 10px 28px rgba(185,83,112,.38), 0 4px 12px rgba(159,59,84,.26);
+  --shadow-glow-sm:0 2px 8px rgba(185,83,112,.24);
+  --shadow-logo-dot:0 0 12px rgba(217,140,160,.45);
+  --grad-soft:linear-gradient(135deg,rgba(185,83,112,.16),rgba(159,59,84,.12)); /* @kind color */
+  --pill-coral-fg:#e79db2;
+  --pill-amber-fg:#e2b39e;
+  --pill-danger-fg:#f0a08b;
+  --pill-warning-fg:#e3c07c;
+  --pill-success-fg:#9ed3ae;
+  --pill-neutral-fg:#cfc2b6;
+}
+
+/* ---------- 4 · FACULTATIF — LA FORME ----------
+   RIEN À REDÉCLARER, et c'est mesuré contre le brief :
+   · cartes et surfaces à gros rayons ~20-24 px → le socle rend déjà 20 (--radius-lg),
+     24 (--radius-xl), 28 (--radius-2xl) ;
+   · boutons pill → c'est une autre RÈGLE, pas une autre valeur : le traitement est dans
+     patterns.css (.ds-btn / .ds-icon-btn → var(--radius-pill)), fichier du projet ;
+   · rail de contrôles, dimensions → défauts du socle, cible tactile 44 px conservée. */

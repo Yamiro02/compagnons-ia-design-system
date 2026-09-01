@@ -22,14 +22,14 @@
  */
 
 /** Nom complet — libellés d'accessibilité, aria-label, alt d'avatar. */
-export const BRAND_NAME = "Acme";
+export const BRAND_NAME = "Compagnons IA";
 
 /** Initiales — variante `monogram` du logo, repli de l'Avatar. 1 à 3 lettres. */
-export const BRAND_MONOGRAM = "AC";
+export const BRAND_MONOGRAM = "CI";
 
 /**
  * Le mot-marque, ligne par ligne. Une seule entrée = variantes `wordmark` et `stacked`
  * identiques. Deux entrées (`['Ma', 'Marque']`) = `stacked` empile les deux lignes,
  * `wordmark` les rend sur une seule.
  */
-export const BRAND_WORDMARK_LINES: readonly string[] = ["Acme"];
+export const BRAND_WORDMARK_LINES: readonly string[] = ["Compagnons","IA"];

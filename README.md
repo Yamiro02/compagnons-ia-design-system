@@ -1,4 +1,4 @@
-# @acme/ds
+# @compagnons-ia/ds
 
 **Un squelette de design system React, à remplir par projet.** Deux couches qui ne se
 mélangent pas : un **socle** générique — structure, comportements, échelles, rail de
@@ -12,8 +12,8 @@ monte une marque toute seule : celle qu'une app charge est visible dans son code
 implicite.
 
 ```ts
-import '@acme/ds/core.css';           // la structure, invariante
-import '@acme/ds/brand-example.css';  // la marque — remplacez-la par la vôtre
+import '@compagnons-ia/ds/core.css';           // la structure, invariante
+import '@compagnons-ia/ds/brand-example.css';  // la marque — remplacez-la par la vôtre
 ```
 
 ## Par où commencer
@@ -57,7 +57,7 @@ géométrique. Si un pixel chaud apparaît, une valeur de marque est restée dan
 Pas de registry : chaque app épingle une version par un tag git.
 
 ```bash
-npm i github:<votre-compte>/<votre-depot>#v0.6.0
+npm i github:<votre-compte>/<votre-depot>#v0.1.0
 ```
 
 Cinq **peer dependencies**, à la charge de l'app :
@@ -95,13 +95,13 @@ Socle plus marque. Deux lignes, pas une : c'est ce qui rend explicite la marque 
 
 ```ts
 // src/main.tsx — une app du projet
-import '@acme/ds/core.css';
-import '@acme/ds/brand-example.css';
+import '@compagnons-ia/ds/core.css';
+import '@compagnons-ia/ds/brand-example.css';
 ```
 
 ```ts
 // ou, pour un projet qui a sa propre marque
-import '@acme/ds/core.css';
+import '@compagnons-ia/ds/core.css';
 import './brand-client.css';        // écrit à partir de brand.template.css
 ```
 
@@ -120,7 +120,7 @@ jetons et polices compris. L'import JS reste la voie recommandée : c'est celle 
 vitrine, donc celle qui est vérifiée à chaque version.
 
 **L'extension métier est à part et optionnelle.** `brand-content.css` et le sous-chemin
-`@acme/ds/brand-content` portent les halos de vignette et les icônes de plateformes : de
+`@compagnons-ia/ds/brand-content` portent les halos de vignette et les icônes de plateformes : de
 quoi fabriquer une miniature ou une carte de motion, pas un écran. Une app d'interface ne
 les importe pas et ne perd rien.
 
@@ -132,7 +132,7 @@ ne le verrait pas.
 
 ```css
 /* src/index.css — l'entrée CSS de l'app */
-@import '@acme/ds/theme.css';
+@import '@compagnons-ia/ds/theme.css';
 ```
 
 ```ts
@@ -176,7 +176,7 @@ aucune valeur.
 ### 3. Les composants
 
 ```tsx
-import { Button, Card, Icon } from '@acme/ds';
+import { Button, Card, Icon } from '@compagnons-ia/ds';
 
 <Card variant="feature" size="lg">
   <h2>J'ai construit cette <span className="accent">app</span> en un week-end</h2>
@@ -192,9 +192,9 @@ Les outils internes desktop importent en plus un module d'échelle, qui adapte l
 par palier de largeur d'écran pour garder une mise en page effective proche de la maquette :
 
 ```ts
-import '@acme/ds/core.css';
-import '@acme/ds/brand-example.css';
-import '@acme/ds/app-scale.css';   // outils internes desktop uniquement
+import '@compagnons-ia/ds/core.css';
+import '@compagnons-ia/ds/brand-example.css';
+import '@compagnons-ia/ds/app-scale.css';   // outils internes desktop uniquement
 ```
 
 Les paliers sont en **%** : ils multiplient la préférence de taille de texte du navigateur au lieu
@@ -240,7 +240,7 @@ de Tailwind, sur laquelle reposent les composants shadcn de ton app.
 > préfixe `text-`. Sans ça, `text-control` repasse **couleur** et disparaît du DOM au premier
 > conflit avec `text-foreground`.
 > ```ts
-> import { makeCn } from '@acme/ds';
+> import { makeCn } from '@compagnons-ia/ds';
 > export const cn = makeCn(['tab', 'hero']);   // + text-tab, text-hero
 > ```
 > `cn` reste le raccourci quand il n'y a aucun palier à ajouter, et `PALIERS_TYPO` reste exporté
@@ -281,7 +281,7 @@ de Tailwind, sur laquelle reposent les composants shadcn de ton app.
 Tous sont exportés en nommé depuis la racine, avec leurs types :
 
 ```ts
-import { Button, type ButtonProps } from '@acme/ds';
+import { Button, type ButtonProps } from '@compagnons-ia/ds';
 ```
 
 Les règles d'usage composant par composant sont dans [`docs/PROMPTS.md`](docs/PROMPTS.md).

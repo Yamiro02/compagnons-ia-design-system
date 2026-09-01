@@ -6,7 +6,7 @@
    police, pas un dégradé, pas une lueur. Ce fichier DÉCLARE LE CONTRAT — la liste des
    jetons qu'un fichier de marque doit fournir — il ne le remplit pas.
 
-       @import "@acme/ds/core.css";        <- CE fichier, l'entrée du socle
+       @import "@compagnons-ia/ds/core.css";        <- CE fichier, l'entrée du socle
        @import "./brand-<vous>.css";                  <- la vôtre, copiée du gabarit
 
    POURQUOI DEUX FICHIERS, ET PAS UN OVERRIDE EN CASCADE. Importer le système complet

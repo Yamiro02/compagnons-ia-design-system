@@ -1,4 +1,4 @@
-import { Card } from '@acme/ds';
+import { Card } from '@compagnons-ia/ds';
 import { Block, Grid, Section, Spec, Swatch } from '../ui';
 
 const SURFACES = ['--background', '--foreground', '--card', '--popover', '--secondary', '--muted', '--accent', '--border', '--input'];

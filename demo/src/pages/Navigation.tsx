@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { ContentIcon } from '@acme/ds/brand-content';
+import { ContentIcon } from '@compagnons-ia/ds/brand-content';
 import { IDENTITY } from '../identity';
-import { AppShell, Avatar, Button, Footer, Icon, IconButton, Navbar, Pagination, Sidebar, Tabs, Logo } from '@acme/ds';
+import { AppShell, Avatar, Button, Footer, Icon, IconButton, Navbar, Pagination, Sidebar, Tabs, Logo } from '@compagnons-ia/ds';
 import { Block, Row, Section } from '../ui';
 
 const LINKS = [{ label: 'Vidéos', active: true }, { label: 'Séries' }, { label: 'À propos' }];

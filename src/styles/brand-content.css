@@ -5,8 +5,8 @@
    Rien de ce que porte ce fichier n'est de l'INTERFACE : les halos chauds de miniature,
    le noir profond et la lueur de mot-clé servent à fabriquer des VISUELS — une vignette YouTube, une carte de motion design — pas des écrans.
 
-       @import "@acme/ds/theme.css";
-       @import "@acme/ds/brand-content.css";   <- seulement si vous en avez besoin
+       @import "@compagnons-ia/ds/theme.css";
+       @import "@compagnons-ia/ds/brand-content.css";   <- seulement si vous en avez besoin
 
    Il s'importe depuis le CSS de l'app, à côté de `theme.css` et pas depuis le JS :
    il déclare des `@utility` et un `@theme inline`, que seul le plugin Tailwind sait lire.
@@ -25,7 +25,7 @@
    `brand.template.css` les liste, commentés, dans son bloc optionnel ; la marque
    d'exemple livrée avec le paquet les renseigne.
 
-   Le pendant JavaScript est sur le sous-chemin `@acme/ds/brand-content` :
+   Le pendant JavaScript est sur le sous-chemin `@compagnons-ia/ds/brand-content` :
    `HaloHot` et `ContentIcon`.
 
    LA GRILLE FINE N'EST PLUS ICI. `GridBackground`, `.ds-grid`, `bg-grid*` et les trois
