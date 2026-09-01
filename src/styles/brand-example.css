@@ -1,0 +1,213 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MARQUE D'EXEMPLE — ✏️  À REMPLACER PAR CELLE DU PROJET.
+
+   Ce fichier existe pour deux raisons, et aucune n'est esthétique :
+
+   1 · LA VITRINE REND TOUT DE SUITE. Un template dont la démo ne s'affiche pas ne se
+       vérifie pas. Celui-ci s'ouvre, montre les 37 composants, et vous voyez ce que
+       vous remplacez.
+
+   2 · IL PROUVE QUE LE SOCLE EST NEUTRE. Sa palette est FROIDE — bleus, cyans, verts,
+       pas un orange nulle part — et ses polices sont une SERIF en display et une
+       grotesque géométrique en texte. Si un pixel chaud ou une graisse condensée
+       apparaît à l'écran, c'est qu'une valeur de marque est restée coincée dans le
+       socle. C'est un détecteur, pas une décoration.
+       DEUX EXCEPTIONS LÉGITIMES, à connaître pour que le détecteur garde sa valeur :
+       --pill-warning-bg/fg sont ambre et --destructive* sont rose-rouge — c'est la
+       sémantique (avertissement, danger), pas une fuite du socle. Tout AUTRE pixel
+       chaud est un signal.
+
+   COMMENT ON LE REMPLACE :
+     · copiez-le en `src/styles/brand-<projet>.css`
+     · gardez `src/styles/brand.template.css` ouvert à côté : il dit ce que chaque
+       jeton doit tenir, et il porte les règles de structure d'une palette
+     · repointez l'import de `demo/brand-entry.css` sur votre fichier
+     · puis mesurez :  TOKENS=src/styles/brand-<projet>.css node check-contrast.mjs
+
+   CE QU'IL CONTIENT : les 54 jetons OBLIGATOIRES remplis — c'est aussi ce qui prouve
+   que le contrat est complet — plus TROIS des 33 jetons FACULTATIFS de forme, au § 4
+   en bas de fichier. Ces trois-là démontrent l'autre moitié de la règle : le socle
+   porte un défaut, et la marque le REPREND. Si la vitrine rend une navbar de 72 px,
+   un rayon de carte de 20 px ou un calendrier à 36 px, la redéclaration ne gagne pas
+   et tout le § FACULTATIF est décoratif.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ---------- 1 · POLICES ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* ---------- 2 · ÉCARTS D'ACCESSIBILITÉ ASSUMÉS ----------
+   La liste repart de ZÉRO : aucun renoncement d'une autre marque n'est hérité. Ceux qui
+   suivent sont ceux de CETTE palette, mesurés sur elle. */
+
+/* @a11y-assume: .ds-btn--primary — label sur --brand-from (pire arrêt)
+   Le vert clair du départ de dégradé ne tient pas le blanc. Assumé par le dispositif
+   de test, qui n'est pas un produit livré. */
+/* @a11y-assume: .ds-btn--primary — label sur --brand-via
+   Même dégradé, arrêt médian. */
+/* @a11y-assume: .eyebrow / .accent — dégradé clippé en texte
+   Le dégradé clippé en texte pique toujours au même endroit, quelle que soit la palette :
+   c'est une propriété de la TECHNIQUE. Résultat intéressant du test. */
+/* @a11y-assume: .ds-input — bordure --input vs page
+   Contours doux, choix repris du template. */
+/* @a11y-assume: .ds-input — bordure --input vs remplissage
+   Contours doux, choix repris du template. */
+/* @a11y-assume: .ds-input — remplissage vs page
+   Contours doux, choix repris du template. */
+/* @a11y-assume: .ds-card — bordure --border vs page
+   Contours doux, choix repris du template. */
+/* @a11y-assume: .ds-sep — filet --border sur --card
+   Contours doux, choix repris du template. */
+/* @a11y-assume: .ds-input.is-error — bordure --destructive
+   En sombre, la remontée du remplissage --secondary (l'échelle des surfaces) laisse la
+   bordure d'erreur à 2,69. L'état d'erreur n'est jamais porté par la seule bordure :
+   le message --destructive-readable et son icône l'annoncent toujours (FormField). */
+
+/* ---------- 3 · JETONS ---------- */
+:root{
+  /* Surfaces & neutres — gris-bleu froid. L'ÉCHELLE CLAIRE, du lavis au sommet :
+       muted #e5ebf1 → background #eef2f6 → card #f8fafc → popover/secondary #ffffff.
+     En clair, l'élévation monte vers le blanc et le lavis descend SOUS la page.
+     popover et secondary partagent le blanc pur : deux rôles qui ne se composent jamais
+     entre eux. Jamais deux valeurs identiques parmi les paires composées — muted/card,
+     secondary/card, popover/card, accent/card — c'est mesuré par check-surfaces.mjs. */
+  --background:#eef2f6; --foreground:#0f1d2a;
+  --card:#f8fafc; --card-foreground:#0f1d2a;
+  --popover:#ffffff; --popover-foreground:#0f1d2a;
+  --secondary:#ffffff; --secondary-foreground:#0f1d2a;
+  --muted:#e5ebf1; --muted-foreground:#4d6070;
+  --accent:#dcebf2; --accent-foreground:#0f1d2a;
+  --border:#d2dde6; --input:#d2dde6;
+
+  /* Pas de surface — un cran SOUS la porteuse en clair. Écart carte -> alt visé ~1,08. */
+  --surface-alt:#e7edf3;
+
+  /* Neutres nommés */
+  --tone-dark:#0f1d2a; --tone-dark-soft:#1c2f40; --tone-light:#eef2f6; --tone-light-alt:#f8fafc;
+  --text-secondary:#2b3f50; --text-muted:#4d6070; --text-inverted:#f1f6fa;
+
+  /* Marque — remplissages. Vert -> cyan -> bleu. Zéro orange. */
+  --primary:#0e7490; --primary-foreground:#ffffff;
+  --destructive:#a52a4a; --destructive-foreground:#ffffff;
+  --ring:#0e7490;
+  --brand-from:#34a06a; --brand-via:#0e8fa8; --brand-to:#2255a4;
+  --grad-soft:linear-gradient(135deg,rgba(52,160,106,.10),rgba(34,85,164,.08)); /* @kind color */
+  --gradient-halo:radial-gradient(60% 45% at 50% 100%, rgba(14,143,168,.30) 0%, rgba(34,85,164,.12) 45%, transparent 75%); /* @kind color */
+  --gradient-halo-top:radial-gradient(60% 45% at 50% 0%, rgba(14,143,168,.30) 0%, rgba(34,85,164,.12) 45%, transparent 75%); /* @kind color */
+  --gradient-halo-center:radial-gradient(55% 55% at 50% 50%, rgba(14,143,168,.30) 0%, rgba(34,85,164,.12) 45%, transparent 75%); /* @kind color */
+
+  /* Les jumeaux lisibles */
+  --primary-readable:#0a5468;
+  --destructive-readable:#8a2340;
+
+  /* Sémantique — les six pilules. Les noms « coral » et « amber » sont ceux du SOCLE :
+     ce sont des emplacements, pas des couleurs imposées. Ici ils sont froids. */
+  --pill-coral-fg:#0a5468;
+  --pill-amber-fg:#1c5f3c;
+  --pill-danger-bg:rgba(165,42,74,0.14);  --pill-danger-fg:#8a2340;
+  --pill-warning-bg:rgba(122,90,20,0.16); --pill-warning-fg:#6b4e0f;
+  --pill-success-fg:#1c5f3c;
+  --pill-neutral-fg:#41525f;
+  --success:#2f8f5b;
+
+  /* Familles — une SERIF en display, une grotesque géométrique en texte.
+     Replis SYSTÈME : le test reste probant hors réseau. */
+  --font-display:'Playfair Display',Georgia,'Times New Roman',serif; /* @kind font */
+  --font-body:'Space Grotesk','Trebuchet MS',Verdana,sans-serif;     /* @kind font */
+  --font-mono:'IBM Plex Mono','Courier New',monospace;               /* @kind font */
+
+  /* Le régime de titrage — l'autre moitié du test. Une serif en CAPITALES 400, c'est ce
+     que rendait le socle avant que ces deux jetons existent : la règle de titrage d'une
+     autre marque appliquée à une face qui ne la demande pas. Ici, casse d'origine et gras. */
+  --heading-transform:none;
+  --heading-weight:var(--weight-bold);
+
+  /* Relief de marque — la lueur suit le dégradé : cyan et bleu, jamais ambre. */
+  --shadow-glow:0 6px 18px rgba(14,143,168,.30), 0 2px 6px rgba(34,85,164,.22);
+  --shadow-glow-lg:0 10px 28px rgba(14,143,168,.42), 0 4px 12px rgba(34,85,164,.30);
+  --shadow-glow-sm:0 2px 8px rgba(14,143,168,.25);
+  --shadow-logo-dot:0 0 12px rgba(14,143,168,.5);
+
+  /* MÉTIER — déclaré ici uniquement parce que la vitrine rend la page Marque, qui
+     montre miniatures et grille. Une app d'interface ne les déclare pas. */
+  --tone-deep:#05090d;
+  --gradient-thumbnail:radial-gradient(70% 55% at 50% 100%, rgba(14,143,168,.55) 0%, rgba(34,85,164,.28) 45%, transparent 72%); /* @kind color */
+  --shadow-accent-hot:0 0 34px rgba(14,143,168,.65);
+}
+.dark{
+  /* L'ÉCHELLE SOMBRE — six crans, mesurés (check-surfaces.mjs) :
+       page #0d1620 → muted #121c26 → card #18232e → popover #1c2732
+       → surface-alt #1e2a35 → secondary #24303c
+     En sombre les ombres ne portent plus l'élévation : c'est la SURFACE qui doit monter.
+     muted lave SOUS la carte (rayures de table, champ désactivé), popover flotte
+     AU-DESSUS (dropdown, modale sur une carte), secondary porte les contrôles posés sur
+     la mise en page (champ, barre d'onglets, pagination). --accent n'est pas une surface
+     neutre : c'est la PLAQUE DE MARQUE, teintée (1,17 sur la carte).
+     --input se sépare de --border ici : une carte veut un filet discret, un champ veut
+     un contour qui survit à la remontée du remplissage --secondary. */
+  --background:#0d1620; --foreground:#e6eef5;
+  --card:#18232e; --card-foreground:#e6eef5;
+  --popover:#1c2732; --popover-foreground:#e6eef5;
+  --secondary:#24303c; --secondary-foreground:#e6eef5;
+  --muted:#121c26; --muted-foreground:#93a7b6;
+  --accent:#12313f; --accent-foreground:#e6eef5;
+  --border:#2b3a48; --input:#3c4d60; --ring:#3fbcd4;
+  --surface-alt:#1e2a35;
+  --text-secondary:#c4d2dd; --text-muted:#93a7b6; --text-inverted:#0d1620;
+  /* Le sombre ÉCLAIRCIT ses remplissages de marque et bascule le label sur l'encre.
+     Certaines marques gardent le même accent et le même blanc dans les deux thèmes ; celle-ci
+     ne le peut pas — son cyan #0e7490 ne tenait que 2,73 sur --surface-alt, la barre de
+     progression y disparaissait. Le contrat le permet : --primary et --primary-foreground
+     sont deux jetons distincts, redéclarables par thème. C'est exactement le genre de
+     divergence qu'un template doit accepter sans qu'on ouvre le socle. */
+  --primary:#1596b8; --primary-foreground:#06202a;
+  --destructive:#c33f60; --destructive-foreground:#ffffff;
+  --primary-readable:#5cc4dc;
+  --destructive-readable:#ef91a8;
+  /* Le label du CTA étant passé à l'encre en sombre, c'est TOUT LE DÉGRADÉ qui doit
+     s'éclaircir : le CTA porte le dégradé, pas --primary. Leçon du dispositif de test —
+     basculer --primary-foreground oblige à retoucher les trois arrêts. Et comme les deux
+     dégradés dérivent désormais de ces arrêts, check-dark-substitution.mjs EXIGE qu'on
+     les redéclare ici : c'est lui qui a signalé l'oubli. */
+  --brand-from:#5fc994; --brand-via:#4fcbe2; --brand-to:#7fadef;
+  --shadow-glow:0 6px 18px rgba(79,203,226,.26), 0 2px 6px rgba(127,173,239,.20);
+  --shadow-glow-lg:0 10px 28px rgba(79,203,226,.36), 0 4px 12px rgba(127,173,239,.26);
+  --shadow-glow-sm:0 2px 8px rgba(79,203,226,.22);
+  --shadow-logo-dot:0 0 12px rgba(79,203,226,.45);
+  --grad-soft:linear-gradient(135deg,rgba(52,160,106,.16),rgba(34,85,164,.12)); /* @kind color */
+  --pill-coral-fg:#5cc4dc;
+  /* Signalé par check-dark-substitution.mjs : ce fond dérive de --brand-from, qui vient
+     de changer en .dark juste au-dessus. Sans cette ligne, la pilule garderait le vert
+     CLAIR dans une section sombre imbriquée. */
+  --pill-amber-fg:#79d3a0;
+  --pill-danger-fg:#ef91a8;
+  --pill-warning-fg:#dcc06a;
+  --pill-success-fg:#79d3a0;
+  --pill-neutral-fg:#ccd8e2;
+}
+
+/* ---------- 4 · FACULTATIF — LA FORME ----------
+   Le pendant du § 4 de `brand.template.css`, et le seul endroit du dépôt où il est exercé.
+   TROIS jetons, choisis pour être voyants à l'œil nu sur la vitrine, pas pour être beaux :
+
+     --navbar-h    72 -> 96 px.  La barre du haut est visiblement plus haute, sur toutes
+                                 les pages : c'est le premier élément qu'on voit.
+     --radius-lg   20 -> 2 px.   Le rayon standard. Il tient les cartes, les dropdowns, les
+                                 toasts, les bandeaux, l'état vide, le calendrier et le cadre
+                                 de table — une douzaine de sites. À 2px les angles sont
+                                 francs : impossible de le rater, impossible de le confondre
+                                 avec l'échelle du socle. Il emporte aussi `--radius`, que le
+                                 socle déclare `var(--radius-lg)` — c'est voulu, et c'est ce
+                                 qui prouve que la dérivation survit à la substitution.
+     --cal-day     36 -> 48 px.  Le calendrier entier grandit : case du jour, en-tête de jour
+                                 de semaine et colonne de grille suivent le même jeton. Si
+                                 une seule des trois bougeait, la grille se décalerait — c'est
+                                 aussi le test de l'unicité du jeton.
+
+   Les 30 autres jetons du § FACULTATIF ne sont PAS déclarés ici, exprès : ils prouvent
+   l'autre moitié de la règle, qu'un jeton de forme omis retombe sur le socle sans rien
+   casser. Une marque de forme complète ne prouverait rien de plus qu'une marque vide. */
+:root{
+  --navbar-h:6rem;      /* 96 */
+  --radius-lg:0.125rem; /* 2 */
+  --cal-day:3rem;       /* 48 */
+}
