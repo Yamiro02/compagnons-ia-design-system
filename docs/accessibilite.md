@@ -211,6 +211,14 @@ danger sous 4,5:1 : les deux seuils sont incompatibles à ce remplissage. Et l'�
 n'est jamais porté par la seule bordure — `FormField` affiche toujours le message en
 `--destructive-readable` avec son icône. La bordure est un renfort, pas le signal.
 
+> **Sur la marque Compagnons IA, cet écart N'EXISTE PLUS** — et il n'a pas été fermé en
+> déplaçant le jeton, mais en déplaçant la PORTEUSE. Le champ est blanc (`--card`) depuis la
+> doctrine « le blanc est la surface portée », pas `--secondary` : le dilemme des deux seuils
+> incompatibles disparaît avec le remplissage qui le créait. Avec `--destructive` sombre à
+> `#d04444`, la paire mesure **5,47 en clair, 3,59 en sombre** — conforme, et son
+> `@a11y-assume` a été retiré du fichier de marque. Le paragraphe ci-dessus reste vrai de la
+> marque d'exemple, celle que ce document mesure.
+
 ## 4. Ce que ce document ne couvre pas
 
 Le contraste des couleurs, et lui seul. Trois points relèvent de l'accessibilité mais pas
@@ -223,6 +231,15 @@ de la mesure faite ici :
   très en dessous de 3:1. C'est un usage courant et non couvert stricto sensu par 1.4.11
   (l'état reste identifiable par le curseur et le focus), mais il mérite d'être connu.
 - **2.4.7, 1.4.12, 1.4.10.** Focus, espacement du texte, redimensionnement : hors mesure.
+- **2.5.8 Taille de la cible (minimum) — un écart ASSUMÉ, hors contraste.** Tout le système
+  tient le rail 44 px, avec **une** exception : `.ds-tabbar__item`, l'onglet de la `TabBar`
+  mobile, mesure `2.25rem` (36 px) de haut. La barre est une capsule FLOTTANTE : à 44 px de
+  haut par item elle mange le contenu qu'elle survole, et la coque cesse d'être une coque.
+  Ce qui rend l'écart tenable, et qui doit être vérifié si la règle bouge :
+  la cible RÉELLE au doigt vaut **44 px** marges comprises (36 + 4 px de marge d'item de
+  chaque côté), rien d'autre n'est cliquable dans cet intervalle — il n'y a donc aucune
+  cible voisine à rater — et les quatre onglets occupent chacun un quart de la largeur, très
+  au-delà du minimum en largeur. Le jour où la barre cesse de flotter, l'item reprend 44 px.
 
 ---
 

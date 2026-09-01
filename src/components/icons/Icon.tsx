@@ -21,7 +21,10 @@ import { House } from './compat-glyphs';
  * `@compagnons-ia/ds/brand-content`, sous le composant `ContentIcon`. `github` reste :
  * c'est une plateforme de développement, présente dans à peu près tout produit technique.
  * Sizes are CSS lengths in rem (1rem / 1.25rem / 1.5rem); the 24x24 viewBox stays unitless.
- * stroke-width 2 by default, 2.5 inside pills and toasts, 3 for the check.
+ * Stroke width: c'est la RÈGLE CSS qui décide — 1.75 partout, 1.5 dans une tuile (badge,
+ * toast, bandeau, pastille, message d'erreur), 2.5 dans la case d'un checkbox / radio.
+ * `strokeWidth` n'écrit qu'un ATTRIBUT de présentation, que la règle recouvre : un site
+ * d'appel qui veut une autre graisse la pose en style inline.
  */
 export type IconName =
   | 'check' | 'x' | 'chevron-down' | 'chevron-right' | 'chevron-left'
@@ -43,7 +46,11 @@ export interface IconBaseProps {
    * le créneau : c'est la surcharge optique au site d'appel, et elle doit le rester.
    */
   size?: string;
-  /** SVG stroke width in px (2 · 2.5 in pills/toasts · 3 for check). Default 2. */
+  /**
+   * SVG stroke width in px. ATTRIBUT de présentation : les règles de `patterns.css` le
+   * recouvrent (1.75 partout · 1.5 en tuile · 2.5 dans une case). Défaut 2 — c'est la
+   * valeur rendue seulement là où aucune règle ne porte. Pour forcer : style inline.
+   */
   strokeWidth?: number;
   className?: string;
   style?: CSSProperties;

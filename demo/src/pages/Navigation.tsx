@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ContentIcon } from '@compagnons-ia/ds/brand-content';
 import { IDENTITY } from '../identity';
-import { AppShell, Avatar, Button, Footer, Icon, IconButton, Navbar, Pagination, Sidebar, Tabs, Logo } from '@compagnons-ia/ds';
+import { AppShell, Avatar, Button, Footer, Icon, IconButton, Navbar, Pagination, Sidebar, TabBar, Tabs, Logo } from '@compagnons-ia/ds';
 import { Block, Row, Section } from '../ui';
 
 const LINKS = [{ label: 'Vidéos', active: true }, { label: 'Séries' }, { label: 'À propos' }];
@@ -12,20 +12,29 @@ const SERIES = [
   { value: 'coulisses', label: 'Coulisses' },
 ];
 
+/* Les quatre destinations de la coque — la limite du composant, montrée telle quelle. */
+const COQUE = [
+  { value: 'accueil', label: 'Accueil', icon: <Icon name="house" /> },
+  { value: 'discussions', label: 'Discussions', icon: <Icon name="message-square" /> },
+  { value: 'profil', label: 'Profil', icon: <Icon name="user" /> },
+  { value: 'reglages', label: 'Réglages', icon: <Icon name="settings" /> },
+];
+
 export function NavigationPage() {
   const [tab, setTab] = useState('build');
+  const [onglet, setOnglet] = useState('accueil');
   const [page, setPage] = useState(4);
   const [longPage, setLongPage] = useState(12);
 
   return (
     <div className="flex flex-col gap-space-7">
-      <Section title="Navbar" note="Posée sur --secondary avec une bordure basse en permanence — c'est un contrôle détaché du layout, jamais transparent. Au scroll elle se teinte, prend un blur(10px) et une ombre. Seul endroit du système qui utilise backdrop-filter.">
+      <Section title="Navbar" note="Posée sur --card (blanche) avec une bordure basse en permanence — doctrine « le blanc est la surface portée » : un contrôle posé sur la mise en page crème, jamais transparent. Au scroll elle se teinte, prend un blur(10px) et une ombre. Seul endroit du système qui utilise backdrop-filter.">
         <Block label="Au repos">
           <div className="overflow-x-auto rounded-xl border border-border">
             <Navbar homeLabel={`${IDENTITY.personne} — accueil`} brand={<Logo variant="wordmark" wordmark={IDENTITY.wordmark} height="1.375rem" />} scrolled={false} links={LINKS} cta={<Button size="sm">La newsletter</Button>} />
           </div>
         </Block>
-        <Block label="État scrollé" hint="Teinte color-mix sur --secondary + blur + ombre.">
+        <Block label="État scrollé" hint="Teinte color-mix sur --card + blur + ombre.">
           <div className="overflow-x-auto rounded-xl border border-border bg-card">
             <Navbar homeLabel={`${IDENTITY.personne} — accueil`} brand={<Logo variant="wordmark" wordmark={IDENTITY.wordmark} height="1.375rem" />} scrolled links={LINKS} cta={<Button size="sm">La newsletter</Button>} />
           </div>
@@ -41,16 +50,23 @@ export function NavigationPage() {
         </Block>
       </Section>
 
-      <Section title="Tabs" note="Groupe d'onglets pill sur --muted. Le pill est légal ici — onglets, badges, compteurs.">
+      <Section title="Tabs" note="Barre BLANCHE (--card) sur la page, onglet actif sur la crème --background. Barre et onglets pill : --tabs-radius est redéclaré en marque, sinon l'onglet déborde des coins de sa barre.">
         <Block label="Interactif">
           <Row><Tabs items={SERIES} value={tab} onChange={setTab} /></Row>
           <p className="caption">Onglet actif : {SERIES.find(s => s.value === tab)?.label}</p>
         </Block>
-        <Block label="onCard" hint="La barre contraste avec sa surface porteuse ET l'onglet actif contraste avec la barre : il descend d'un cran de surface, jamais au niveau de la barre. Sur la page : barre --secondary, actif --background. Sur une card : barre --background, actif --card. Vérifie les deux en clair ET en sombre — en sombre, --card et --secondary valent tous les deux #2b2a28, un actif en --card y serait invisible.">
+        <Block label="onCard" hint="La barre contraste avec sa surface porteuse ET l'onglet actif contraste avec la barre : il descend d'un cran de surface, jamais au niveau de la barre. Sur la page : barre --card, actif --background. Sur une card : barre --background, actif --card. onPage fait l'inverse : un îlot crème dans une card qui doit rester blanc. Vérifie en clair ET en sombre — en sombre l'actif se mêle à l'encre (color-mix sur --card), l'ombre n'y porte plus l'élévation.">
           <Row label="sur la page (défaut)"><Tabs items={SERIES} value="build" onChange={() => undefined} /></Row>
           <Row label="sur une card — onCard">
             <span className="inline-flex rounded-lg border border-border bg-card p-space-4">
               <Tabs onCard items={SERIES} value="build" onChange={() => undefined} />
+            </span>
+          </Row>
+          <Row label="îlot crème dans une card — onPage">
+            <span className="inline-flex rounded-lg border border-border bg-card p-space-4">
+              <span className="inline-flex rounded-lg bg-background p-space-3">
+                <Tabs onPage items={SERIES} value="build" onChange={() => undefined} />
+              </span>
             </span>
           </Row>
         </Block>
@@ -68,7 +84,31 @@ export function NavigationPage() {
         </Block>
       </Section>
 
-      <Section title="Pagination" note="Contrôlée. Barre --secondary, même traitement que les onglets ; la page courante reprend l'onglet actif. Au-delà de 7 pages, une ellipsis en icône — jamais le caractère.">
+      <Section title="TabBar" note="La coque de la PWA sur mobile : une capsule BLANCHE FLOTTANTE, détachée des bords, ombre --shadow-lg. Quatre destinations au plus, libellés toujours visibles. L'item actif se pose dans sa propre capsule --accent, icône et libellé en --primary-readable.">
+        <Block label="Spécimen — cadre 390 px" hint="La largeur de l'écran de référence, sur la crème de la mise en page. La barre flotte au-dessus du contenu : marges latérales, marge basse, safe-area comprise.">
+          {/* 24.375rem = 390 px, l'écran de référence du projet. */}
+          <div className="overflow-hidden rounded-xl border border-border bg-background" style={{ width: '24.375rem', maxWidth: '100%' }}>
+            <div className="flex flex-col gap-space-2 p-space-5">
+              <h3>{COQUE.find(o => o.value === onglet)?.label}</h3>
+              <p className="caption">Le contenu de l'écran vit ici. Change d'onglet : la capsule --accent suit, le reste ne bouge pas.</p>
+            </div>
+            <TabBar items={COQUE.map(o => ({ ...o, active: o.value === onglet, onSelect: () => setOnglet(o.value) }))} />
+          </div>
+          <p className="caption">Dans l'app, <code className="mono">dock</code> l'enveloppe dans <code className="mono">.ds-tabbar-dock</code> — <code className="mono">position:fixed</code>, collée en bas de l'écran. Ici on la rend dans le flux : un spécimen ne se fixe pas au viewport de la vitrine.</p>
+        </Block>
+        <Block label="États" hint="Repos, survol forcé, actif. Un cinquième onglet est rendu quand même — couper une navigation en silence serait pire — mais signalé en console en développement. Cible tactile : 36 px + 4 px de marge de chaque côté, sous le rail 44 px — écart assumé, voir docs/accessibilite.md.">
+          <div className="rounded-xl bg-background p-space-3" style={{ maxWidth: '24.375rem' }}>
+            <div className="ds-tabbar">
+              <button type="button" className="ds-tabbar__item is-active" aria-current="page"><Icon name="house" /><span>Accueil</span></button>
+              <button type="button" className="ds-tabbar__item is-hover"><Icon name="message-square" /><span>Discussions</span></button>
+              <button type="button" className="ds-tabbar__item"><Icon name="user" /><span>Profil</span></button>
+              <button type="button" className="ds-tabbar__item"><Icon name="settings" /><span>Réglages</span></button>
+            </div>
+          </div>
+        </Block>
+      </Section>
+
+      <Section title="Pagination" note="Contrôlée. Barre BLANCHE --card au rayon pill (--pagination-radius), même traitement que les onglets ; survol et page courante descendent sur la crème --background. Au-delà de 7 pages, une ellipsis en icône — jamais le caractère.">
         <Block label="Peu de pages">
           <Row><Pagination page={page} pageCount={5} onPageChange={setPage} /></Row>
           <p className="caption">Page {page} sur 5.</p>
@@ -83,7 +123,7 @@ export function NavigationPage() {
         </Block>
       </Section>
 
-      <Section title="AppShell et Sidebar" note="Le squelette des outils internes : grille [barre latérale | contenu]. La barre est sur --secondary, repliable en icônes seules, et l'état est persisté en localStorage.">
+      <Section title="AppShell et Sidebar" note="Le squelette des outils internes : grille [barre latérale | contenu]. La barre est BLANCHE (--card) et la zone de contenu porte la crème ; items pill, survol et actif sur --background. Repliable en icônes seules, l'état est persisté en localStorage.">
         <Block label="Complet" hint="responsive={false} et staticLayout épinglent la mise en page à deux colonnes pour la vitrine. Chaque section est un groupe : 16px les séparent, avec ou sans titre — le dernier groupe, sans titre, ne se colle plus au précédent.">
           <div className="overflow-hidden rounded-xl border border-border">
             <AppShell

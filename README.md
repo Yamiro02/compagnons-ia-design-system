@@ -2,7 +2,7 @@
 
 **Un squelette de design system React, à remplir par projet.** Deux couches qui ne se
 mélangent pas : un **socle** générique — structure, comportements, échelles, rail de
-contrôles, motion, 37 composants React + TypeScript, **zéro couleur** — et une **marque**,
+contrôles, motion, 38 composants React + TypeScript, **zéro couleur** — et une **marque**,
 qui porte les couleurs, les polices, les dégradés et la lueur.
 
 Jetons CSS · couche Tailwind v4 · tout est en `rem`.
@@ -221,7 +221,7 @@ Une section ink au milieu d'une page crème adopte le scope, elle ne peint pas u
 |---|---|
 | Couleurs | `bg-background` `text-foreground` `bg-card` `text-card-foreground` `bg-popover` `bg-primary` `bg-secondary` `bg-muted` `text-muted-foreground` `bg-accent` `bg-destructive` `border-border` `ring-ring` `bg-tone-dark` `bg-tone-dark-soft` `bg-tone-light` `bg-tone-light-alt` `text-text-secondary` `text-text-muted` `text-text-inverted` `bg-brand-from/via/to` `bg-pill-*-bg` `text-pill-*-fg` |
 | Dégradés | `bg-brand-gradient` `bg-brand-gradient-diagonal` `bg-grad-soft` `bg-halo` — pas de namespace v4 pour `background-image` : ce sont des `@utility`, donc variantables (`hover:`, `dark:`) |
-| Rayons | `rounded-xs` `rounded-sm` `rounded-md` `rounded-lg` `rounded-xl` `rounded-2xl` `rounded-pill` — le pill est réservé aux **badges et compteurs** : jamais un bouton, un input ni une barre d'onglets. **`rounded` nu n'est pas au barème**, voir plus bas |
+| Rayons | `rounded-xs` `rounded-sm` `rounded-md` `rounded-lg` `rounded-xl` `rounded-2xl` `rounded-pill` — **DOCTRINE ARRONDIE de ce projet : le pill est la règle**, tout ce qui se presse ou se remplit le porte ; les exceptions sont listées dans `docs/DESIGN.md` § 5. **`rounded` nu n'est pas au barème**, voir plus bas |
 | Ombres | `shadow-sm` `shadow-md` `shadow-lg` `shadow-glow` `shadow-glow-lg` |
 | Typo | `font-display` `font-body` `font-mono` · `text-display-xl` `text-display` `text-heading-xl` `text-heading` `text-subheading` `text-heading-sm` `text-body-lg` `text-body` `text-body-sm` `text-control` `text-caption` `text-eyebrow` `text-chip` |
 | Espacement | `gap-space-1` … `gap-space-8` · `h-control-sm/md/lg` · `w-icon-control-sm/md/lg` · `p-card-pad` `p-card-pad-lg` — **rail unique** : tous les contrôles s'alignent sur `--control-md`, qui descend à 2.75rem sous 64rem |
@@ -253,7 +253,7 @@ de Tailwind, sur laquelle reposent les composants shadcn de ton app.
 > lève aucune erreur : il passe silencieusement de 20 px à 4 px.
 
 > **Le paquet n'est pas scanné par Tailwind.** v4 ne lit pas `node_modules`. Sans effet
-> aujourd'hui : les 37 composants s'habillent en classes `.ds-*` et n'écrivent aucun utilitaire
+> aujourd'hui : les 38 composants s'habillent en classes `.ds-*` et n'écrivent aucun utilitaire
 > Tailwind. C'est une précaution pour l'avenir — le jour où un composant du DS écrira une classe
 > Tailwind, l'app devra pointer le paquet :
 > ```css
@@ -270,12 +270,12 @@ de Tailwind, sur laquelle reposent les composants shadcn de ton app.
 | Famille | Composants |
 |---|---|
 | `icons` | `Icon` — 48 glyphes Lucide ; la taille vient du **créneau** (`--ds-icon-size`, repli `1.25rem`), `size` reste la surcharge au site d'appel |
-| `actions` | `Button` · `IconButton` — 4 variantes (5 pour `IconButton`, `accent` compris), 3 tailles, jamais un pill |
+| `actions` | `Button` · `IconButton` — 4 variantes (5 pour `IconButton`, `accent` compris), 3 tailles, pill (doctrine arrondie) |
 | `forms` | `Input` · `Textarea` · `Select` · `Checkbox` · `Radio` · `Switch` · `FormField` · `Calendar` · `DatePicker` |
 | `data-display` | `Card` (+ en-tête à slots) · `Pastille` · `Badge` (2 rembourrages) · `Tooltip` · `Separator` · `Table` (+ `THead` `TBody` `Tr` `Th` `Td`) — `framed` · `columns` · `striped` · `hoverable`, composables |
 | `feedback` | `Toast` · `Banner` · `EmptyState` · `Skeleton` · `SkeletonCard` · `Spinner` · `Progress` |
 | `overlays` | `Modal` (3 phases + feuille basse sous 64 rem) · `ActionSheet` · `Dropdown` |
-| `navigation` | `Navbar` · `Footer` · `Tabs` · `Pagination` · `AppShell` · `Sidebar` |
+| `navigation` | `Navbar` · `Footer` · `Tabs` (+ `onCard` / `onPage`) · `TabBar` (coque mobile flottante, 4 onglets, `dock`) · `Pagination` · `AppShell` · `Sidebar` |
 | `brand` | `Logo` · `Halo` · `Avatar` |
 
 Tous sont exportés en nommé depuis la racine, avec leurs types :
@@ -383,7 +383,8 @@ est reporté, puis porté ici.
 ## Interdits
 
 Pas de valeur inventée : chaque couleur, taille, rayon ou ombre vient d'un jeton. Pas
-d'emoji — seul le point médian `·`. Jamais un pill sur un bouton ou un input. La face
+d'emoji — seul le point médian `·`. Le pill est la RÈGLE, pas l'exception (doctrine
+arrondie, `docs/DESIGN.md` § 5). La face
 `--font-display` est réservée aux titres, jamais sous `1.125rem`, jamais faux-grassée — sa
 casse et sa graisse viennent de `--heading-transform` / `--heading-weight`, que la marque
 règle. `--tone-deep` : miniatures et motion uniquement. Jamais `rounded` nu — toujours

@@ -20,19 +20,24 @@
    check-contrast.mjs ; chaque écart est repris dans docs/accessibilite.md. */
 
 /* @a11y-assume: .ds-input — bordure --input vs page
-   Contours doux voulus — la chaleur passe par des frontières discrètes ; le champ reste
-   trouvable par son label et son remplissage propre. */
+   1,49 en clair · 2,06 en sombre. Contours doux voulus — la chaleur passe par des
+   frontières discrètes ; le champ reste trouvable par son label et son remplissage propre. */
 
 /* @a11y-assume: .ds-input — bordure --input vs remplissage
-   Même choix de contours doux : la bordure #dbc9ae reste perceptible sans être dure. */
+   1,62 en clair · 1,82 en sombre — chiffres REMESURÉS depuis que le remplissage est --card
+   (le blanc écarte un peu la bordure, 1,53 / 1,51 auparavant). Même choix de contours doux :
+   la bordure #dbc9ae reste perceptible sans être dure. */
 
 /* @a11y-assume: .ds-input — remplissage vs page
-   Champs quasi affleurants sur le crème, assumés : le champ se lit par sa bordure douce,
-   son label et son placeholder — jamais par le seul aplat. */
+   1,09 en clair · 1,13 en sombre — REMESURÉS sur le remplissage réel (--card, plus
+   --secondary) : le champ blanc se détache un peu MIEUX du crème qu'avant (1,03), l'écart
+   reste sous le seuil et reste assumé. Champs quasi affleurants : le champ se lit par sa
+   bordure douce, son label et son placeholder — jamais par le seul aplat. */
 
-/* @a11y-assume: .ds-input.is-error — bordure --destructive
-   2,88:1 en sombre, au ras du seuil : l'état d'erreur n'est jamais porté par la seule
-   bordure — message d'erreur en --destructive-readable et label l'accompagnent. */
+/* PLUS D'ÉCART SUR LA BORDURE D'ERREUR — l'@a11y-assume qui vivait ici est retiré, et
+   c'est le garde qui l'a demandé. Deux changements l'ont fermé : le champ est désormais
+   BLANC (doctrine « le blanc est la surface portée »), et --destructive sombre est passé
+   au rouge accordé #d04444. Mesure : 5,47 en clair, 3,59 en sombre, seuil 3. */
 
 /* @a11y-assume: .ds-card — bordure --border vs page
    Cartes blanches sur crème : la carte se lit par sa surface et son ombre douce, le
@@ -45,16 +50,28 @@
    4,01:1 en sombre sur l'arrêt le plus sombre du dégradé : propriété de la technique de
    clip ; l'accent est rationné (sur-titres courts, jamais seul porteur de sens). */
 
+/* ---------- 2 bis · ÉCART DE SURFACE ASSUMÉ ----------
+   Clé exacte de check-surfaces.mjs. */
+
+/* @surface-assume: --popover / --card — clair
+   Doctrine « le blanc est la surface portée » : la surface flottante et la carte partagent
+   le blanc pur, l'écart d'aplat est donc nul. Ce qui porte le dropdown et la modale, c'est
+   --shadow-lg et la bordure --border — jamais une différence de remplissage. En SOMBRE
+   l'échelle reste étagée (card #251e1a sous popover #2a221e), la paire y tient seule. */
+
 /* ---------- 3 · JETONS ---------- */
 :root{
   /* Surfaces & neutres — chauds, jamais de gris froids. L'ÉCHELLE CLAIRE :
-       muted #f1e8d8 → background #faf5ec (crème) → secondary/popover #fdf8ef → card #ffffff.
-     La carte est le sommet (blanc pur, maquettes validées) ; les contrôles posés sur la
-     page (#fdf8ef) restent SOUS elle — l'écart card/secondary et card/popover est mesuré
-     (≥1,05), le dropdown au-dessus d'une carte se porte par --shadow-lg. */
+       muted #f1e8d8 → background #faf5ec (crème) → secondary #fdf8ef → card/popover #ffffff.
+     DOCTRINE « LE BLANC EST LA SURFACE PORTÉE » : tout ce qui se pose sur la mise en page
+     crème est blanc — carte, navbar, barre latérale, pied, champ, barre d'onglets — et un
+     champ posé DANS une porteuse blanche repasse en crème (--background). --popover rejoint
+     donc --card : un dropdown au-dessus d'une carte est blanc sur blanc et se porte par son
+     OMBRE (--shadow-lg) et sa bordure, jamais par un écart d'aplat (écart assumé § 2 bis).
+     --secondary reste l'aplat de contrôle en creux (bouton secondaire, îlot sur carte). */
   --background:#faf5ec; --foreground:#2b2420;
   --card:#ffffff; --card-foreground:#2b2420;
-  --popover:#fdf8ef; --popover-foreground:#2b2420;
+  --popover:#ffffff; --popover-foreground:#2b2420;
   --secondary:#fdf8ef; --secondary-foreground:#2b2420;
   --muted:#f1e8d8; --muted-foreground:#6b5d51;
   --accent:#f6e3e6; --accent-foreground:#2b2420;
@@ -69,7 +86,7 @@
 
   /* Marque — remplissages. Grenat clair → bordeaux, même teinte, dégradé discret. */
   --primary:#a03b58; --primary-foreground:#ffffff;
-  --destructive:#c2452a; --destructive-foreground:#ffffff;   /* rouge-orangé brûlé, jamais le grenat */
+  --destructive:#c53030; --destructive-foreground:#ffffff;   /* rouge franc, jamais le grenat */
   --ring:#a03b58;
   --brand-from:#a03b58; --brand-via:#98344d; --brand-to:#8f2d42;
   --grad-soft:linear-gradient(135deg,rgba(160,59,88,.09),rgba(143,45,66,.06)); /* @kind color */
@@ -79,12 +96,12 @@
 
   /* Les jumeaux lisibles — le bordeaux tient ≥4,5:1 sur les six surfaces claires. */
   --primary-readable:#8f2d42;
-  --destructive-readable:#9d3417;
+  --destructive-readable:#9e2222;
 
   /* Sémantique — les six pilules. Fonds translucides, textes sombres et chauds. */
   --pill-coral-fg:#8f2d42;
   --pill-amber-fg:#7d4a1f;
-  --pill-danger-bg:rgba(194,69,42,0.13);  --pill-danger-fg:#9d3417;
+  --pill-danger-bg:rgba(197,48,48,0.13);  --pill-danger-fg:#9e2222;
   --pill-warning-bg:rgba(158,113,22,0.15); --pill-warning-fg:#6d4e0e;
   --pill-success-fg:#2c5e3e;
   --pill-neutral-fg:#5c5148;
@@ -124,9 +141,9 @@
   /* Le grenat s'éclaircit d'un cran pour rester lisible (label blanc conservé : 4,6:1
      sur l'arrêt le plus clair) et tenir ≥3:1 sur --surface-alt (barre de progression). */
   --primary:#b95370; --primary-foreground:#ffffff;
-  --destructive:#c34e31; --destructive-foreground:#ffffff;
+  --destructive:#d04444; --destructive-foreground:#ffffff;
   --primary-readable:#e79db2;
-  --destructive-readable:#f0a08b;
+  --destructive-readable:#f09a94;
   /* Les trois arrêts s'éclaircissent avec --primary : les dégradés dérivés en dépendent. */
   --brand-from:#b95370; --brand-via:#ac4762; --brand-to:#9f3b54;
   --shadow-glow:0 6px 18px rgba(185,83,112,.28), 0 2px 6px rgba(159,59,84,.20);
@@ -136,7 +153,7 @@
   --grad-soft:linear-gradient(135deg,rgba(185,83,112,.16),rgba(159,59,84,.12)); /* @kind color */
   --pill-coral-fg:#e79db2;
   --pill-amber-fg:#e2b39e;
-  --pill-danger-fg:#f0a08b;
+  --pill-danger-fg:#f09a94;
   --pill-warning-fg:#e3c07c;
   --pill-success-fg:#9ed3ae;
   --pill-neutral-fg:#cfc2b6;
@@ -148,4 +165,13 @@
      24 (--radius-xl), 28 (--radius-2xl) ;
    · boutons pill → c'est une autre RÈGLE, pas une autre valeur : le traitement est dans
      patterns.css (.ds-btn / .ds-icon-btn → var(--radius-pill)), fichier du projet ;
-   · rail de contrôles, dimensions → défauts du socle, cible tactile 44 px conservée. */
+   · rail de contrôles, dimensions → défauts du socle, cible tactile 44 px conservée.
+
+   DEUX EXCEPTIONS, et elles suivent la DOCTRINE ARRONDIE du projet : tout ce qui se presse
+   ou se remplit est PILL. Les barres qui portent des items pill doivent l'être aussi, sinon
+   l'item déborde optiquement des coins de sa barre. Les RÈGLES correspondantes (l'item
+   lui-même) vivent dans patterns.css ; ici, seules les deux mesures. */
+:root{
+  --tabs-radius:var(--radius-pill);
+  --pagination-radius:var(--radius-pill);
+}

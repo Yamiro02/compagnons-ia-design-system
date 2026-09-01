@@ -172,7 +172,7 @@ export function OverlaysPage() {
         </Block>
       </Section>
 
-      <Section title="Dropdown" note="Panneau de menu, rayon 2xl, --shadow-lg. Les items s'éclairent sur --accent. DESKTOP ONLY — sous 64 rem, c'est l'ActionSheet ci-dessus qui prend le relais.">
+      <Section title="Dropdown" note="Panneau de menu, rayon 2xl, --shadow-lg. Les items s'éclairent sur la crème --background — sur un panneau blanc, --surface-alt ne se voit plus. DESKTOP ONLY — sous 64 rem, c'est l'ActionSheet ci-dessus qui prend le relais.">
         <Block label="inline — rendu dans le flux" hint="Posé à côté de l'ActionSheet ci-dessus, la parenté se voit : mêmes lignes, mêmes tons. Le Dropdown garde son filet — dense, survolé à la souris — là où la feuille du bas l'a perdu.">
           <Row>
             <Dropdown inline items={[

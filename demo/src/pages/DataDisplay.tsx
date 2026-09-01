@@ -8,7 +8,7 @@ const TONS_PASTILLE = ['brand', 'brand-solid', 'coral', 'amber', 'success', 'war
 export function DataDisplayPage() {
   return (
     <div className="flex flex-col gap-space-7">
-      <Section title="Card" note="La surface signature : fond --card teinté, bordure 1px, rayon lg ou xl, ombre teintée. Jamais une card blanche.">
+      <Section title="Card" note="La surface signature : fond --card, bordure 1px, rayon lg ou xl, ombre teintée. Sur cette marque, --card EST le blanc pur — c'est la doctrine « le blanc est la surface portée ».">
         <Block label="Variantes" hint="Les gaps de grille entre cards sont ≥ 1.5rem.">
           <Grid cols={3}>
             <Card>
@@ -84,7 +84,7 @@ export function DataDisplayPage() {
       </Section>
 
       <Section title="Pastille" note="La tuile d'icône du système — une seule pour toutes les tuiles teintées. Les tailles sont nommées PAR CONTEXTE, jamais par mesure : un site d'appel n'écrit jamais un rem.">
-        <Block label="Tailles" hint="carte 2.25 · dialogue 2.625 · panneau 3.25 · héros 4 · écran 5rem. Le rayon suit la taille : sm · md · lg · xl · 2xl.">
+        <Block label="Tailles" hint="carte 2.25 · dialogue 2.625 · panneau 3.25 · héros 4 · écran 5rem. Le rayon NE suit plus la taille : la pastille est ronde à toutes les tailles (doctrine arrondie), les modificateurs ne portent que leur mesure.">
           <Row>
             {TAILLES.map(t => (
               <div key={t} className="flex flex-col items-center gap-space-2">
@@ -93,7 +93,7 @@ export function DataDisplayPage() {
               </div>
             ))}
           </Row>
-          <Row label="shape=&quot;round&quot; — le rayon passe à --radius-pill">
+          <Row label="shape=&quot;round&quot; — devenu redondant, conservé comme classe publique">
             {TAILLES.map(t => <Pastille key={t} size={t} shape="round"><Icon name="user" size="1.25rem" /></Pastille>)}
           </Row>
         </Block>
@@ -113,15 +113,15 @@ export function DataDisplayPage() {
         </Block>
       </Section>
 
-      <Section title="Badge" note="Le rayon pill est légal ici. Les tons sémantiques portent toujours une icône + du texte.">
+      <Section title="Badge" note="Le rayon pill est celui de tout le système depuis la doctrine arrondie. Les tons sémantiques portent toujours une icône + du texte.">
         <Block label="Tous les tons">
           <Row>
-            <Badge tone="success" icon={<Icon name="circle-check" size="0.875rem" strokeWidth={2.5} />}>En ligne</Badge>
-            <Badge tone="danger" icon={<Icon name="circle-alert" size="0.875rem" strokeWidth={2.5} />}>Échec</Badge>
-            <Badge tone="warning" icon={<Icon name="triangle-alert" size="0.875rem" strokeWidth={2.5} />}>À vérifier</Badge>
-            <Badge tone="coral" icon={<Icon name="zap" size="0.875rem" strokeWidth={2.5} />}>Nouveau</Badge>
-            <Badge tone="amber" icon={<Icon name="clock" size="0.875rem" strokeWidth={2.5} />}>Bientôt</Badge>
-            <Badge tone="accent" icon={<Icon name="rocket" size="0.875rem" strokeWidth={2.5} />}>Mis en avant</Badge>
+            <Badge tone="success" icon={<Icon name="circle-check" strokeWidth={2.5} />}>En ligne</Badge>
+            <Badge tone="danger" icon={<Icon name="circle-alert" strokeWidth={2.5} />}>Échec</Badge>
+            <Badge tone="warning" icon={<Icon name="triangle-alert" strokeWidth={2.5} />}>À vérifier</Badge>
+            <Badge tone="coral" icon={<Icon name="zap" strokeWidth={2.5} />}>Nouveau</Badge>
+            <Badge tone="amber" icon={<Icon name="clock" strokeWidth={2.5} />}>Bientôt</Badge>
+            <Badge tone="accent" icon={<Icon name="rocket" strokeWidth={2.5} />}>Mis en avant</Badge>
             <Badge tone="neutral">Brouillon</Badge>
             <Badge tone="outline">Archivé</Badge>
           </Row>
@@ -132,13 +132,13 @@ export function DataDisplayPage() {
 
         <Block label="Rembourrages" hint="md = --badge-h (29 px), la hauteur historique, figée pour non-régression · dense = --badge-h-dense (24 px), celle qui s'aligne sur une pilule d'état de la même rangée. Icône 0.875rem en md, 0.75rem en dense.">
           <Row label="md — posé à côté d'un Button sm et d'un Input sm">
-            <Badge tone="success" icon={<Icon name="circle-check" size="0.875rem" strokeWidth={2.5} />}>En ligne</Badge>
+            <Badge tone="success" icon={<Icon name="circle-check" strokeWidth={2.5} />}>En ligne</Badge>
             <Button size="sm" variant="secondary">Action</Button>
             <Input size="sm" defaultValue="Champ sm" style={{ width: '9rem' }} />
           </Row>
           <Row label="dense — même rangée, alignement retrouvé">
-            <Badge pad="dense" tone="success" icon={<Icon name="circle-check" size="0.75rem" strokeWidth={2.5} />}>En ligne</Badge>
-            <Badge pad="dense" tone="coral" icon={<Icon name="zap" size="0.75rem" strokeWidth={2.5} />}>Nouveau</Badge>
+            <Badge pad="dense" tone="success" icon={<Icon name="circle-check" strokeWidth={2.5} />}>En ligne</Badge>
+            <Badge pad="dense" tone="coral" icon={<Icon name="zap" strokeWidth={2.5} />}>Nouveau</Badge>
             <Badge pad="dense" tone="neutral">Brouillon</Badge>
           </Row>
         </Block>
@@ -170,10 +170,10 @@ export function DataDisplayPage() {
               <Tr><Th>Vidéo</Th><Th>Série</Th><Th>Publiée</Th><Th>Statut</Th></Tr>
             </THead>
             <TBody>
-              <Tr><Td>Construire une app en un week-end</Td><Td>Build</Td><Td>il y a 3 j</Td><Td><Badge tone="success" icon={<Icon name="circle-check" size="0.875rem" strokeWidth={2.5} />}>En ligne</Badge></Td></Tr>
-              <Tr><Td>Cadrer une idée en une phrase</Td><Td>Tuto</Td><Td>il y a 9 j</Td><Td><Badge tone="success" icon={<Icon name="circle-check" size="0.875rem" strokeWidth={2.5} />}>En ligne</Badge></Td></Tr>
+              <Tr><Td>Construire une app en un week-end</Td><Td>Build</Td><Td>il y a 3 j</Td><Td><Badge tone="success" icon={<Icon name="circle-check" strokeWidth={2.5} />}>En ligne</Badge></Td></Tr>
+              <Tr><Td>Cadrer une idée en une phrase</Td><Td>Tuto</Td><Td>il y a 9 j</Td><Td><Badge tone="success" icon={<Icon name="circle-check" strokeWidth={2.5} />}>En ligne</Badge></Td></Tr>
               <Tr><Td>Le prompt que j'utilise tous les jours</Td><Td>Build</Td><Td>il y a 16 j</Td><Td><Badge tone="neutral">Brouillon</Badge></Td></Tr>
-              <Tr><Td>Ce que Claude Code ne sait pas faire</Td><Td>Coulisses</Td><Td>il y a 24 j</Td><Td><Badge tone="warning" icon={<Icon name="triangle-alert" size="0.875rem" strokeWidth={2.5} />}>À revoir</Badge></Td></Tr>
+              <Tr><Td>Ce que Claude Code ne sait pas faire</Td><Td>Coulisses</Td><Td>il y a 24 j</Td><Td><Badge tone="warning" icon={<Icon name="triangle-alert" strokeWidth={2.5} />}>À revoir</Badge></Td></Tr>
             </TBody>
           </Table>
         </Block>
@@ -210,10 +210,10 @@ export function DataDisplayPage() {
           <Table framed columns striped hoverable>
             <THead><Tr><Th>Vidéo</Th><Th>Série</Th><Th>Publiée</Th><Th>Statut</Th></Tr></THead>
             <TBody>
-              <Tr><Td>Construire une app en un week-end</Td><Td>Build</Td><Td>il y a 3 j</Td><Td><Badge tone="success" icon={<Icon name="circle-check" size="0.875rem" strokeWidth={2.5} />}>En ligne</Badge></Td></Tr>
-              <Tr><Td>Cadrer une idée en une phrase</Td><Td>Tuto</Td><Td>il y a 9 j</Td><Td><Badge tone="success" icon={<Icon name="circle-check" size="0.875rem" strokeWidth={2.5} />}>En ligne</Badge></Td></Tr>
+              <Tr><Td>Construire une app en un week-end</Td><Td>Build</Td><Td>il y a 3 j</Td><Td><Badge tone="success" icon={<Icon name="circle-check" strokeWidth={2.5} />}>En ligne</Badge></Td></Tr>
+              <Tr><Td>Cadrer une idée en une phrase</Td><Td>Tuto</Td><Td>il y a 9 j</Td><Td><Badge tone="success" icon={<Icon name="circle-check" strokeWidth={2.5} />}>En ligne</Badge></Td></Tr>
               <Tr><Td>Le prompt que j'utilise tous les jours</Td><Td>Build</Td><Td>il y a 16 j</Td><Td><Badge tone="neutral">Brouillon</Badge></Td></Tr>
-              <Tr><Td>Ce que Claude Code ne sait pas faire</Td><Td>Coulisses</Td><Td>il y a 24 j</Td><Td><Badge tone="warning" icon={<Icon name="triangle-alert" size="0.875rem" strokeWidth={2.5} />}>À revoir</Badge></Td></Tr>
+              <Tr><Td>Ce que Claude Code ne sait pas faire</Td><Td>Coulisses</Td><Td>il y a 24 j</Td><Td><Badge tone="warning" icon={<Icon name="triangle-alert" strokeWidth={2.5} />}>À revoir</Badge></Td></Tr>
             </TBody>
           </Table>
         </Block>

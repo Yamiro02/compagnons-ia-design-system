@@ -4,7 +4,8 @@ import { cn } from '../../lib/cn';
 
 /**
  * Single-line text field on the shared control rail, aligned with Button and the Select trigger.
- * Focus = the border turns --ring — ONE border, never an extra ring. Never a pill.
+ * Focus = the border turns --ring — ONE border, never an extra ring. PILL, since the project's
+ * rounded doctrine: what gets pressed or filled is pill (patterns.css).
  * `forwardRef` : la ref atteint l'<input> natif — c'est ce qui rend le champ utilisable
  * avec une bibliothèque de formulaires (register() de react-hook-form pose une ref).
  */
@@ -12,8 +13,15 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   size?: 'sm' | 'md' | 'lg';
   /** Red border + 3px destructive ring. Always pair with an error message. */
   invalid?: boolean;
-  /** 'page' (default) = sits directly on the layout (fill --secondary, like navbar/tabs/search) · 'card' = inside a card (fill --background). */
-  surface?: 'page' | 'card';
+  /**
+   * La surface porteuse — l'échappatoire à la DÉDUCTION de patterns.css, jumelle exacte
+   * du `surface` de Button. `auto` (défaut) laisse la déduction décider : blanc (--card)
+   * sur la mise en page, crème (--background) dans une carte, une modale, une feuille,
+   * un popover ou la navbar. `page` force le BLANC là où la déduction aurait mis du crème
+   * (un îlot crème posé dans une carte) ; `card` force le crème hors d'une vraie .ds-card,
+   * pour un conteneur qui n'en a que l'apparence.
+   */
+  surface?: 'auto' | 'page' | 'card';
   /**
    * L'unité du champ — « kg », « € », « min » — posée DANS le champ, à droite, en
    * sourdine (v0.3.0). Trois caractères au plus : le
@@ -24,10 +32,11 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
-  size = 'md', invalid = false, surface = 'page', unit, className = '', ...rest
+  size = 'md', invalid = false, surface = 'auto', unit, className = '', ...rest
 }: InputProps, ref): JSX.Element {
-  // surface: 'page' (default) = the input sits directly on the layout (fill --secondary) · 'card' = inside a card (fill --background).
-  // Since the surface-inference rule in patterns.css, a field inside a Card, Modal, ActionSheet, Dropdown or DatePicker pop deduces --background by itself — the prop is only needed for other containers.
+  /* La déduction de patterns.css couvre le cas normal : un champ dans une Card, une Modal,
+     une ActionSheet, un Dropdown, le pop d'un DatePicker ou la Navbar passe en --background
+     tout seul. `surface` n'est là que pour les conteneurs qu'elle ne connaît pas. */
   /* Le rail passe par des classes, jamais par un style inline : `--control-sm`
      aliase `--control-md` depuis le rail unique, mais la classe reste pour l'API
      et pour le jour où le rail redivergerait. */
@@ -35,6 +44,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
     'ds-input',
     size !== 'md' && 'ds-input--' + size,
     surface === 'card' && 'ds-input--on-card',
+    surface === 'page' && 'ds-input--on-page',
     invalid && 'is-error',
     className,
   );

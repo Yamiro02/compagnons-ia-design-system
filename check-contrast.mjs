@@ -143,7 +143,17 @@ function pairs(theme, { ROOT, DARK }, fichier) {
   add('Texte', 'texte courant sur --card', g('--foreground'), g(C), 4.5, '16 / 400');
   add('Texte', '--text-secondary sur --card', g('--text-secondary'), g(C), 4.5, '16 / 400');
   add('Texte', '.caption — --text-muted sur --card', g('--text-muted'), g(C), 4.5, '13 / 500');
-  add('Texte', '.ds-input::placeholder', g('--text-muted'), g('--secondary'), 4.5, '15 / 400');
+  /* SIX PAIRES ONT CHANGÉ DE PORTEUSE, PAS DE NOM. Depuis la doctrine « le blanc est la
+     surface portée », le remplissage du champ, la navbar et la pagination sont --card, et
+     la plaque active de la barre latérale est --background : ces paires mesurent donc
+     --card (placeholder, lien actif de navbar, bordure d'erreur, bordure --input vs
+     remplissage, remplissage vs page) ou --background (item actif de sidenav), plus
+     --secondary ni --surface-alt. Le LIBELLÉ de la règle, lui, ne bouge jamais — c'est la
+     clé que lit un @a11y-assume dans un fichier de marque.
+     RÈGLE DE TENUE : toute paire dont la porteuse change dans patterns.css se recâble ici
+     dans la foulée. Un garde qui mesure une surface que le CSS n'emploie plus est un garde
+     qui ment, même quand il ment dans le sens sûr. */
+  add('Texte', '.ds-input::placeholder', g('--text-muted'), g(C), 4.5, '15 / 400');
   add('Texte', '.ds-tooltip__bubble', theme === 'light' ? g('--text-inverted') : g('--tone-dark'),
                                       theme === 'light' ? g('--tone-dark') : g('--tone-light-alt'), 4.5, '13 / 600');
 
@@ -151,11 +161,15 @@ function pairs(theme, { ROOT, DARK }, fichier) {
   add('Lien', 'a{} au repos sur --card', g('--primary-readable'), g(C), 4.5, '16 / 400');
   add('Lien', 'a:hover — dérivé vers --foreground', over(g('--primary-readable'), .8, g('--foreground')), g(B), 4.5, '16 / 400');
 
-  add('Marque-contenu', '.ds-navlink.is-active', g('--primary-readable'), g('--secondary'), 4.5, '16 / 500');
-  add('Marque-contenu', '.ds-sidenav.is-active', g('--primary-readable'), g('--surface-alt'), 4.5, '15 / 500');
+  add('Marque-contenu', '.ds-navlink.is-active', g('--primary-readable'), g(C), 4.5, '16 / 500');
+  add('Marque-contenu', '.ds-sidenav.is-active', g('--primary-readable'), g(B), 4.5, '15 / 500');
   add('Marque-contenu', '.ds-badge--accent', g('--primary-readable'), g('--accent'), 4.5, '12 / 700');
   add('Marque-contenu', '.ds-banner--info', g('--primary-readable'), g('--accent'), 4.5, '15 / 400');
-  add('Marque-contenu', '.ds-cal__day.is-today', g('--primary-readable'), g(C), 4.5, '14 / 700');
+  /* Le calendrier est posé sur --popover (.ds-cal), pas sur --card : cette paire-là ne
+     suit pas la doctrine blanche, elle mesurait la mauvaise surface DEPUIS LE DÉBUT. En
+     clair les deux valent le même blanc, mais en sombre --popover est un cran au-dessus
+     de --card et le chiffre publié était optimiste. */
+  add('Marque-contenu', '.ds-cal__day.is-today', g('--primary-readable'), g('--popover'), 4.5, '14 / 700');
   add('Marque-contenu', '.ds-pastille--brand — icône', g('--primary-readable'), over(g('--brand-from'), softAlpha[0], g(C)), 3, 'icône');
   /* Le ton PLEIN : le glyphe est --primary-foreground sur le dégradé opaque, donc mesuré
      sur ses trois arrêts et pas sur un aplat. Seuil 3 comme sa jumelle douce — un glyphe de
@@ -187,10 +201,10 @@ function pairs(theme, { ROOT, DARK }, fichier) {
   add('Non-texte', '.ds-choice coché — aplat --primary', g('--primary'), g(B), 3, 'contrôle');
   add('Non-texte', '.ds-switch actif — piste --primary', g('--primary'), g(B), 3, 'contrôle');
   add('Non-texte', '.ds-progress__bar sur son rail', g('--primary'), g('--surface-alt'), 3, 'graphique');
-  add('Non-texte', '.ds-input.is-error — bordure --destructive', g('--destructive'), g('--secondary'), 3, 'contour 1.5px');
+  add('Non-texte', '.ds-input.is-error — bordure --destructive', g('--destructive'), g(C), 3, 'contour 1.5px');
   add('Non-texte', '.ds-input — bordure --input vs page', g('--input'), g(B), 3, 'contour 1.5px');
-  add('Non-texte', '.ds-input — bordure --input vs remplissage', g('--input'), g('--secondary'), 3, 'contour 1.5px');
-  add('Non-texte', '.ds-input — remplissage vs page', g('--secondary'), g(B), 3, 'aplat');
+  add('Non-texte', '.ds-input — bordure --input vs remplissage', g('--input'), g(C), 3, 'contour 1.5px');
+  add('Non-texte', '.ds-input — remplissage vs page', g(C), g(B), 3, 'aplat');
   add('Non-texte', '.ds-card — bordure --border vs page', g('--border'), g(B), 3, 'contour 1px');
   add('Non-texte', '.ds-sep — filet --border sur --card', g('--border'), g(C), 3, 'filet 1px');
   return P;

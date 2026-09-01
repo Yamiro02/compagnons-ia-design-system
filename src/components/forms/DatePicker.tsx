@@ -24,8 +24,15 @@ export interface DatePickerProps extends Omit<HTMLAttributes<HTMLSpanElement>, '
   min?: Date;
   max?: Date;
   disabledDates?: Date[];
-  /** 'page' (default) = on the layout (fill --secondary) · 'card' = inside a card (fill --background). */
-  surface?: 'page' | 'card';
+  /**
+   * La surface porteuse — l'échappatoire à la DÉDUCTION de patterns.css, jumelle exacte
+   * du `surface` de Button. `auto` (défaut) laisse la déduction décider : blanc (--card)
+   * sur la mise en page, crème (--background) dans une carte, une modale, une feuille,
+   * un popover ou la navbar. `page` force le BLANC là où la déduction aurait mis du crème
+   * (un îlot crème posé dans une carte) ; `card` force le crème hors d'une vraie .ds-card,
+   * pour un conteneur qui n'en a que l'apparence.
+   */
+  surface?: 'auto' | 'page' | 'card';
   invalid?: boolean;
   disabled?: boolean;
   /** Nom du champ soumis par le <form>. Sans lui, pas d'input caché : rien n'est soumis. */
@@ -81,7 +88,7 @@ function iso(d: Date): string {
 
 export const DatePicker = forwardRef<HTMLSpanElement, DatePickerProps>(function DatePicker({
   value, onChange, placeholder = 'Choisir une date', locale = 'fr-FR', min, max,
-  disabledDates, surface = 'page', invalid = false, disabled = false, name, trigger,
+  disabledDates, surface = 'auto', invalid = false, disabled = false, name, trigger,
   className = '', ...rest
 }: DatePickerProps, refExterne: Ref<HTMLSpanElement>): JSX.Element {
   const [open, setOpen] = useState(false);
@@ -129,7 +136,7 @@ export const DatePicker = forwardRef<HTMLSpanElement, DatePickerProps>(function 
           {...triggerProps}
           type="button"
           disabled={disabled}
-          className={cn('ds-input', 'ds-datepicker__trigger', surface === 'card' && 'ds-input--on-card', invalid && 'is-error')}
+          className={cn('ds-input', 'ds-datepicker__trigger', surface === 'card' && 'ds-input--on-card', surface === 'page' && 'ds-input--on-page', invalid && 'is-error')}
         >
           <span className={value ? '' : 'ds-datepicker__ph'}>{value ? fmt.format(value) : placeholder}</span>
           {/* Sans taille : le créneau du déclencheur rend 1rem (patterns.css, v0.3.0). */}

@@ -25,8 +25,9 @@
 | Jeton | Clair | Sombre | Rôle |
 |---|---|---|---|
 | `--background` | `#faf5ec` crème chaud | `#171210` brun-charbon | fond de page |
-| `--card` | `#ffffff` | `#251e1a` | la carte se détache (1,09 / 1,07 mesurés) |
-| `--secondary` | `#fdf8ef` | `#372c24` | contrôles posés sur la page |
+| `--card` | `#ffffff` | `#251e1a` | LA surface portée — carte, navbar, barre latérale, pied, champ, barre d'onglets |
+| `--popover` | `#ffffff` | `#2a221e` | flottant (dropdown, modale) — blanc sur blanc en clair, porté par `--shadow-lg` (écart de surface assumé) |
+| `--secondary` | `#fdf8ef` | `#372c24` | l'aplat en creux : bouton secondaire, îlot posé sur une carte |
 | `--accent` | `#f6e3e6` lavis rosé | `#45242c` | plaque de marque, jamais rose bonbon |
 | `--surface-alt` | `#f7f0e2` | `#2f2620` | un cran de séparation, même écart dans les deux thèmes |
 | `--border` · `--input` | `#e8dcc8` · `#dbc9ae` | `#41352c` · `#56463a` | frontières chaudes |
@@ -46,7 +47,8 @@
 |---|---|---|---|
 | `--primary` | grenat clair `#a03b58` | grenat éclairci `#b95370` | LA couleur d'action, remplissage seulement |
 | `--primary-readable` | bordeaux `#8f2d42` | rose `#e79db2` | liens, icônes, libellés actifs — ≥4,5:1 sur les six surfaces |
-| `--destructive` / `--destructive-readable` | `#c2452a` / `#9d3417` | `#c34e31` / `#f0a08b` | rouge-orangé brûlé, jamais confondu avec le grenat |
+| `--destructive` / `--destructive-readable` | `#c53030` / `#9e2222` | `#d04444` / `#f09a94` | rouge franc, jamais confondu avec le grenat ; en sombre le jumeau lisible reste ORANGÉ pour tenir la distance avec le rose `--primary-readable` |
+| `--pill-danger-bg` / `--pill-danger-fg` | `rgba(197,48,48,.13)` / `#9e2222` | (fond hérité) / `#f0a08b` | la pilule de danger, accordée au rouge |
 | `--brand-from/via/to` | `#a03b58 → #98344d → #8f2d42` | `#b95370 → #ac4762 → #9f3b54` | dégradé signature discret, même teinte ; s'il tire vers le kitsch → aplat (même valeur ×3) |
 
 **Où l'accent a le droit d'apparaître** — liste FERMÉE :
@@ -77,8 +79,9 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 
 ## 5. Espacement, rayons, rail
 
-**Rayons :** tels quels — le socle rend déjà les gros rayons voulus (cartes 20, panneaux 24, modales 28). Aucune redéclaration.
-**Boutons pill :** autre RÈGLE, pas autre valeur → `patterns.css` (`.ds-btn` / `.ds-icon-btn` → `var(--radius-pill)`). Champs, selects, barres d'onglets restent sur le rayon du socle : seul ce qui se presse est pill.
+**Rayons :** tels quels — le socle rend déjà les gros rayons voulus (cartes 20, panneaux 24, modales 28). Deux redéclarations seulement, en fin de fichier de marque : `--tabs-radius` et `--pagination-radius` → `--radius-pill` (une barre carrée sur des items pill laisse déborder l'item dans ses coins).
+**DOCTRINE ARRONDIE — tout ce qui se presse ou se remplit est PILL.** Autre RÈGLE, pas autre valeur → `patterns.css`. Sont pill : boutons et carrés d'icône, champs / selects / déclencheur de date, items d'onglet, de pagination et de barre latérale, croix de toast et de modale, bascule de barre latérale, rail de progression, tuile d'icône de toast, pastilles à TOUTES les tailles.
+**Les exceptions, écrites :** textarea `--radius-lg` (un pill courberait sa première et sa dernière ligne) · items de menu, dropdown et action sheet `--radius-sm` (ce sont des lignes de liste) · case à cocher `--choice-box-radius` (le squircle de marque) · tooltip `--radius-md` · squelette `--radius-sm` (il mime du CONTENU). Cartes, panneaux, modales : ce sont des surfaces, elles gardent leurs rayons.
 **Densité :** rail du socle conservé (48 px, 44 px sous 64rem) — la cible l'exige.
 
 ## 6. Motifs signature
@@ -87,6 +90,8 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 **Le dégradé :** CTA + un mot de titre + sur-titre. Grenat → bordeaux, même teinte : il se lit comme une profondeur, pas comme un arc-en-ciel.
 **La lueur :** `--shadow-glow*` grenat très douce, CTA uniquement.
 **L'ombre :** trois niveaux teintés de `--tone-dark` (noir chaud), jamais du noir pur.
+
+**DOCTRINE « LE BLANC EST LA SURFACE PORTÉE » :** tout ce qui se pose sur la mise en page crème est BLANC — carte, navbar, barre latérale, pied, pagination, barre d'onglets, champ. Un contrôle posé DANS une porteuse blanche repasse en crème (`--background`) : c'est la déduction de `patterns.css`, avec `surface="card"` / `surface="page"` (et `onCard` / `onPage` pour Tabs) comme échappatoires. Sur une surface blanche, survols et états actifs descendent sur la crème — `--surface-alt` ne s'y voit plus.
 
 **Un motif qu'on refuse :** aucun aplat grenat plein écran, aucun rose bonbon, aucun néon/nightclub en sombre.
 
@@ -101,7 +106,7 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 
 ## 8. Périmètre du design system
 
-**Ce qui entre :** les 37 composants du socle, sans ajout ni retrait au portage.
+**Ce qui entre :** les 37 composants du socle, plus `TabBar` — un ajout ASSUMÉ (§ 10), la coque d'une PWA mobile que le socle ne portait pas. 38 en tout, aucun retrait.
 **Ce qui n'entre pas :** tout ce qui connaît le métier (carte persona, bulle de conversation, paywall) — ça vit dans l'app.
 **Extension métier :** `brand-content.css` NON importé, ses trois jetons non déclarés.
 
@@ -110,7 +115,7 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 1. Aucune valeur littérale hors des fichiers de jetons et de marque.
 2. Toute dimension en `rem`, sauf la liste d'exceptions de `scales.css`.
 3. `--primary` et `--destructive` ne sont jamais une `color:` — le contenu prend les jumeaux lisibles.
-4. Le rayon pill appartient aux BOUTONS (traitement de marque) et aux badges — jamais aux champs ni aux barres d'onglets.
+4. Le rayon pill est la RÈGLE (doctrine arrondie) : tout ce qui se presse ou se remplit. Les seules exceptions sont celles de la § 5 — textarea, items de menu, case à cocher, tooltip, squelette.
 5. Jamais la couleur seule pour porter un sens — toujours + icône + texte.
 6. `house` pour l'accueil ; `layout-dashboard` réservé à un vrai tableau de bord de widgets.
 7. Jamais un utilitaire de couleur, de fond, de `background-clip` ou de dimension sur le nœud qui porte `.accent` ou `.eyebrow`.
@@ -124,7 +129,25 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 |---|---|---|
 | 2026-09-01 | Carte = blanc pur, contrôles de page à `#fdf8ef` sous elle | maquettes validées carte blanche ; l'échelle mesurée exige card ≠ popover/secondary |
 | 2026-09-01 | Boutons pill via `patterns.css`, pas via `--radius-md` | pill sur `--radius-md` aurait emporté champs et selects ; seul ce qui se presse est pill |
-| 2026-09-01 | Destructif rouge-orangé brûlé `#c2452a` | ne jamais confondre danger et marque (grenat) |
+| 2026-09-01 | Destructif rouge franc `#c53030` (était `#c2452a`, rouge-orangé brûlé) | ne jamais confondre danger et marque (grenat) ; le brûlé lisait « terre cuite » plus que « danger ». Les jumeaux (`--destructive-readable`, le couple sombre, `--pill-danger-bg`) restent sur l'ancienne teinte — accord à trancher |
 | 2026-09-01 | Une seule famille (Nunito Sans) display + body | épuré ; la hiérarchie passe par la graisse |
 | 2026-09-01 | Sombre : bruns-charbon, grenat éclairci, label CTA blanc conservé | garder la chaleur, éviter nightclub ; 4,6:1 mesuré sur l'arrêt le plus clair |
 | 2026-09-01 | Import Google Fonts provisoire | .woff2 à déposer dans `src/styles/assets/fonts/`, @font-face prêts en commentaire |
+| 2026-09-01 | Toast et Banner : icône centrée verticalement, tuile de Toast à `2rem` | sur un message d'une seule ligne, l'alignement haut faisait flotter la tuile ; à `1.5rem` elle serrait son tracé |
+| 2026-09-01 | Barre d'onglets posée sur `--card` sur la page (était `--secondary`), actif `--background` | la barre se lit comme un contrôle POSÉ sur la page, pas comme un creux ; les barres sur une carte gardent leur régime inverse |
+| 2026-09-01 | Tracés lucide un cran plus fins — `1.75`, `1.5` en tuile, `2.5` dans une case | Nunito Sans est ronde et légère : à `2` les icônes pesaient plus lourd que le texte qu'elles accompagnent |
+| 2026-09-01 | Point du mot-marque remonté à `0.14em` (override projet dans `patterns.css`) | à `0.03em` — le défaut du socle — il tombait sous la ligne de base sur Nunito Sans |
+| 2026-09-01 | `TabBar` — 38e composant, ajout ASSUMÉ hors des 37 du socle | la PWA est mobile-first et le socle ne portait aucune coque basse ; 4 onglets au plus, limite tenue par un avertissement en développement |
+| 2026-09-02 | `--popover` passe au blanc pur — doctrine « le blanc est la surface portée » | tout ce qui se pose sur la mise en page crème est blanc ; le flottant se lit par `--shadow-lg`, pas par un écart d'aplat (`@surface-assume` écrit dans le fichier de marque) |
+| 2026-09-02 | Navbar, barre latérale, pied, pagination, champs : blancs (`--card`) ; `.ds-appshell__main` porte le crème | même doctrine — la zone de contenu EST la mise en page, les surfaces s'y posent |
+| 2026-09-02 | Survols et actifs des surfaces blanches descendent sur `--background` | sur du blanc, `--surface-alt` et `--card` ne se voient plus |
+| 2026-09-02 | DOCTRINE ARRONDIE — pill partout sauf cinq exceptions écrites (§ 5) | une seule décision de forme au lieu de huit rayons qui divergeaient ; `--tabs-radius` et `--pagination-radius` suivent, sinon l'item déborde des coins de sa barre |
+| 2026-09-02 | Pastille ronde à TOUTES les tailles ; `shape="round"` devient redondant, conservé | le rayon quitte les modificateurs de taille et vit sur la base |
+| 2026-09-02 | Survol d'un bouton secondaire : `--accent` (était `--surface-alt`) | sur une page presque toute blanche, le cran de surface ne se voyait plus ; le ghost garde la crème, il n'a pas de bordure pour le tenir |
+| 2026-09-02 | Créneaux d'icône : `width/height:var(--ds-icon-size, <mesure>)` au lieu de déclarer la propriété | rendu identique, mais `--ds-icon-size` n'est plus jamais déclarée dans le socle : sa seule source devient le site d'appel |
+| 2026-09-02 | `TabBar` version finale : capsule blanche FLOTTANTE, item actif en capsule `--accent` | détachée des bords, elle se lit comme une coque et non comme un bord d'écran ; cible tactile 36 px, écart assumé (voir `docs/accessibilite.md`) |
+| 2026-09-02 | Jumeaux du rouge accordés : clair `--destructive-readable` / `--pill-danger-fg` → `#9e2222`, `--pill-danger-bg` → `rgba(197,48,48,.13)`, sombre `--destructive` → `#d04444`, sombre `--destructive-readable` → `#f09a94` | ils restaient teintés de l'ancien `#c2452a` ; en sombre le jumeau garde une pointe d'ORANGÉ (`#f09a94` plutôt qu'un rouge pur) pour ne pas se confondre avec le rose `--primary-readable` |
+| 2026-09-02 | L'écart assumé sur la bordure d'erreur en sombre est RETIRÉ | il n'a pas été fermé en bougeant le jeton mais la PORTEUSE : le champ est blanc, plus `--secondary`, et les deux seuils incompatibles disparaissent avec le remplissage qui les créait. Mesure 5,47 / 3,59, seuil 3 |
+| 2026-09-02 | `check-contrast.mjs` : **six** paires recâblées sur leur porteuse réelle — `.ds-navlink.is-active`, `.ds-input::placeholder`, `.ds-input.is-error`, `.ds-input — bordure --input vs remplissage`, `.ds-input — remplissage vs page` sur `--card` ; `.ds-sidenav.is-active` sur `--background`. Libellés inchangés (ce sont les clés des `@a11y-assume`) | un garde qui mesure une porteuse que le CSS n'utilise plus est un garde qui ment, même dans le sens sûr. **Règle de tenue** : toute paire dont la porteuse change dans `patterns.css` se recâble dans la foulée |
+| 2026-09-02 | `--pill-danger-fg` sombre → `#f09a94`, réaligné sur son jumeau `--destructive-readable` | les deux jetons étaient identiques avant le changement de rouge ; les laisser diverger aurait créé deux salmons pour un seul rôle |
+| 2026-09-02 | `.ds-cal__day.is-today` recâblée sur `--popover` — dernière fiction connue du garde | le calendrier n'a jamais été posé sur `--card` : celle-là ne venait pas de la doctrine blanche, elle mesurait la mauvaise surface depuis le début. Le garde ne mesure plus que la réalité |

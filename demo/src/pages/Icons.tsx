@@ -22,10 +22,10 @@ export function IconsPage() {
           <Spec token="size=&quot;1.5rem&quot;"><Icon name="circle-check" size="1.5rem" /></Spec>
         </Block>
 
-        <Block label="Graisses" hint="2 standard · 2.5 dans les pills et les toasts · 3 pour le check.">
-          <Spec token="strokeWidth={2}"><Icon name="check" size="1.5rem" strokeWidth={2} /></Spec>
-          <Spec token="strokeWidth={2.5}"><Icon name="check" size="1.5rem" strokeWidth={2.5} /></Spec>
-          <Spec token="strokeWidth={3}"><Icon name="check" size="1.5rem" strokeWidth={3} /></Spec>
+        <Block label="Graisses" hint="C'est la RÈGLE CSS qui décide, pas la prop : 1.75 partout, 1.5 dans une tuile (badge, toast, bandeau, pastille, erreur), 2.5 dans une case à cocher. strokeWidth n'écrit qu'un attribut de présentation, que la règle recouvre — pour forcer, c'est un style inline.">
+          <Spec token="défaut — la règle rend 1.75"><Icon name="check" size="1.5rem" /></Spec>
+          <Spec token="dans une tuile — 1.5"><span className="ds-pastille ds-pastille--dialogue ds-pastille--brand"><Icon name="check" size="1.5rem" /></span></Spec>
+          <Spec token="forcé en inline — 3"><Icon name="check" size="1.5rem" style={{ strokeWidth: 3 }} /></Spec>
         </Block>
 
         <Block label="Couleur" hint="currentColor — --foreground par défaut, --primary seulement pour une icône active ou un CTA.">

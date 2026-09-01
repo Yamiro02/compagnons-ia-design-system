@@ -17,7 +17,7 @@ export function FormsPage() {
 
   return (
     <div className="flex flex-col gap-space-7">
-      <Section title="Input" note="Rail de contrôle partagé, bordure 1.5px. Le focus se lit sur la bordure seule, qui passe en --ring — jamais d'anneau en plus. Jamais un pill.">
+      <Section title="Input" note="Rail de contrôle partagé, bordure 1.5px. Le focus se lit sur la bordure seule, qui passe en --ring — jamais d'anneau en plus. PILL et BLANC : doctrine arrondie + « le blanc est la surface portée ».">
         <Block label="Tailles">
           <Stack>
             <Input size="sm" placeholder="Petite — 2.375rem" />
@@ -33,11 +33,18 @@ export function FormsPage() {
             <Input disabled defaultValue="Indisponible" />
           </Stack>
         </Block>
-        <Block label="Surfaces" hint="page (défaut) = le champ est posé à même le layout, fond --secondary — comme la navbar, les onglets et la recherche · card = dans une card, fond --background.">
+        <Block label="Surfaces" hint="auto (défaut) = la déduction décide : blanc --card sur la mise en page, crème --background dans une card, une modale, une feuille, un popover ou la navbar. card force le crème hors d'une vraie .ds-card ; page force le blanc là où la déduction aurait mis du crème.">
           <Stack>
-            <Input surface="page" placeholder="surface=page (défaut)" />
-            <Input surface="card" placeholder="surface=card" />
+            <Input placeholder="surface=auto (défaut) — sur la page, donc blanc" />
+            <Input surface="card" placeholder="surface=card — crème forcé" />
           </Stack>
+        </Block>
+        <Block label="L'îlot on-page" hint="Le cas de surface=page : un îlot crème posé DANS une card. La déduction y mettrait du crème sur du crème — le champ disparaîtrait. surface=page le remonte au blanc.">
+          <div className="flex flex-col gap-space-3 rounded-xl bg-background p-space-4">
+            <span className="chip text-text-muted">îlot --background dans la card de démo</span>
+            <Input placeholder="sans la prop — le champ se fond dans l'îlot" />
+            <Input surface="page" placeholder="surface=page — le champ redevient blanc" />
+          </div>
         </Block>
         <Block label="Unité" hint="unit pose l'unité dans le champ, à droite, en sourdine — trois caractères au plus. aria-hidden : c'est le libellé du FormField qui la nomme.">
           <Stack>

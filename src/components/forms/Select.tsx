@@ -10,18 +10,25 @@ export interface SelectOption { value: string; label: string }
 export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'children'> {
   options?: SelectOption[];
   invalid?: boolean;
-  /** 'page' (default) = sits directly on the layout (fill --secondary) · 'card' = inside a card (fill --background). */
-  surface?: 'page' | 'card';
+  /**
+   * La surface porteuse — l'échappatoire à la DÉDUCTION de patterns.css, jumelle exacte
+   * du `surface` de Button. `auto` (défaut) laisse la déduction décider : blanc (--card)
+   * sur la mise en page, crème (--background) dans une carte, une modale, une feuille,
+   * un popover ou la navbar. `page` force le BLANC là où la déduction aurait mis du crème
+   * (un îlot crème posé dans une carte) ; `card` force le crème hors d'une vraie .ds-card,
+   * pour un conteneur qui n'en a que l'apparence.
+   */
+  surface?: 'auto' | 'page' | 'card';
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select({
-  options = [], invalid = false, surface = 'page', className = '', ...rest
+  options = [], invalid = false, surface = 'auto', className = '', ...rest
 }: SelectProps, ref): JSX.Element {
   return (
     <span className="ds-select">
       <select
         ref={ref}
-        className={cn('ds-input', surface === 'card' && 'ds-input--on-card', invalid && 'is-error', className)}
+        className={cn('ds-input', surface === 'card' && 'ds-input--on-card', surface === 'page' && 'ds-input--on-page', invalid && 'is-error', className)}
         aria-invalid={invalid || undefined}
         {...rest}
       >

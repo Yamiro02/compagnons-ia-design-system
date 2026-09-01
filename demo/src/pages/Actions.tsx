@@ -9,7 +9,7 @@ const ICON_VARIANTS = ['primary', 'secondary', 'ghost', 'danger', 'accent'] as c
 export function ActionsPage() {
   return (
     <div className="flex flex-col gap-space-7">
-      <Section title="Button" note="Rayon toujours --radius-md. Jamais un pill. Un seul bouton primaire par vue.">
+      <Section title="Button" note="Rayon --radius-pill — doctrine arrondie : tout ce qui se presse ou se remplit est pill. Un seul bouton primaire par vue.">
         <Block label="Variantes" hint="primary porte seul le glow de marque ; secondary, ghost et danger n'en ont aucun.">
           <Row>
             <Button variant="primary">On build une app</Button>
@@ -66,7 +66,7 @@ export function ActionsPage() {
         </Block>
       </Section>
 
-      <Section title="IconButton" note="Carré, rayon --radius-md. md fait 2.625rem — la cible de touche minimale. Jamais un pill.">
+      <Section title="IconButton" note="Carré, rayon --radius-pill (doctrine arrondie). md fait 2.625rem — la cible de touche minimale.">
         <Block label="Variantes et tailles" hint="Les icônes ne portent aucun size : le créneau les dimensionne (sm 1rem · md 1.125rem). accent = fond --accent, sans bordure, icône --primary — l'état « sélectionné doux » d'un lien-icône.">
           {ICON_VARIANTS.map(v => (
             <Row key={v} label={v}>

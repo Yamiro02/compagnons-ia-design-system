@@ -21,7 +21,8 @@ export function Toast({
   return (
     <div className={cn('ds-toast', className)} role="status" {...rest}>
       <span className={`ds-toast__icon ds-toast__icon--${t}`}>
-        <Icon name={TONE_ICONS[t]} size="0.9375rem" strokeWidth={2.5} />
+        {/* Sans taille : le créneau de la tuile rend 1rem (patterns.css). */}
+        <Icon name={TONE_ICONS[t]} strokeWidth={2.5} />
       </span>
       <div className="ds-toast__body">
         <span className="ds-toast__title">{title}</span>

@@ -88,7 +88,7 @@ export function Foundations() {
             </Spec>
           ))}
         </Block>
-        <Block label="Rayons" hint="pill est légal sur les onglets, badges et compteurs — jamais sur un bouton ni un input.">
+        <Block label="Rayons" hint="DOCTRINE ARRONDIE : pill partout où ça se presse ou se remplit. Les exceptions — textarea lg, items de menu sm, case à cocher, tooltip md, squelette sm — sont écrites dans docs/DESIGN.md § 5.">
           <div className="grid grid-cols-2 gap-space-4 sm:grid-cols-4 lg:grid-cols-7">
             {RADII.map(t => (
               <div key={t} className="flex flex-col gap-space-2">

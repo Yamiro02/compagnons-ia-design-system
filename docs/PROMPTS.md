@@ -93,13 +93,15 @@ navigation dans du texte (un `<a>` suffit).
   (`auto·page·card`) · `icon` / `iconRight` · `loading` (spinner + désactivé) · `fullWidth`
   · `as` / `href`.
 - **`surface` déclare à la main la surface qui porte le bouton**, jumelle de celle
-  d'`Input`. Le squelette ne DÉDUIT rien : `secondary` porte `--secondary` partout, et
-  `auto` (défaut) est donc l'état normal. `card` force `--background`, pour un conteneur
-  qui n'a que l'apparence d'une carte. `page` force `--secondary` — inerte tant que
+  d'`Input`. Le squelette ne DÉDUIT rien pour le BOUTON : `secondary` porte `--secondary`
+  partout, et `auto` (défaut) est donc l'état normal. `card` force `--background`, pour un
+  conteneur qui n'a que l'apparence d'une carte. `page` force `--secondary` — inerte tant que
   `patterns.css` ne déduit pas la surface, indispensable le jour où il le fait : une
   déduction ne prévoit qu'un bouton posé SUR une carte, jamais sur un panneau imbriqué
   dedans. Sans effet sur `ghost`, `primary` et `danger`.
-- Rayon toujours `--radius-md`. **Jamais un pill** — le pill est réservé aux badges.
+- Rayon `--radius-pill` — DOCTRINE ARRONDIE du projet : tout ce qui se presse ou se
+  remplit est pill (voir l'en-tête de la section actions dans `patterns.css`). Les
+  exceptions sont écrites : textarea, items de menu, case à cocher, tooltip, squelette.
 - Rail partagé : min-height 3rem (2.75rem sous 64rem). `lg` (3.25rem) = CTA de héros.
 - **Les icônes ne se dimensionnent pas au site d'appel** : le créneau du bouton s'en
   charge (sm 1rem · md 1.125rem, via `--ds-icon-size` — voir la section Icon). Le spinner
@@ -132,7 +134,8 @@ qu'il fait le dit.
   dans un onglet », annonce correcte au lecteur d'écran. Jumeau du `as` de `Button`.
 - L'icône ne se dimensionne pas au site d'appel : le créneau s'en charge (sm 1rem ·
   md 1.125rem) — voir la section Icon.
-- Carré sur son propre rail (`--icon-control-*`), rayon `--radius-md`, jamais un pill.
+- Carré sur son propre rail (`--icon-control-*`), rayon `--radius-pill` — c'est un
+  contrôle qui se presse (doctrine arrondie).
 - États rendus : repos, hover, pressé (`aria-pressed` = actif), focus-visible, désactivé.
 
 ---
@@ -215,7 +218,8 @@ texte**, jamais la couleur seule.
 
 - Props : `tone` (`coral·amber·danger·warning·success·neutral·accent·outline`, défaut
   `neutral`) · `pad` (`md·dense`) · `icon`.
-- Le rayon pill est légal ici — jamais sur un bouton, un champ ou une barre d'onglets.
+- Le rayon pill est celui de tout le système depuis la doctrine arrondie : le badge n'est
+  plus une exception, c'est la règle.
 
 ## Card
 
@@ -251,8 +255,10 @@ sous 1.5rem.
 
 ## Pastille
 
-La tuile d'icône du système — l'unique porteur carré-ou-rond teinté. Ses tailles sont
-nommées par **contexte**, jamais par mesure : un site d'appel n'écrit jamais un rem.
+La tuile d'icône du système — l'unique porteur teinté. **RONDE À TOUTES LES TAILLES**
+depuis la doctrine arrondie : le rayon vit sur la base, les modificateurs de taille ne
+portent plus que leur mesure. Ses tailles sont nommées par **contexte**, jamais par
+mesure : un site d'appel n'écrit jamais un rem.
 
 **Ne pas l'utiliser** comme bouton (elle ne se clique pas) ni réinventer une tuile d'icône
 en div : c'est exactement ce que ce composant remplace.
@@ -266,7 +272,8 @@ en div : c'est exactement ce que ce composant remplace.
 ```
 
 - Props : `size` (`carte` 2.25 · `dialogue` 2.625 · `panneau` 3.25 · `heros` 4 · `ecran`
-  5rem — le rayon suit la taille) · `shape` (`square·round`) · `tone` (`brand` ·
+  5rem — le rayon ne suit plus la taille, il est pill partout) · `shape` (`square·round`,
+  devenu redondant, conservé comme classe publique) · `tone` (`brand` ·
   `brand-solid` + les 6 paires sémantiques + `inverse`) · `outlined` (contour 1px
   currentColor à 22 %).
 - L'icône ne se dimensionne pas au site d'appel : le créneau s'en charge — `dialogue` et
@@ -275,7 +282,7 @@ en div : c'est exactement ce que ce composant remplace.
 - **`tone="brand-solid"` porte le dégradé PLEIN**, avec son glyphe en
   `--primary-foreground` : la tuile de marque affirmée, là où `brand` est la tuile douce.
   `size="dialogue"` en fait le jumeau exact d'un `IconButton` `md` — même 2,625 rem, même
-  `--radius-md` — mais en `<span>`, donc **posable dans un `<label>` ou une zone cliquable,
+  `--radius-pill` — mais en `<span>`, donc **posable dans un `<label>` ou une zone cliquable,
   là où un vrai `<button>` imbriqué est du contenu interactif invalide dont le navigateur
   ne transmet pas l'activation.**
 - ⚠️ `brand-solid` ne porte **aucune lueur**, et c'est délibéré : dans ce système la lueur
@@ -458,8 +465,9 @@ confirmation bloquante (c'est `Modal`).
 
 - Props : `tone` (`success·danger·warning·info`, défaut `info`) · `title` (requis) ·
   `description` · `onClose` (rend la croix).
-- Tuile d'icône 1.5rem radius-sm, glyphes à stroke-width 2.5 (check / x / triangle-alert /
-  info).
+- Tuile d'icône **2rem, ronde** (doctrine arrondie), glyphe 1rem au créneau ; l'épaisseur
+  des tracés est décidée par le CSS — 1.5 dans une tuile (check / x / triangle-alert / info).
+- Tuile et croix **centrées verticalement** sur le corps du message.
 
 ---
 
@@ -533,7 +541,7 @@ un `<input type="hidden">` porte la date en ISO (`YYYY-MM-DD`) pour la soumissio
 ```
 
 - Props : `value` · `onChange(Date)` · `placeholder` · `locale` · `min` / `max` ·
-  `disabledDates` · `surface` (`page·card`) · `invalid` · `disabled` · `name` ·
+  `disabledDates` · `surface` (`auto·page·card`, voir Input) · `invalid` · `disabled` · `name` ·
   `trigger`.
 - **`trigger` — le déclencheur composable** (v0.3.1). Un render-prop qui reçoit
   `{ open, value, triggerProps }` et rend l'élément de son choix en **étalant
@@ -575,8 +583,10 @@ l'anatomie.
 ## Input
 
 Champ texte sur le rail de contrôle partagé, bordure 1.5px. Focus = la bordure passe en
-`--ring` — UNE bordure, jamais un anneau en plus. Jamais un pill. `forwardRef` sur
-l'`<input>` natif.
+`--ring` — UNE bordure, jamais un anneau en plus. **PILL et BLANC** : doctrine arrondie
+(ce qui se remplit est pill) et doctrine « le blanc est la surface portée » (posé sur la
+mise en page, le champ est `--card` ; dans une porteuse blanche, il repasse en
+`--background`). `forwardRef` sur l'`<input>` natif.
 
 **Ne pas l'utiliser** pour du texte multi-lignes (c'est `Textarea`).
 
@@ -588,9 +598,11 @@ l'`<input>` natif.
 <Input unit="kg" inputMode="decimal" placeholder="72" />
 ```
 
-- Props : `size` (`sm·md·lg`) · `invalid` · `surface` (`page` = fond `--secondary`, posé
-  à même le layout · `card` = fond `--background`, dans une Card) · `unit` + attributs
-  natifs.
+- Props : `size` (`sm·md·lg`) · `invalid` · `surface` (`auto` défaut = la déduction de
+  `patterns.css` décide · `card` force le crème `--background` hors d'une vraie Card ·
+  `page` force le blanc `--card` là où la déduction aurait mis du crème — un îlot crème
+  posé dans une Card) · `unit` + attributs natifs. Même prop sur `Textarea`, `Select` et
+  `DatePicker`.
 - **`unit`** (v0.3.0) : l'unité — « kg », « € », « min » — posée DANS le champ, à
   droite, en sourdine. **Trois caractères au plus** ; plus long, c'est un suffixe de
   libellé, pas une unité. Elle est `aria-hidden` : le libellé du `FormField` la nomme.
@@ -625,7 +637,7 @@ Button md. `forwardRef` sur le `<select>` natif.
 <Select options={[{ value: 'a', label: 'A' }]} invalid />
 ```
 
-- Props : `options` (`{value, label}[]`) · `invalid` · `surface` (`page·card`) + attributs
+- Props : `options` (`{value, label}[]`) · `invalid` · `surface` (`auto·page·card`, voir Input) + attributs
   natifs.
 - États rendus : repos, focus, invalide, désactivé — sur les deux surfaces.
 
@@ -657,7 +669,9 @@ vertical uniquement. Même règle de `surface` que l'Input. `forwardRef` sur le
 <Textarea rows={3} invalid defaultValue="Trop court" />
 ```
 
-- Props : `invalid` · `rows` (défaut 4) · `surface` (`page·card`) + attributs natifs.
+- Props : `invalid` · `rows` (défaut 4) · `surface` (`auto·page·card`, voir Input) + attributs
+  natifs. Rayon `--radius-lg` : l'exception documentée de la doctrine arrondie — un pill
+  courberait la première et la dernière ligne d'un champ multi-lignes.
 - États rendus : repos, focus, invalide, désactivé.
 
 ---
@@ -703,7 +717,8 @@ import { ShoppingBag } from 'lucide-react';
 - Props : `name` (`IconName`) **ou** `glyph` (tracé lucide), jamais les deux — ils sont
   mutuellement exclusifs, et le TYPE l'impose : passer les deux, ou aucun, est une erreur
   de compilation. · `size` (longueur CSS, toujours rem — omise, le créneau décide) ·
-  `strokeWidth` (2 standard · 2.5 dans les pills et les toasts · 3 pour la coche).
+  `strokeWidth` (ATTRIBUT de présentation : les règles de `patterns.css` le recouvrent —
+  1.75 partout, 1.5 dans une tuile, 2.5 dans une case à cocher. Pour forcer : style inline).
 - **`name` reste la voie normale** : le catalogue est relu, documenté, et garantit qu'un
   nom existe. `glyph` est la porte de sortie, pas le chemin par défaut — un besoin qui
   revient dans DEUX apps mérite d'entrer au catalogue.
@@ -749,8 +764,10 @@ Pied de site : marque, ligne de signature optionnelle, colonnes de liens, rangé
 
 ## Navbar
 
-Barre de site sticky : logo à gauche, liens au centre, CTA à droite. Toujours sur
-`--secondary` avec filet bas — un contrôle détaché du layout, jamais transparent. Au
+Barre de site sticky : logo à gauche, liens au centre, CTA à droite. Toujours BLANCHE
+(`--card`) avec filet bas — doctrine « le blanc est la surface portée » : un contrôle
+posé sur la mise en page crème, jamais transparent. Un champ posé dedans repasse en
+crème par déduction (`.ds-navbar .ds-input`). Au
 scroll : teinte + blur + ombre. C'est le SEUL endroit du système qui emploie
 `backdrop-filter` — pas de glassmorphism ailleurs.
 
@@ -769,8 +786,10 @@ scroll : teinte + blur + ombre. C'est le SEUL endroit du système qui emploie
 
 ## Pagination
 
-Pagination contrôlée sur une barre `--secondary` (même traitement que Tabs). Ellipse
-au-delà de 7 pages ; la page courante reçoit le traitement de l'onglet actif.
+Pagination contrôlée sur une barre BLANCHE `--card`, au rayon pill
+(`--pagination-radius`, redéclaré en marque) — même traitement que Tabs. Items pill.
+Ellipse au-delà de 7 pages ; survol et page courante descendent sur la crème
+`--background` : sur une barre blanche, `--surface-alt` ne se voit plus.
 
 ```tsx
 <Pagination page={page} pageCount={12} onPageChange={setPage} />
@@ -782,9 +801,10 @@ au-delà de 7 pages ; la page courante reçoit le traitement de l'onglet actif.
 
 ## Sidebar
 
-Navigation d'app sur `--secondary` : marque en tête, sections titrées, item actif, pied
-(Avatar + nom). Repliable en icônes seules, persisté en localStorage. Sous 64rem : tiroir
-`open`/`onClose`, voile compris.
+Navigation d'app BLANCHE (`--card`) : marque en tête, sections titrées, item actif, pied
+(Avatar + nom). Items pill ; survol et item actif descendent sur la crème `--background`.
+Repliable en icônes seules, persisté en localStorage. Sous 64rem : tiroir `open`/`onClose`,
+voile compris.
 
 ```tsx
 <Sidebar
@@ -807,9 +827,11 @@ Navigation d'app sur `--secondary` : marque en tête, sections titrées, item ac
 ## Tabs
 
 Groupe d'onglets segmenté sur le rail de contrôle. La barre contraste TOUJOURS avec sa
-surface porteuse : `--secondary` sur la page, `onCard` bascule sur `--background`.
-Rectangle (barre 0.875rem · onglet `--radius-sm`) — jamais un pill, jamais fondu dans le
-fond.
+surface porteuse : BLANCHE (`--card`) sur la page avec l'onglet actif sur la crème
+`--background` ; dans une Card elle se creuse toute seule (barre `--background`, actif
+`--card`) — `onCard` ne sert qu'aux conteneurs que la déduction ignore, `onPage` fait
+l'inverse (un îlot crème dans une Card qui doit rester blanc). Barre et onglets PILL
+(`--tabs-radius` redéclaré en marque) — jamais fondue dans le fond.
 
 **Ne pas l'utiliser** pour de la navigation entre pages (c'est `Navbar` ou `Sidebar`) :
 Tabs filtre un contenu en place.
@@ -818,10 +840,56 @@ Tabs filtre un contenu en place.
 <Tabs value={tab} onChange={setTab}
   items={[{ value: 'all', label: 'Tout' }, { value: 'build', label: 'Build' }]} />
 <Tabs onCard value={tab} onChange={setTab} items={[{ value: 'all', label: 'Tout' }]} />
+<Tabs onPage value={tab} onChange={setTab} items={[{ value: 'all', label: 'Tout' }]} />
 ```
 
-- Props : `items` (`{value, label}[]`) · `value` / `onChange` (contrôlé) · `onCard`.
+- Props : `items` (`{value, label}[]`) · `value` / `onChange` (contrôlé) · `onCard` ·
+  `onPage`.
 - États rendus : onglet au repos, survolé, sélectionné (`aria-selected`), focus-visible.
+
+## TabBar
+
+La barre d'onglets BASSE — la coque d'une PWA mobile. Une **capsule BLANCHE FLOTTANTE**
+(`--card`, rayon pill, bordure `--border`, `--shadow-lg`) détachée des bords : marges
+latérales et basse, `env(safe-area-inset-bottom)` comprise. Libellés toujours visibles
+sous leur icône. L'item actif se pose dans **sa propre capsule `--accent`**, icône et
+libellé en `--primary-readable` semibold.
+
+**QUATRE ONGLETS, PAS CINQ.** Sur 390 px, un cinquième onglet fait passer chaque cible
+sous 78 px et tronque les libellés. Ce qui ne rentre pas dans quatre destinations
+n'appartient pas à la coque : ça vit derrière l'une d'elles. Un cinquième item est rendu
+quand même — couper une navigation en silence serait pire — mais le composant le signale
+en console en développement.
+
+⚠️ **Cible tactile : 2.25rem (36 px), sous le rail 44 px du reste du système.** Écart
+ASSUMÉ — une capsule flottante à 44 px mange le contenu qu'elle survole. La cible réelle
+au doigt vaut 44 px marges comprises (36 + 4 + 4) et rien d'autre n'est cliquable entre
+deux items. Voir `docs/accessibilite.md`.
+
+**Ne pas la confondre avec `Tabs`**, qui FILTRE un contenu en place. Ici on NAVIGUE :
+d'où le `<nav>`, le rendu en `<a>` dès qu'il y a une destination, et `aria-current="page"`.
+
+```tsx
+<TabBar
+  dock
+  items={[
+    { label: 'Accueil', icon: <Icon name="house" />, href: '/', active: true },
+    { label: 'Discussions', icon: <Icon name="message-square" />, href: '/chats' },
+    { label: 'Profil', icon: <Icon name="user" />, href: '/moi' },
+    { label: 'Réglages', icon: <Icon name="settings" />, href: '/reglages' },
+  ]}
+/>
+```
+
+- Props : `items` (`{label, icon, href?, active?, onSelect?}[]`, 4 au plus) · `dock`
+  (enveloppe la barre dans `.ds-tabbar-dock` — `position:fixed`, collée en bas de l'écran :
+  c'est le rendu de PRODUCTION ; sans lui la barre est rendue dans le flux, ce que veut un
+  spécimen) · `aria-label` (défaut « Navigation principale ») · plus les attributs d'un
+  `<nav>`.
+- `href` présent → l'onglet est un `<a>` ; absent → un `<button>` piloté par `onSelect`.
+- États rendus : onglet au repos, survolé (plaque `--background`), actif (capsule
+  `--accent`, `aria-current="page"`), focus-visible (contour en retrait, pour ne pas
+  déborder de la capsule).
 
 ---
 

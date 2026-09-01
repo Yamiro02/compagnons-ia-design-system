@@ -88,6 +88,8 @@ export { Footer } from './components/navigation/Footer';
 export type { FooterProps, FooterColumn } from './components/navigation/Footer';
 export { Tabs } from './components/navigation/Tabs';
 export type { TabsProps, TabItem } from './components/navigation/Tabs';
+export { TabBar } from './components/navigation/TabBar';
+export type { TabBarProps, TabBarItem } from './components/navigation/TabBar';
 export { Pagination } from './components/navigation/Pagination';
 export type { PaginationProps } from './components/navigation/Pagination';
 export { AppShell } from './components/navigation/AppShell';
