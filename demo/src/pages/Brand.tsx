@@ -4,6 +4,26 @@ import { HaloHot } from '@compagnons-ia/ds/brand-content';
 import { IDENTITY } from '../identity';
 import { Block, Grid, Row, Section } from '../ui';
 
+/* Les trois proportions que les écrans demandent — aucune n'est dans le CSS. */
+const RATIOS = [
+  { ratio: '3 / 4', lettre: 'C' },
+  { ratio: '1 / 1', lettre: 'É' },
+  { ratio: '16 / 9', lettre: 'M' },
+];
+
+/* LA STRUCTURE À RECOPIER, et elle tient en trois nœuds. Le conteneur porte la mise en page
+   et la typo ; le halo est derrière ; l'initiale ne porte QUE `.accent` et sa lettre — pas
+   une classe de plus, pas un style inline. C'est la parade au piège de la classe clippée
+   (docs/PIEGES.md), et check-fragile-classes.mjs la vérifie sur ce fichier. */
+function PortraitDemo({ ratio, lettre }: { ratio: string; lettre: string }) {
+  return (
+    <span className="ds-portrait" style={{ aspectRatio: ratio }}>
+      <Halo placement="center" />
+      <span className="accent">{lettre}</span>
+    </span>
+  );
+}
+
 export function BrandPage() {
   return (
     <div className="flex flex-col gap-space-7">
@@ -96,6 +116,54 @@ export function BrandPage() {
             <Avatar size="3rem" halo={false} />
             <Avatar size="4rem" halo={false} />
           </Row>
+        </Block>
+      </Section>
+
+      <Section title="Portrait de repli" note="La vignette d'une personne SANS photo, et qui n'a jamais l'air cassée : --gradient-portrait, un halo derrière, l'initiale en .accent. Une classe, pas un composant — l'app l'enveloppe dans sa propre carte. La classe ne décide pas de sa hauteur : l'appelant pose aspect-ratio ou height.">
+        <Block label="Ratios" hint="3/4 en vignette de catalogue · 1/1 en recommandation · 16/9 en bandeau de fiche. Aucun ratio n'est dans le CSS : les trois viennent du site d'appel.">
+          <Grid cols={3}>
+            {RATIOS.map(r => (
+              <div key={r.ratio} className="flex flex-col gap-space-2">
+                <PortraitDemo ratio={r.ratio} lettre={r.lettre} />
+                <span className="mono text-caption text-text-muted">aspectRatio: {r.ratio}</span>
+              </div>
+            ))}
+          </Grid>
+        </Block>
+        <Block label="Clair et sombre" hint="Le dégradé mélange les arrêts de marque dans --card, pas dans un blanc nommé : il bascule donc avec le thème. En sombre il reste un brun-grenat doux — le jeton est redéclaré dans .dark, sans quoi une propriété posée sur :root garderait la valeur claire.">
+          <Grid cols={2}>
+            <div className="flex flex-col gap-space-2 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">clair</span>
+              <PortraitDemo ratio="3 / 4" lettre="C" />
+            </div>
+            <div className="dark flex flex-col gap-space-2 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">sombre</span>
+              <PortraitDemo ratio="3 / 4" lettre="C" />
+            </div>
+          </Grid>
+        </Block>
+        <Block label="Avec photo, sans photo" hint="Le repli n'est pas un trou : posé à côté d'une vraie photo, il tient la même place et la même chaleur. La photo est un simple <img> de l'app — le socle n'en fournit aucune.">
+          <Grid cols={2}>
+            <div className="overflow-hidden rounded-xl border border-border bg-card">
+              <span className="ds-portrait" style={{ aspectRatio: '3 / 4' }}>
+                <Halo placement="center" />
+                <span className="accent">M</span>
+              </span>
+              <div className="flex flex-col gap-space-1 p-space-3">
+                <span className="text-control font-bold">Sans photo</span>
+                <span className="caption">Le repli de marque.</span>
+              </div>
+            </div>
+            <div className="overflow-hidden rounded-xl border border-border bg-card">
+              <span className="ds-portrait" style={{ aspectRatio: '3 / 4', background: 'var(--muted)' }}>
+                <span className="caption">l&apos;&lt;img&gt; de l&apos;app vient ici</span>
+              </span>
+              <div className="flex flex-col gap-space-1 p-space-3">
+                <span className="text-control font-bold">Avec photo</span>
+                <span className="caption">Même boîte, même ratio.</span>
+              </div>
+            </div>
+          </Grid>
         </Block>
       </Section>
 

@@ -54,6 +54,7 @@
 | `--destructive` / `--destructive-readable` | `#c53030` / `#9e2222` | `#d04444` / `#f09a94` | rouge franc, jamais confondu avec le grenat ; en sombre le jumeau lisible reste ORANGÉ pour tenir la distance avec le rose `--primary-readable` |
 | `--pill-danger-bg` / `--pill-danger-fg` | `rgba(197,48,48,.13)` / `#9e2222` | (fond hérité) / `#f0a08b` | la pilule de danger, accordée au rouge |
 | `--brand-from/via/to` | `#a03b58 → #98344d → #8f2d42` | `#b95370 → #ac4762 → #9f3b54` | dégradé signature discret, même teinte ; s'il tire vers le kitsch → aplat (même valeur ×3) |
+| `--gradient-portrait` | `#f2e4e8 → #e0c2ca → #c99aa4` | `#3a2526 → #4e2a30 → #602c36` | la vignette d'une personne SANS photo (`.ds-portrait`). 165°, arrêts à 14 / 30 / 48 % des trois arrêts de marque mélangés dans `--card` — jamais dans `--tone-light-alt`, qui ne bascule pas |
 
 **Où l'accent a le droit d'apparaître** — liste FERMÉE :
 
@@ -115,7 +116,8 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 ## 8. Périmètre du design system
 
 **Ce qui entre :** les 37 composants du socle, plus deux ajouts ASSUMÉS (§ 10) : `TabBar`, la coque d'une PWA mobile que le socle ne portait pas, et `ChatBubble`, la bulle de conversation — de la présentation pure, elle ne connaît ni le persona ni le modèle de message. 39 en tout, aucun retrait.
-**En classes, sans composant (pour l'instant) :** `.ds-option`, `.ds-chip`, `.ds-steps`, `.ds-counter`, `.ds-badge--card`, `.ds-card.is-selected` + `.ds-card__flag` — voir `PORTAGE.md`.
+**En classes, sans composant (pour l'instant) :** `.ds-option`, `.ds-chip`, `.ds-steps`, `.ds-counter`, `.ds-badge--card`, `.ds-card.is-selected` + `.ds-card__flag`, `.ds-portrait` — voir `PORTAGE.md`.
+**L'exception du portrait en sombre :** l'initiale quitte `.accent` et prend `--primary-readable` en aplat (`.dark .ds-portrait>:not(.halo)`) — le dégradé clippé tombe à 1,90:1 sur la vignette prune, contre 5,16:1 pour le jumeau lisible ; assombrir la vignette plafonne à 2,59 et l'aplatit. Règle scopée au portrait, aucune classe générique dupliquée.
 **Ce qui n'entre pas :** tout ce qui connaît le métier (carte persona, paywall) — ça vit dans l'app.
 **Extension métier :** `brand-content.css` NON importé, ses trois jetons non déclarés.
 
@@ -173,3 +175,5 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 | 2026-09-30 | Délais des points de saisie dérivés du cycle : `calc(var(--duration-typing) / 8)` et `/ 4` au lieu de `150ms` / `300ms` | rendu identique ; une durée écrite en clair dans `patterns.css` fait tomber `check-literals.sh` |
 | 2026-09-30 | `check-contrast.mjs` : + 8 paires — `.ds-chip.is-selected`, `.ds-bubble--me` et `.ds-counter` sur les trois arrêts, bordure sélectionnée `--brand-to` | règle de tenue : un nouvel état porté par une couleur se mesure. La bordure sélectionnée tombe à 2,52 en sombre — `@a11y-assume` posé, **à trancher** (`docs/accessibilite.md` § 3.5) |
 | 2026-09-30 | Bordure sélectionnée (option, carte de choix) : `--primary` au lieu de `--brand-to` ; l'`@a11y-assume` posé le même jour est retiré | `--brand-to`, l'arrêt le plus sombre du dégradé, tombait à 2,52:1 sur `--card` en sombre ; `--primary` tient 6,44 en clair et 3,54 en sombre. Même bordure que la chip : un seul rouge pour « sélectionné ». Écart à reporter dans la vitrine Claude Design |
+| 2026-09-30 | `--gradient-portrait` + `.ds-portrait` : le repli d'une vignette sans photo, déclaré en clair ET en sombre | la maquette l'écrivait en dur en mélangeant dans `--tone-light-alt`, qui vaut `#ffffff` dans les deux thèmes — la vignette restait rose clair en sombre. La base du mélange devient `--card`. Une classe, pas un composant : trois écrans du même produit ne passent pas le test 2 de `GOVERNANCE.md` |
+| 2026-09-30 | En sombre, l'initiale du portrait quitte `.accent` pour `--primary-readable` en aplat | le dégradé clippé mesure 1,90:1 sur la vignette prune (mi-ton sur mi-ton) contre 3,91 en clair ; assombrir la vignette plafonne à 2,59 et l'aplatit à 1,06 d'amplitude. Le jumeau lisible donne 5,16. Règle SCOPÉE au portrait (`.dark .ds-portrait>:not(.halo)`), qui ne nomme pas la classe fragile |

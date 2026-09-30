@@ -43,7 +43,7 @@
    pas la sienne, soit un fichier de marque doit répéter quarante mesures qui ne le regardent
    pas. Les deux régimes tiennent ensemble, pas séparément.
 
-   COMBIEN : 54 jetons OBLIGATOIRES en `:root`, dont AU MOINS 32 à redéclarer en `.dark` —
+   COMBIEN : 55 jetons OBLIGATOIRES en `:root`, dont AU MOINS 33 à redéclarer en `.dark` —
    davantage si votre marque éclaircit ses remplissages en thème sombre. Sept jetons qui
    étaient autrefois à remplir — les deux dégradés de marque et cinq fonds de pilule — sont
    maintenant DÉRIVÉS par le socle dans `tokens/derives.css` et n'ont plus à l'être. Plus
@@ -134,6 +134,11 @@
   --gradient-halo:;             /* @kind color — halo bas, jamais plein écran */
   --gradient-halo-top:;         /* @kind color */
   --gradient-halo-center:;      /* @kind color */
+  /* Le repli d'une vignette sans photo (.ds-portrait) : un dégradé qui a du POIDS, pas un
+     lavis. Mélangez vos arrêts de marque dans une SURFACE du thème (--card), jamais dans un
+     blanc nommé : --tone-light-alt ne bascule pas, et votre vignette resterait claire en
+     sombre. À redéclarer en .dark — voir le bloc plus bas, la même expression suffit. */
+  --gradient-portrait:;         /* @kind color — vignette de repli, initiale centrée */
 
   /* LES JUMEAUX LISIBLES — le point le plus facile à rater du contrat.
      --primary et --destructive sont des couleurs de REMPLISSAGE : un aplat, une bordure.
@@ -225,6 +230,7 @@
   --primary-readable:;
   --destructive-readable:;
   --grad-soft:;
+  --gradient-portrait:;
   --pill-coral-fg:;
   --pill-amber-fg:;
   --pill-danger-fg:;

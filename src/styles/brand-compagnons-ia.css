@@ -94,6 +94,16 @@
   --gradient-halo:radial-gradient(60% 45% at 50% 100%, rgba(160,59,88,.16) 0%, rgba(143,45,66,.07) 45%, transparent 75%); /* @kind color */
   --gradient-halo-top:radial-gradient(60% 45% at 50% 0%, rgba(160,59,88,.16) 0%, rgba(143,45,66,.07) 45%, transparent 75%); /* @kind color */
   --gradient-halo-center:radial-gradient(55% 55% at 50% 50%, rgba(160,59,88,.16) 0%, rgba(143,45,66,.07) 45%, transparent 75%); /* @kind color */
+  /* LE DÉGRADÉ DE PORTRAIT — le repli d'une vignette sans photo (.ds-portrait).
+     La base du mélange est --card, PAS --tone-light-alt : ce dernier vaut #ffffff dans les
+     DEUX thèmes (le bloc .dark ne le redéclare pas), et la maquette qui l'employait rendait
+     donc un rose clair en sombre. Les trois arrêts montent en intensité du haut vers le bas
+     — 14 → 30 → 48 % — pour que la vignette ait un poids, jamais un aplat.
+     Ce jeton est REDÉCLARÉ en .dark, et ce n'est pas cosmétique : une propriété
+     personnalisée posée sur :root est calculée UNE FOIS, avec les valeurs claires ; sans la
+     redéclaration, var(--card) resterait le blanc sous .dark. check-dark-substitution.mjs
+     fait tomber le build sur ce cas précis. */
+  --gradient-portrait:linear-gradient(165deg,color-mix(in srgb,var(--brand-from) 14%,var(--card)) 0%,color-mix(in srgb,var(--brand-via) 30%,var(--card)) 55%,color-mix(in srgb,var(--brand-to) 48%,var(--card)) 100%); /* @kind color */
 
   /* Les jumeaux lisibles — le bordeaux tient ≥4,5:1 sur les six surfaces claires. */
   --primary-readable:#8f2d42;
@@ -152,6 +162,11 @@
   --shadow-glow-sm:0 2px 8px rgba(185,83,112,.24);
   --shadow-logo-dot:0 0 12px rgba(217,140,160,.45);
   --grad-soft:linear-gradient(135deg,rgba(185,83,112,.16),rgba(159,59,84,.12)); /* @kind color */
+  /* MÊME EXPRESSION qu'en clair — ce qui compte est l'ÉLÉMENT qui porte la déclaration, pas
+     la valeur écrite : sous .dark, var(--card) vaut #251e1a et les trois arrêts --brand-*
+     sont déjà éclaircis. Le brun-charbon prend donc une teinte grenat douce, sans virer au
+     nightclub : c'est la même recette, lue dans l'autre thème. */
+  --gradient-portrait:linear-gradient(165deg,color-mix(in srgb,var(--brand-from) 14%,var(--card)) 0%,color-mix(in srgb,var(--brand-via) 30%,var(--card)) 55%,color-mix(in srgb,var(--brand-to) 48%,var(--card)) 100%); /* @kind color */
   --pill-coral-fg:#e79db2;
   --pill-amber-fg:#e2b39e;
   --pill-danger-fg:#f09a94;

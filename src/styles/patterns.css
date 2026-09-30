@@ -721,3 +721,43 @@ svg.lucide{stroke-width:1.75}
    (tokens/base.css) : sur Nunito Sans, à cette hauteur, il se lit comme s'il tombait sous
    la ligne. Override de PROJET — la règle du socle reste intacte, celle-ci la recouvre. */
 .ds-logo__dot{margin-bottom:0.14em}
+
+/* ---------- brand: Portrait de repli ---------- */
+/* LA VIGNETTE D'UNE PERSONNE SANS PHOTO, et qui n'a jamais l'air cassée. Un aplat gris avec
+   une icône d'appareil photo dit « il manque quelque chose » ; un dégradé de marque avec
+   l'initiale dit « c'est elle ». C'est la même information, ce n'est pas le même produit.
+
+   CE QUE LA CLASSE NE DÉCIDE PAS : sa hauteur. Ni ratio ni height ici — l'appelant pose
+   `aspect-ratio` (3/4 en vignette de catalogue, 1/1 en reco, 16/9 en bandeau de fiche) ou
+   une hauteur fixe. Une vignette n'a pas de proportion universelle ; la lui imposer ferait
+   une prop qui ment au premier écran qui n'en veut pas.
+
+   LA TYPO EST PORTÉE PAR LE CONTENEUR, ET C'EST STRUCTUREL — pas un raccourci.
+   `.accent` clippe le dégradé de marque dans son texte par quatre déclarations solidaires
+   (background, background-clip, color:transparent, width:fit-content). Tout ce qu'on pose
+   À CÔTÉ d'elle sur le même nœud la casse en silence : c'est le piège documenté dans
+   docs/PIEGES.md, et check-fragile-classes.mjs le surveille. La parade est ici : le
+   conteneur porte la mise en page ET la typo — toutes deux HÉRITÉES — et l'initiale ne
+   porte que `.accent` et sa lettre. La maquette d'origine posait font-family, font-weight,
+   font-size, line-height et position EN INLINE sur le nœud `.accent` : recopiée telle
+   quelle, elle amenait la panne muette dans l'app.
+
+   `.ds-portrait>*` plutôt que `.ds-portrait .accent` : la règle remonte l'initiative
+   au-dessus du `.halo` (absolu, inset 0) sans NOMMER la classe fragile dans un sélecteur —
+   le halo garde son inset, la lettre passe devant, et rien ne vise `.accent`. */
+.ds-portrait{position:relative;display:flex;align-items:center;justify-content:center;width:100%;overflow:hidden;background:var(--gradient-portrait);font-family:var(--font-display);font-weight:var(--heading-weight);font-size:var(--text-display);line-height:1}
+.ds-portrait>*{position:relative}
+/* EN SOMBRE, L'INITIALE QUITTE LE DÉGRADÉ CLIPPÉ — et c'est une mesure, pas un goût.
+   `.accent` clippe --brand-gradient dans son texte. En clair, ce dégradé est le grenat
+   FONCÉ sur une vignette PÂLE : 3,91:1, la lettre se détache. En sombre, il devient le
+   grenat ÉCLAIRCI (#b95370 → #9f3b54) sur une vignette prune chaude — deux mi-tons dans la
+   même bande de luminance : 1,90:1, la lettre disparaît presque.
+   CE N'EST PAS RATTRAPABLE EN ASSOMBRISSANT LA VIGNETTE : le balayage donne 2,59 au mieux
+   (4/8/14 % sur --background), toujours sous le seuil 3:1 du gros texte, pour une amplitude
+   de dégradé tombée à 1,06 — donc un aplat. On change l'encre, pas la vignette.
+   En sombre, l'initiale prend donc --primary-readable en aplat : 5,16:1, et la vignette
+   garde ses 14/30/48 %. EXCEPTION SCOPÉE AU PORTRAIT — pas de classe générique qui
+   dupliquerait `.accent`, et le sélecteur ne la NOMME PAS : il vise les enfants du
+   portrait, sauf le halo. patterns.css est en layer(components), tokens/base.css en
+   layer(base) : la couche suffit à passer devant, quelle que soit la spécificité. */
+.dark .ds-portrait>:not(.halo){background:none;-webkit-background-clip:border-box;background-clip:border-box;color:var(--primary-readable)}

@@ -1,6 +1,6 @@
 {
   "name": "@compagnons-ia/ds",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Design system Compagnons IA — jetons, couche Tailwind v4 et primitives React.",
   "license": "UNLICENSED",
   "private": false,

@@ -171,6 +171,21 @@ function pairs(theme, { ROOT, DARK }, fichier) {
      clair les deux valent le même blanc, mais en sombre --popover est un cran au-dessus
      de --card et le chiffre publié était optimiste. */
   add('Marque-contenu', '.ds-cal__day.is-today', g('--primary-readable'), g('--popover'), 4.5, '14 / 700');
+  /* L'INITIALE DU PORTRAIT — et elle change d'ENCRE selon le thème, ce qui est le fait
+     mesuré, pas une coquetterie. En clair c'est `.accent`, le dégradé de marque clippé ;
+     son arrêt le plus défavorable sur une vignette pâle est --brand-from. En sombre la
+     règle `.dark .ds-portrait>:not(.halo)` la passe en aplat --primary-readable, parce que
+     le dégradé éclairci tombait à 1,90 sur la vignette prune. La porteuse mesurée est
+     l'arrêt MÉDIAN de --gradient-portrait (--brand-via à 30 % dans --card), et PAS le pire
+     arrêt — contrairement à l'idiome « label sur --brand-from (pire arrêt) » employé pour
+     le bouton. La raison est géométrique, pas arrangeante : le label d'un bouton couvre
+     toute sa boîte, donc les trois arrêts passent derrière lui ; ici la lettre est CENTRÉE
+     dans une vignette trois à quatre fois plus haute qu'elle, et l'arrêt du bas — le plus
+     foncé — n'arrive jamais sous le glyphe. Mesurée contre cet arrêt-là, la paire donnerait
+     2,65 en clair : un chiffre exact et sans objet. Seuil 3 : 52px en 700, gros texte. */
+  add('Marque-contenu', '.ds-portrait — initiale sur la vignette',
+    theme === 'light' ? g('--brand-from') : g('--primary-readable'),
+    over(g('--brand-via'), 0.30, g(C)), 3, '52 / 700');
   add('Marque-contenu', '.ds-pastille--brand — icône', g('--primary-readable'), over(g('--brand-from'), softAlpha[0], g(C)), 3, 'icône');
   /* Le ton PLEIN : le glyphe est --primary-foreground sur le dégradé opaque, donc mesuré
      sur ses trois arrêts et pas sur un aplat. Seuil 3 comme sa jumelle douce — un glyphe de

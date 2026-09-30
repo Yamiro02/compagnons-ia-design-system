@@ -57,7 +57,7 @@ géométrique. Si un pixel chaud apparaît, une valeur de marque est restée dan
 Pas de registry : chaque app épingle une version par un tag git.
 
 ```bash
-npm i github:<votre-compte>/<votre-depot>#v0.1.0
+npm i github:Yamiro02/compagnons-ia-design-system#v0.2.0
 ```
 
 Cinq **peer dependencies**, à la charge de l'app :
@@ -288,7 +288,8 @@ Les règles d'usage composant par composant sont dans [`docs/PROMPTS.md`](docs/P
 
 **En classes, sans composant** (parcours cœur, Compagnons IA) : `.ds-option` (md / sm),
 `.ds-chip`, `.ds-steps`, `.ds-counter`, `.ds-badge--card`, `.ds-card.is-selected` +
-`.ds-card__flag`. Structure et usage : [`PORTAGE.md`](PORTAGE.md).
+`.ds-card__flag`, `.ds-portrait` (la vignette d'une personne sans photo). Structure et
+usage : [`PORTAGE.md`](PORTAGE.md).
 
 > **Doctrine ⋯ .** `Dropdown` est **desktop only**. Sous 64 rem, un menu ⋯ s'ouvre **toujours** en
 > `ActionSheet`, jamais en `Dropdown` : ce ne sont pas deux composants concurrents, c'est le même

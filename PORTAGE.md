@@ -186,6 +186,7 @@ dans `src/styles/patterns.css`, toutes montrées dans la vitrine (Forms, Data di
 | `.ds-counter` | `<span class="ds-counter">3</span>` — le compteur de non-lus, pastille pleine en dégradé | Data display |
 | `.ds-badge--card` | `.ds-badge.ds-badge--card` — l'étiquette de centre d'intérêt, blanche, faite pour la crème ; contenu de persona, emoji permis | Data display |
 | `.ds-card.is-selected` · `.ds-card__flag` | la carte de choix (formules) sélectionnée ; son drapeau est un `.ds-badge.ds-badge--accent.ds-badge--dense.ds-card__flag` | Data display |
+| `.ds-portrait` | la vignette d'une personne SANS photo : `.ds-portrait` (l'appelant pose `aspect-ratio` ou `height`) > `.halo` + un nœud portant **uniquement** `.accent` et l'initiale. La typo est portée par le conteneur et héritée — ne rien poser sur le nœud `.accent`. En sombre l'initiale passe en `--primary-readable`, automatiquement | Marque |
 
 Leur promotion en composants React est une décision à part — proposée, pas appliquée.
 

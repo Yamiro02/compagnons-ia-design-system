@@ -1,27 +1,94 @@
-# Journal des versions
+# Journal des versions — Compagnons IA
 
-Ce fichier est **celui du projet que vous fabriquez**, pas celui du squelette. Videz-le en
-dupliquant : l'historique d'un autre design system n'apprend rien sur le vôtre, et vous
-repartez de votre propre `0.1.0`.
+Le journal de CE design system, celui du produit. La numérotation est repartie de `0.1.0`
+au portage : elle ne suit ni celle du gabarit dont le dépôt est né, ni celle d'un autre
+design system de marque. L'historique du gabarit est conservé plus bas, sous son propre
+titre — déplacé, pas supprimé.
 
 La procédure de version est dans [`GOVERNANCE.md`](GOVERNANCE.md), et `node check-version.mjs`
 vérifie que la version de `package.json`, la ligne d'installation du README et le tag git
-concordent.
+concordent. Le tag n'est pas le but : c'est le péage.
 
-**DEUX NUMÉROTATIONS, ET « INDÉPENDANTE » NE VEUT PAS DIRE « FIGÉE ».** La formulation
-précédente laissait confondre les deux, alors ce sont deux choses distinctes :
+---
 
-- **Celle du gabarit** avance à chaque lot de son mainteneur, comme n'importe quel dépôt.
-  Elle n'a pas de rôle d'installation — on **copie le dossier**, on ne fait pas `npm i` —
-  mais elle est le **seul marqueur de millésime qui survit à une duplication** : une copie
-  n'emporte pas l'historique git, il ne reste que `package.json` et ce fichier. Un numéro
-  qui ne bouge pas pendant que le contenu change rend deux copies faites à six mois d'écart
-  indiscernables, toutes deux estampillées « 0.1.0 ».
-- **Celle de votre projet** repart de zéro le jour où vous dupliquez, et le choix du numéro
-  vous appartient. Elle ne suit ni celle du gabarit, ni celle d'un design system de marque.
+## 0.2.0 — le portrait de repli
 
-Le tag, ici, n'est pas le but : c'est le péage. `check-version.mjs` l'exige dès qu'on touche
-au numéro, et c'est lui qui garde `package.json` et le README honnêtes.
+Une personne sans photo n'a plus l'air d'une image cassée.
+
+### Ajouté
+
+- **`--gradient-portrait`**, jeton de marque, déclaré en `:root` **et** en `.dark`. 165°,
+  les trois arrêts de marque à 14 / 30 / 48 % mélangés dans `--card` :
+  `#f2e4e8 → #e0c2ca → #c99aa4` en clair, `#3a2526 → #4e2a30 → #602c36` en sombre.
+  Entré au contrat (`brand.template.css`, § 3 OBLIGATOIRE **et** bloc `.dark`) : le compte
+  passe de **54 à 55 jetons obligatoires**, dont **33** à redéclarer en sombre.
+- **`.ds-portrait`** dans `patterns.css` — le conteneur de la vignette : dégradé, halo
+  derrière, initiale centrée. **Aucune hauteur, aucun ratio** : l'appelant pose
+  `aspect-ratio` ou `height`. La typo est portée par le conteneur et **héritée** par
+  l'initiale, ce qui laisse `.accent` seule sur son nœud.
+- Vitrine : section **Portrait de repli** sur la page Marque — trois ratios (3/4, 1/1,
+  16/9), la comparaison clair / sombre, et le repli posé à côté d'une vraie photo.
+
+### Pourquoi la base du mélange est `--card`
+
+La maquette écrivait le dégradé en dur en mélangeant dans **`--tone-light-alt`**, qui vaut
+`#ffffff` dans les **deux** thèmes — le bloc `.dark` ne le redéclare pas. La vignette
+restait donc rose clair en sombre. `--card` bascule, lui.
+
+Et le jeton est **redéclaré en `.dark` avec la même expression**, ce qui n'est pas
+cosmétique : une propriété personnalisée posée sur `:root` est calculée **une fois**, avec
+les valeurs claires ; sans la redéclaration, `var(--card)` y resterait le blanc.
+`check-dark-substitution.mjs` fait tomber le build sur ce cas précis.
+
+### ⚠ L'initiale change d'encre en sombre
+
+En clair, l'initiale reste en `.accent` — le dégradé de marque clippé dans le texte, comme
+la maquette : **3,91:1** sur la vignette pâle.
+
+En sombre, `.accent` clippe le dégradé **éclairci** (`#b95370 → #9f3b54`), deux mi-tons sur
+une vignette prune de la même bande de luminance : **1,90:1**, la lettre disparaît presque.
+Ce n'est pas rattrapable en assombrissant la vignette — le balayage plafonne à **2,59**
+(4/8/14 % sur `--background`), toujours sous le seuil 3:1 du gros texte, pour une amplitude
+de dégradé tombée à 1,06, donc un aplat.
+
+L'initiale prend donc `--primary-readable` en aplat sous `.dark`, et la vignette garde ses
+14 / 30 / 48 %. La règle est **scopée au portrait** — `.dark .ds-portrait>:not(.halo)` — et
+ne nomme pas la classe fragile ; aucune classe générique ne duplique `.accent`.
+
+La paire entre à `check-contrast.mjs` (règle de tenue : un état porté par une couleur se
+mesure) : **3,91 en clair · 5,81 en sombre**, seuil 3. La porteuse mesurée est l'arrêt
+**médian** du dégradé, pas le pire — contrairement à l'idiome du bouton. C'est
+géométrique : le label d'un bouton couvre toute sa boîte, une initiale centrée dans une
+vignette trois à quatre fois plus haute qu'elle ne touche jamais l'arrêt du bas. Contre cet
+arrêt-là la paire donnerait 2,65 en clair — exact, et sans objet.
+
+### Ce que l'app doit savoir
+
+```tsx
+<span className="ds-portrait" style={{ aspectRatio: '3 / 4' }}>
+  <Halo placement="center" />
+  <span className="accent">{prenom.charAt(0)}</span>
+</span>
+```
+
+Le nœud `.accent` ne porte **rien d'autre** : ni classe, ni style. Tout ce qu'on pose à côté
+d'elle casse le clip en silence — c'est le piège de `docs/PIEGES.md`, et
+`check-fragile-classes.mjs` le surveille.
+
+---
+
+## 0.1.0 — marque Compagnons IA
+
+Le portage du gabarit : grenat / crème, Nunito Sans auto-hébergée, doctrine arrondie,
+surfaces blanches, `TabBar`, `ChatBubble`, les classes du parcours cœur. Non taguée — les
+lots sont dans l'historique git.
+
+---
+
+# Historique du gabarit (avant portage)
+
+Ce qui suit est le journal du **squelette** dont ce dépôt est né, conservé pour la
+traçabilité des décisions du socle. Ces numéros de version ne sont pas ceux de ce projet.
 
 ---
 
