@@ -297,6 +297,10 @@ svg.lucide{stroke-width:1.75}
 /* La CHIP : un bouton à bascule (aria-pressed) — centres d'intérêt, filtres. Sélectionnée,
    elle prend la plaque --accent, la bordure --primary et le libellé --primary-readable. Son
    libellé est de l'INTERFACE : jamais d'emoji (le badge carte, lui, est du contenu).
+   DEUX MODES, UN SEUL RENDU — v0.3.1. En BASCULE (choix multiples), l'état vit dans
+   aria-pressed. En RADIO (choix unique : role="radiogroup" sur le groupe, role="radio" sur
+   chaque chip), aria-pressed n'est pas un attribut valide du rôle radio — l'état vit dans
+   aria-checked. Les deux attributs dessinent la même sélection.
    CIBLE TACTILE — la règle du système est « 44 px AU DOIGT », pas à l'œil : la chip se voit à
    --chip-h (36) et sa zone de toucher déborde de --space-1 en haut et en bas (::before
    invisible) → 36 + 4 + 4 = 44. Même principe que .ds-tabbar__item. Condition : l'écart
@@ -305,7 +309,7 @@ svg.lucide{stroke-width:1.75}
 .ds-chip{position:relative;display:inline-flex;align-items:center;min-height:var(--chip-h);padding:0 var(--space-4);box-sizing:border-box;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-pill);font-family:var(--font-body);font-size:var(--text-body-sm);font-weight:var(--weight-medium);line-height:1;color:var(--foreground);cursor:pointer;outline:none;transition:border-color var(--duration-fast) var(--ease-standard),background-color var(--duration-fast) var(--ease-standard),box-shadow var(--duration-fast) var(--ease-standard)}
 .ds-chip::before{content:"";position:absolute;inset-inline:0;inset-block:calc(var(--space-1) * -1)}
 .ds-chip:hover:not(:disabled),.ds-chip.is-hover{border-color:var(--input)}
-.ds-chip.is-selected,.ds-chip[aria-pressed="true"]{border-color:var(--primary);background:var(--accent);color:var(--primary-readable);font-weight:var(--weight-semibold)}
+.ds-chip.is-selected,.ds-chip[aria-pressed="true"],.ds-chip[aria-checked="true"]{border-color:var(--primary);background:var(--accent);color:var(--primary-readable);font-weight:var(--weight-semibold)}
 .ds-chip:focus-visible,.ds-chip.is-focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--ring) 35%,transparent)}
 .ds-chip:disabled,.ds-chip.is-disabled{opacity:.5;cursor:not-allowed}
 /* La PROGRESSION PAR ÉTAPES — un libellé (« Étape 2 sur 5 ») et une rangée de points.

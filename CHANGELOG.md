@@ -11,6 +11,26 @@ concordent. Le tag n'est pas le but : c'est le péage.
 
 ---
 
+## 0.3.1 — la chip apprend le choix unique
+
+Aucune rupture. Un sélecteur s'ajoute, rien ne change à l'écran pour l'existant.
+
+### Ajouté
+
+- **`.ds-chip[aria-checked="true"]`** dessine la sélection exactement comme
+  `[aria-pressed="true"]`. Cas d'usage : un groupe de chips à **choix unique**
+  (`role="radiogroup"`, chaque chip en `role="radio"` + `aria-checked`), où `aria-pressed`
+  n'est pas un attribut valide du rôle. Avant, l'app devait choisir entre un ARIA faux et
+  une sélection invisible.
+- **`docs/PROMPTS.md` § `.ds-chip`** : les deux modes — **bascule** (`aria-pressed`, choix
+  multiples) et **radio** (`aria-checked`, choix unique) — avec leur ARIA et la navigation
+  clavier attendue. En radio, le clavier est à la charge de l'app : un seul arrêt de
+  tabulation pour le groupe, les flèches déplacent le focus et la sélection, en boucle.
+- Vitrine, Formulaires § Chip : spécimen **radio** interactif (`ChipsRadio`, tabindex
+  itinérant + flèches), en thème courant et en sombre forcé.
+
+---
+
 ## 0.3.0 — le système se relit
 
 Aucune rupture d'API. Cinq composants gagnent une prop, une classe entre, et toute la

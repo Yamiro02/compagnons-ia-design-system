@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState, type KeyboardEvent } from 'react';
 import { IDENTITY } from '../identity';
 import { Calendar, Checkbox, DatePicker, FormField, Icon, Input, Radio, Select, Switch, Textarea } from '@compagnons-ia/ds';
 import { Block, Grid, Row, Section, Stack } from '../ui';
@@ -17,6 +17,7 @@ const INTENTIONS = [
 ];
 const MOMENTS = ['Le matin', 'En soirée', 'Le week-end'];
 const INTERETS = ['Cuisine', 'Randonnée', 'Jazz', 'Voyages', 'Bricolage', 'Cinéma'];
+const RYTHMES = ['Tous les jours', 'Quelques fois par semaine', 'De temps en temps'];
 
 /* Les cases de .ds-option — le balisage interne de Radio et Checkbox, repris tel quel. */
 const CASE_RADIO = <span className="ds-choice__box ds-choice__box--radio"><span className="ds-choice__dot" /></span>;
@@ -32,6 +33,42 @@ function Etapes({ courante, total }: { courante: number; total: number }) {
           <span key={i} className={i + 1 < courante ? 'ds-steps__dot is-done' : i + 1 === courante ? 'ds-steps__dot is-current' : 'ds-steps__dot'} />
         ))}
       </span>
+    </div>
+  );
+}
+
+/* .ds-chip en mode RADIO — le comportement d'un radiogroup ARIA, écrit par l'app : un seul
+   arrêt de tabulation (la chip choisie, sinon la première), les flèches déplacent le focus
+   ET la sélection, en boucle. Le socle ne fournit que le rendu de aria-checked. */
+function ChipsRadio({ label }: { label: string }) {
+  const [choix, setChoix] = useState(RYTHMES[1]);
+  const chips = useRef<(HTMLButtonElement | null)[]>([]);
+  const arret = RYTHMES.includes(choix) ? choix : RYTHMES[0];
+  const auClavier = (e: KeyboardEvent<HTMLButtonElement>, i: number) => {
+    const pas = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+    if (!pas) return;
+    e.preventDefault();
+    const j = (i + pas + RYTHMES.length) % RYTHMES.length;
+    setChoix(RYTHMES[j]);
+    chips.current[j]?.focus();
+  };
+  return (
+    <div role="radiogroup" aria-label={label} className="flex flex-wrap items-center gap-space-2">
+      {RYTHMES.map((r, i) => (
+        <button
+          key={r}
+          ref={el => { chips.current[i] = el; }}
+          type="button"
+          role="radio"
+          aria-checked={choix === r}
+          tabIndex={r === arret ? 0 : -1}
+          className="ds-chip"
+          onClick={() => setChoix(r)}
+          onKeyDown={e => auClavier(e, i)}
+        >
+          {r}
+        </button>
+      ))}
     </div>
   );
 }
@@ -204,13 +241,25 @@ export function FormsPage() {
         </Block>
       </Section>
 
-      <Section title="Chip" note="Parcours cœur. Un bouton à bascule (aria-pressed), hauteur --chip-h : 36 à l'œil, 44 au doigt (zone de toucher ::before de --space-1 en haut et en bas ; au moins --space-2 entre deux rangées). Sélectionnée : plaque --accent, bordure --primary, libellé --primary-readable semibold. Libellé d'INTERFACE : jamais d'emoji — c'est le badge carte (Data display) qui en porte. Classe seule, pas de composant.">
-        <Block label="Groupe cliquable" hint="Tes centres d'intérêt — clique pour basculer.">
+      <Section title="Chip" note="Parcours cœur. Deux modes, un seul rendu : BASCULE (aria-pressed, choix multiples) ou RADIO (role=radio + aria-checked dans un role=radiogroup, choix unique). Hauteur --chip-h : 36 à l'œil, 44 au doigt (zone de toucher ::before de --space-1 en haut et en bas ; au moins --space-2 entre deux rangées). Sélectionnée : plaque --accent, bordure --primary, libellé --primary-readable semibold. Libellé d'INTERFACE : jamais d'emoji — c'est le badge carte (Data display) qui en porte. Classe seule, pas de composant.">
+        <Block label="Bascule — choix multiples" hint="Tes centres d'intérêt — clique pour basculer. aria-pressed, une tabulation par chip, Espace ou Entrée bascule.">
           <div className="flex flex-wrap items-center gap-space-2 rounded-xl bg-background p-space-4">
             {INTERETS.map(i => (
               <button key={i} type="button" className="ds-chip" aria-pressed={interets.includes(i)} onClick={() => setInterets(basculer(interets, i))}>{i}</button>
             ))}
           </div>
+        </Block>
+        <Block label="Radio — choix unique" hint="Ton rythme de conversation. role=radiogroup nommé, role=radio + aria-checked sur chaque chip (aria-pressed n'est pas valide sur un radio). Un seul arrêt de tabulation pour le groupe ; les flèches déplacent le focus et la sélection, en boucle. Le premier spécimen suit la vitrine, le second force le sombre.">
+          <Grid cols={2}>
+            <div className="flex flex-col gap-space-2 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">thème courant</span>
+              <ChipsRadio label="Ton rythme de conversation" />
+            </div>
+            <div className="dark flex flex-col gap-space-2 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">sombre, forcé</span>
+              <ChipsRadio label="Ton rythme de conversation (sombre)" />
+            </div>
+          </Grid>
         </Block>
         <Block label="États">
           <div className="flex flex-wrap items-center gap-space-2 rounded-xl bg-background p-space-4">

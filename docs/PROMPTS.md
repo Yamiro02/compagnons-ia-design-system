@@ -1084,20 +1084,58 @@ largeur. `--sm` pour un écran qui pose plusieurs groupes.
 
 ## .ds-chip
 
-Un bouton à bascule — centres d'intérêt, filtres.
+Une pastille de choix — centres d'intérêt, filtres, réponse courte. **Deux modes, un seul
+rendu** : l'état vit dans un attribut ARIA, jamais dans une classe — `.is-selected` n'est
+que l'aide de spécimen. Sélectionnée : plaque `--accent`, bordure `--primary`, libellé
+`--primary-readable` semibold, quel que soit le mode.
+
+**Bascule — choix multiples** (v0.3.0). Chaque chip est un bouton à bascule indépendant.
 
 ```tsx
-<button type="button" className="ds-chip" aria-pressed={choisi} onClick={basculer}>Cuisine</button>
+<div role="group" aria-label="Tes centres d'intérêt" className="flex flex-wrap gap-space-2">
+  <button type="button" className="ds-chip" aria-pressed={choisi} onClick={basculer}>Cuisine</button>
+</div>
 ```
 
-- L'état vit dans **`aria-pressed`**, pas dans une classe : `.is-selected` est l'aide de
-  spécimen. Sélectionnée : plaque `--accent`, bordure `--primary`, libellé
-  `--primary-readable` semibold.
+- ARIA : `aria-pressed` (`true` / `false`) sur chaque `<button type="button">`. Le groupe
+  est nommé (`role="group"` + `aria-label`, ou un titre relié par `aria-labelledby`).
+- Clavier : **rien à écrire**, c'est le bouton natif — Tab / Maj+Tab passent de chip en
+  chip (un arrêt par chip), Espace ou Entrée basculent.
+
+**Radio — choix unique** (v0.3.1). Le groupe se comporte comme un groupe de boutons radio.
+`aria-pressed` n'est **pas valide** sur le rôle `radio` : l'état passe par
+`aria-checked`, et le socle le dessine exactement comme `aria-pressed="true"`.
+
+```tsx
+<div role="radiogroup" aria-label="Ton rythme de conversation" className="flex flex-wrap gap-space-2">
+  {RYTHMES.map((r, i) => (
+    <button key={r} type="button" role="radio" className="ds-chip"
+      aria-checked={choix === r} tabIndex={r === arret ? 0 : -1}
+      onClick={() => setChoix(r)} onKeyDown={e => auClavier(e, i)}>{r}</button>
+  ))}
+</div>
+```
+
+- ARIA : `role="radiogroup"` nommé sur le conteneur ; `role="radio"` + `aria-checked`
+  (`true` / `false`) sur chaque chip. Une seule chip à `true`.
+- Clavier — **à la charge de l'app**, le socle ne pose que le rendu :
+  - **un seul arrêt de tabulation** pour tout le groupe (tabindex itinérant) : la chip
+    choisie à `tabIndex={0}`, les autres à `-1` ; si aucune ne l'est, la première ;
+  - **flèches** (→ / ↓ suivante, ← / ↑ précédente, en boucle) : déplacent le focus **et**
+    la sélection ;
+  - **Espace** choisit la chip qui a le focus si elle ne l'est pas ;
+  - **Tab** sort du groupe.
+- L'implémentation complète est dans la vitrine : `ChipsRadio`,
+  `demo/src/pages/Forms.tsx`.
+
+**Choisir le mode** : plusieurs réponses possibles → bascule ; une seule → radio. Ne pas
+simuler un choix unique avec des `aria-pressed` qui s'éteignent entre eux : le lecteur
+d'écran annonce des bascules indépendantes, et l'exclusivité n'est dite nulle part.
 - **Libellé d'INTERFACE : jamais d'emoji.** Celui qui en porte est `.ds-badge--card`, qui
   est du contenu.
 - **Cible tactile** : 36 px à l'œil, 44 au doigt par une couche `::before` invisible.
   Condition : au moins `--space-2` entre deux rangées. Voir `docs/accessibilite.md` § 4.
-- Vitrine : Formulaires § Chip.
+- Vitrine : Formulaires § Chip — bascule, radio (clair + sombre), états.
 
 ## .ds-steps
 
