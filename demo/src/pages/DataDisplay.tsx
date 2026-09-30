@@ -82,7 +82,7 @@ export function DataDisplayPage() {
           </Grid>
         </Block>
 
-        <Block label="Carte de choix — deux formules" hint="Parcours cœur. .ds-card.is-selected : bordure 1.5px --brand-to (liste fermée de l'accent). Le drapeau est un Badge accent dense + .ds-card__flag, à cheval sur le bord haut — seule .is-selected positionne la carte, le drapeau suppose donc une carte sélectionnée.">
+        <Block label="Carte de choix — deux formules" hint="Parcours cœur. .ds-card.is-selected : bordure 1.5px --primary (liste fermée de l'accent). Le drapeau est un Badge accent dense + .ds-card__flag, à cheval sur le bord haut — seule .is-selected positionne la carte, le drapeau suppose donc une carte sélectionnée.">
           <Grid cols={2}>
             <Card className="is-selected">
               <Badge tone="accent" pad="dense" className="ds-card__flag">Le plus choisi</Badge>

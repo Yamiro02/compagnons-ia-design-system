@@ -267,12 +267,12 @@ svg.lucide{stroke-width:1.75}
      <label class="ds-option"><span class="ds-choice"><input type="radio|checkbox">…case
      .ds-choice__box…</span>Libellé</label>
    md (défaut) = écran à une question ; sm = écran à plusieurs groupes. L'état sélectionné
-   se lit sur la bordure --brand-to (liste fermée de l'accent, docs/DESIGN.md § 3), la
+   se lit sur la bordure --primary (liste fermée de l'accent, docs/DESIGN.md § 3), la
    graisse du libellé ET la case cochée — jamais sur la bordure seule. Le focus passe de la
    case à l'option entière. */
 .ds-option{display:flex;align-items:center;gap:var(--space-4);padding:var(--space-5);box-sizing:border-box;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-pill);font-family:var(--font-body);font-size:var(--text-body-lg);font-weight:var(--weight-semibold);line-height:var(--leading-snug);color:var(--text-secondary);cursor:pointer;transition:border-color var(--duration-fast) var(--ease-standard),color var(--duration-fast) var(--ease-standard),box-shadow var(--duration-fast) var(--ease-standard)}
 .ds-option:hover,.ds-option.is-hover{border-color:var(--input)}
-.ds-option.is-selected,.ds-option:has(input:checked){border-color:var(--brand-to);font-weight:var(--weight-bold);color:var(--foreground)}
+.ds-option.is-selected,.ds-option:has(input:checked){border-color:var(--primary);font-weight:var(--weight-bold);color:var(--foreground)}
 .ds-option:has(input:focus-visible),.ds-option.is-focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--ring) 35%,transparent)}
 .ds-option:has(input:focus-visible) .ds-choice__box{box-shadow:none}
 .ds-option--sm{gap:var(--space-3);padding:var(--space-4) var(--space-5);font-size:var(--text-control);font-weight:var(--weight-medium)}
@@ -343,9 +343,10 @@ svg.lucide{stroke-width:1.75}
 /* Le COMPTEUR de non-lus — pastille pleine en dégradé, l'un des trois ajouts de la liste
    fermée de l'accent (docs/DESIGN.md § 3). --text-micro : hors lecture, un chiffre. */
 .ds-counter{flex:none;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:1.125rem;height:1.125rem;padding:0 var(--space-1);border-radius:var(--radius-pill);background:var(--brand-gradient);color:var(--primary-foreground);font-family:var(--font-body);font-size:var(--text-micro);font-weight:var(--weight-bold);line-height:1}
-/* La CARTE DE CHOIX sélectionnée (formules) : bordure --brand-to. Son drapeau est un
+/* La CARTE DE CHOIX sélectionnée (formules) : bordure --primary — comme l'option et la
+   chip : --brand-to, l'arrêt sombre du dégradé, tombait à 2,52:1 en thème sombre. Son drapeau est un
    .ds-badge.ds-badge--accent.ds-badge--dense.ds-card__flag, posé à cheval sur le bord haut. */
-.ds-card.is-selected{position:relative;border:1.5px solid var(--brand-to)}
+.ds-card.is-selected{position:relative;border:1.5px solid var(--primary)}
 .ds-card__flag{position:absolute;top:-0.6875rem;left:var(--card-pad)}
 /* La BULLE DE CONVERSATION — composant ChatBubble. `them` (le persona) est une carte blanche
    à gauche, coin bas-gauche resserré ; `me` (l'utilisateur) porte le dégradé à droite, coin

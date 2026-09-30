@@ -62,7 +62,7 @@
 3. le sur-titre
 4. le CTA primaire, un seul par vue — **sauf** CTA répété à l'identique dans une liste de cartes (« Faire connaissance » sur chaque carte de recommandation). La carte mise en avant ne change pas la couleur de son bouton.
 5. le halo
-6. l'état sélectionné d'un contrôle — la bordure de marque d'une option, d'une chip ou d'une carte de choix (`--brand-to` ; la chip, qui porte aussi la plaque `--accent`, prend `--primary`)
+6. l'état sélectionné d'un contrôle — la bordure `--primary` d'une option, d'une chip ou d'une carte de choix (la chip y ajoute la plaque `--accent`)
 7. la bulle de message de l'utilisateur — fond `--brand-gradient`
 8. le compteur de non-lus — pastille pleine `--brand-gradient`
 
@@ -172,3 +172,4 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 | 2026-09-30 | Classes du parcours cœur, sans composant : `.ds-option` (md / sm), `.ds-chip`, `.ds-steps`, `.ds-counter`, `.ds-badge--card`, `.ds-card.is-selected` + `.ds-card__flag`, `.ds-bubble` / `.ds-typing` | la promotion en composant est proposée à part, pas appliquée |
 | 2026-09-30 | Délais des points de saisie dérivés du cycle : `calc(var(--duration-typing) / 8)` et `/ 4` au lieu de `150ms` / `300ms` | rendu identique ; une durée écrite en clair dans `patterns.css` fait tomber `check-literals.sh` |
 | 2026-09-30 | `check-contrast.mjs` : + 8 paires — `.ds-chip.is-selected`, `.ds-bubble--me` et `.ds-counter` sur les trois arrêts, bordure sélectionnée `--brand-to` | règle de tenue : un nouvel état porté par une couleur se mesure. La bordure sélectionnée tombe à 2,52 en sombre — `@a11y-assume` posé, **à trancher** (`docs/accessibilite.md` § 3.5) |
+| 2026-09-30 | Bordure sélectionnée (option, carte de choix) : `--primary` au lieu de `--brand-to` ; l'`@a11y-assume` posé le même jour est retiré | `--brand-to`, l'arrêt le plus sombre du dégradé, tombait à 2,52:1 sur `--card` en sombre ; `--primary` tient 6,44 en clair et 3,54 en sombre. Même bordure que la chip : un seul rouge pour « sélectionné ». Écart à reporter dans la vitrine Claude Design |

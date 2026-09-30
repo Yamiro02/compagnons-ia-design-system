@@ -50,14 +50,6 @@
    4,01:1 en sombre sur l'arrêt le plus sombre du dégradé : propriété de la technique de
    clip ; l'accent est rationné (sur-titres courts, jamais seul porteur de sens). */
 
-/* @a11y-assume: .ds-option / .ds-card.is-selected — bordure --brand-to
-   8,01 en clair · 2,52 en sombre sur --card (2,86 contre la page). --brand-to est l'arrêt
-   le plus SOMBRE du dégradé : sur les bruns-charbon il perd la distance que --primary garde
-   (3,54). La bordure n'est pas seule : l'option porte aussi sa case cochée, remplie du
-   dégradé (son arrêt clair tient 3,54 sur --card en sombre), et un libellé qui passe en
-   gras --foreground. Sur la carte de
-   choix, la bordure reste le signal visuel principal : écart À TRANCHER — voir
-   docs/accessibilite.md § 3.5. */
 
 /* ---------- 2 bis · ÉCART DE SURFACE ASSUMÉ ----------
    Clé exacte de check-surfaces.mjs. */

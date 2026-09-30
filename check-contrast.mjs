@@ -209,10 +209,10 @@ function pairs(theme, { ROOT, DARK }, fichier) {
   add('Non-texte', '.ds-choice coché — aplat --primary', g('--primary'), g(B), 3, 'contrôle');
   add('Non-texte', '.ds-switch actif — piste --primary', g('--primary'), g(B), 3, 'contrôle');
   add('Non-texte', '.ds-progress__bar sur son rail', g('--primary'), g('--surface-alt'), 3, 'graphique');
-  /* L'état SÉLECTIONNÉ d'une option ou d'une carte de choix se lit sur sa bordure
-     --brand-to, posée sur un remplissage --card : c'est la paire la plus serrée des deux
-     côtés de la bordure (--card, puis la page). */
-  add('Non-texte', '.ds-option / .ds-card.is-selected — bordure --brand-to', g('--brand-to'), g(C), 3, 'contour 1.5px');
+  /* L'état SÉLECTIONNÉ d'une option, d'une chip ou d'une carte de choix se lit sur sa
+     bordure --primary, posée sur un remplissage --card : c'est la paire la plus serrée des
+     deux côtés de la bordure (--card, puis la page). --brand-to y tombait à 2,52 en sombre. */
+  add('Non-texte', '.ds-option / .ds-chip / .ds-card.is-selected — bordure --primary', g('--primary'), g(C), 3, 'contour 1.5px');
   add('Non-texte', '.ds-input.is-error — bordure --destructive', g('--destructive'), g(C), 3, 'contour 1.5px');
   add('Non-texte', '.ds-input — bordure --input vs page', g('--input'), g(B), 3, 'contour 1.5px');
   add('Non-texte', '.ds-input — bordure --input vs remplissage', g('--input'), g(C), 3, 'contour 1.5px');

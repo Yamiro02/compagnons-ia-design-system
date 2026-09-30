@@ -146,7 +146,7 @@ export function FormsPage() {
         </Grid>
       </Section>
 
-      <Section title="Option" note="Parcours cœur. Une réponse d'onboarding, pill, qui enveloppe un .ds-choice — toute l'option est cliquable. md = écran à une question, sm = écran à plusieurs groupes. Sélectionnée : bordure --brand-to, libellé en gras --foreground, case cochée — jamais la bordure seule. Classes seules, pas de composant.">
+      <Section title="Option" note="Parcours cœur. Une réponse d'onboarding, pill, qui enveloppe un .ds-choice — toute l'option est cliquable. md = écran à une question, sm = écran à plusieurs groupes. Sélectionnée : bordure --primary, libellé en gras --foreground, case cochée — jamais la bordure seule. Classes seules, pas de composant.">
         <Grid cols={2}>
           <Block label="md — radio, une question" hint="Tu cherches plutôt… — posée sur la crème, comme dans l'onboarding.">
             <div className="flex flex-col gap-space-3 rounded-xl bg-background p-space-4">

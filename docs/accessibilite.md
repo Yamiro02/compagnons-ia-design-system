@@ -219,30 +219,20 @@ n'est jamais porté par la seule bordure — `FormField` affiche toujours le mes
 > `@a11y-assume` a été retiré du fichier de marque. Le paragraphe ci-dessus reste vrai de la
 > marque d'exemple, celle que ce document mesure.
 
-### 3.5 · Marque Compagnons IA — la bordure sélectionnée en sombre, `2,52` — À TRANCHER
+### 3.5 · Marque Compagnons IA — la bordure sélectionnée : écart FERMÉ
 
-**L'écart.** L'option (`.ds-option`) et la carte de choix (`.ds-card.is-selected`)
-sélectionnées portent une bordure 1.5px `--brand-to`. En clair elle mesure **8,01** sur
-`--card` ; en sombre, **2,52** sur `--card` et **2,86** contre la page — sous le seuil 3:1
-des contours d'état. `--brand-to` est l'arrêt le plus SOMBRE du dégradé : sur les
-bruns-charbon, c'est lui qui perd le plus de distance.
+L'option (`.ds-option`), la chip (`.ds-chip`) et la carte de choix (`.ds-card.is-selected`)
+sélectionnées portent une bordure 1.5px **`--primary`**. Mesure sur `--card` : **6,44** en
+clair, **3,54** en sombre — seuil 3:1 des contours d'état tenu dans les deux thèmes.
 
-**Ce qui l'atténue — sur l'option.** La bordure n'y est pas seule : la case cochée se
-remplit du dégradé (son arrêt clair tient 3,54 sur `--card`) et le libellé passe en gras
-`--foreground`. L'état reste lisible sans la bordure.
+Elle a d'abord été posée en `--brand-to`, l'arrêt le plus SOMBRE du dégradé : 8,01 en clair
+mais **2,52** en sombre, où il perd sa distance sur les bruns-charbon. Sur la carte de choix,
+la bordure est le signal visuel principal de la sélection — l'écart était réel. Il est
+fermé en changeant la RÈGLE (`patterns.css`), pas un jeton, et son `@a11y-assume` a été
+retiré du fichier de marque.
 
-**Ce qui ne l'atténue pas — sur la carte de choix.** Là, la bordure est le signal visuel
-principal de la sélection. L'écart est réel, et l'`@a11y-assume` posé dans le fichier de
-marque est provisoire. Trois issues :
-
-1. pointer la bordure sélectionnée sur `--primary` (8,01 → 6,44 en clair, 2,52 → **3,54**
-   en sombre) — une règle de `patterns.css`, aucun jeton ne bouge ; la chip le fait déjà ;
-2. doubler la carte d'un indicateur coché (radio visible) — la carte devient le libellé
-   d'un radio, comme l'option ;
-3. assumer l'écart tel quel.
-
-Le garde mesure la paire sous la clé `.ds-option / .ds-card.is-selected — bordure
---brand-to`.
+Le garde mesure la paire sous la clé `.ds-option / .ds-chip / .ds-card.is-selected —
+bordure --primary`.
 
 ## 4. Ce que ce document ne couvre pas
 
