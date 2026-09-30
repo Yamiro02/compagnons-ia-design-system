@@ -144,7 +144,7 @@ export function DataDisplayPage() {
           </Row>
         </Block>
 
-        <Block label="Rembourrages" hint="md = --badge-h (29 px), la hauteur historique, figée pour non-régression · dense = --badge-h-dense (24 px), celle qui s'aligne sur une pilule d'état de la même rangée. Icône 0.875rem en md, 0.75rem en dense.">
+        <Block label="Rembourrages" hint="md = --badge-h (29 px), la hauteur historique, figée pour non-régression · dense = --badge-h-dense (24 px), celle qui s'aligne sur une pilule d'état de la même rangée. Icône au créneau : 0.8125rem en md, 0.75rem en dense — aucune taille n'est écrite au site d'appel.">
           <Row label="md — posé à côté d'un Button sm et d'un Input sm">
             <Badge tone="success" icon={<Icon name="circle-check" strokeWidth={2.5} />}>En ligne</Badge>
             <Button size="sm" variant="secondary">Action</Button>
