@@ -2,7 +2,7 @@
 
 **Un squelette de design system React, à remplir par projet.** Deux couches qui ne se
 mélangent pas : un **socle** générique — structure, comportements, échelles, rail de
-contrôles, motion, 38 composants React + TypeScript, **zéro couleur** — et une **marque**,
+contrôles, motion, 39 composants React + TypeScript, **zéro couleur** — et une **marque**,
 qui porte les couleurs, les polices, les dégradés et la lueur.
 
 Jetons CSS · couche Tailwind v4 · tout est en `rem`.
@@ -253,7 +253,7 @@ de Tailwind, sur laquelle reposent les composants shadcn de ton app.
 > lève aucune erreur : il passe silencieusement de 20 px à 4 px.
 
 > **Le paquet n'est pas scanné par Tailwind.** v4 ne lit pas `node_modules`. Sans effet
-> aujourd'hui : les 38 composants s'habillent en classes `.ds-*` et n'écrivent aucun utilitaire
+> aujourd'hui : les 39 composants s'habillent en classes `.ds-*` et n'écrivent aucun utilitaire
 > Tailwind. C'est une précaution pour l'avenir — le jour où un composant du DS écrira une classe
 > Tailwind, l'app devra pointer le paquet :
 > ```css
@@ -269,10 +269,10 @@ de Tailwind, sur laquelle reposent les composants shadcn de ton app.
 
 | Famille | Composants |
 |---|---|
-| `icons` | `Icon` — 48 glyphes Lucide ; la taille vient du **créneau** (`--ds-icon-size`, repli `1.25rem`), `size` reste la surcharge au site d'appel |
+| `icons` | `Icon` — 48 glyphes Lucide ; la taille vient du **créneau** (`--ds-icon-size`, repli `1.25rem`), `size` reste la surcharge au site d'appel. Échelle : `1` · `1.125` (contrôle md, TabBar) · `1.25` · `1.5` rem |
 | `actions` | `Button` · `IconButton` — 4 variantes (5 pour `IconButton`, `accent` compris), 3 tailles, pill (doctrine arrondie) |
 | `forms` | `Input` · `Textarea` · `Select` · `Checkbox` · `Radio` · `Switch` · `FormField` · `Calendar` · `DatePicker` |
-| `data-display` | `Card` (+ en-tête à slots) · `Pastille` · `Badge` (2 rembourrages) · `Tooltip` · `Separator` · `Table` (+ `THead` `TBody` `Tr` `Th` `Td`) — `framed` · `columns` · `striped` · `hoverable`, composables |
+| `data-display` | `Card` (+ en-tête à slots) · `Pastille` · `Badge` (2 rembourrages) · `ChatBubble` (`them` / `me`, indicateur `typing`) · `Tooltip` · `Separator` · `Table` (+ `THead` `TBody` `Tr` `Th` `Td`) — `framed` · `columns` · `striped` · `hoverable`, composables |
 | `feedback` | `Toast` · `Banner` · `EmptyState` · `Skeleton` · `SkeletonCard` · `Spinner` · `Progress` |
 | `overlays` | `Modal` (3 phases + feuille basse sous 64 rem) · `ActionSheet` · `Dropdown` |
 | `navigation` | `Navbar` · `Footer` · `Tabs` (+ `onCard` / `onPage`) · `TabBar` (coque mobile flottante, 4 onglets, `dock`) · `Pagination` · `AppShell` · `Sidebar` |
@@ -285,6 +285,10 @@ import { Button, type ButtonProps } from '@compagnons-ia/ds';
 ```
 
 Les règles d'usage composant par composant sont dans [`docs/PROMPTS.md`](docs/PROMPTS.md).
+
+**En classes, sans composant** (parcours cœur, Compagnons IA) : `.ds-option` (md / sm),
+`.ds-chip`, `.ds-steps`, `.ds-counter`, `.ds-badge--card`, `.ds-card.is-selected` +
+`.ds-card__flag`. Structure et usage : [`PORTAGE.md`](PORTAGE.md).
 
 > **Doctrine ⋯ .** `Dropdown` est **desktop only**. Sous 64 rem, un menu ⋯ s'ouvre **toujours** en
 > `ActionSheet`, jamais en `Dropdown` : ce ne sont pas deux composants concurrents, c'est le même
@@ -383,7 +387,10 @@ est reporté, puis porté ici.
 ## Interdits
 
 Pas de valeur inventée : chaque couleur, taille, rayon ou ombre vient d'un jeton. Pas
-d'emoji — seul le point médian `·`. Le pill est la RÈGLE, pas l'exception (doctrine
+d'emoji dans l'INTERFACE (boutons, titres, navigation, chips, états, erreurs) — seul le
+point médian `·` y est décoratif ; le CONTENU des personas (centres d'intérêt, messages)
+peut en porter. La copie tutoie, chaleureuse et posée (`docs/DESIGN.md` § 1). Un seul CTA
+primaire par vue, sauf CTA répété à l'identique dans une liste de cartes. Le pill est la RÈGLE, pas l'exception (doctrine
 arrondie, `docs/DESIGN.md` § 5). La face
 `--font-display` est réservée aux titres, jamais sous `1.125rem`, jamais faux-grassée — sa
 casse et sa graisse viennent de `--heading-transform` / `--heading-weight`, que la marque

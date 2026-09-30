@@ -74,7 +74,10 @@ couleur, `bg-*`, `w-*`…) — le dégradé meurt en silence. **Sans risque** : 
 ## Button
 
 L'action du système. `primary` porte le dégradé de marque et la lueur : c'est LE CTA de la
-vue — un seul par écran. Tout le reste est `secondary`, `ghost` ou `danger`.
+vue — un seul par écran. Tout le reste est `secondary`, `ghost` ou `danger`. **Seule
+exception** : un CTA répété à l'identique dans une liste de cartes (« Faire connaissance »
+sur chaque carte de recommandation) — et la carte mise en avant ne change pas la couleur de
+son bouton.
 
 **Ne pas l'utiliser** pour une action icône seule (c'est `IconButton`), ni pour un lien de
 navigation dans du texte (un `<a>` suffit).
@@ -252,6 +255,36 @@ sous 1.5rem.
   main pour choisir un alignement — c'est le composant qui le sait.
 - États rendus : repos ; `interactive` ajoute hover (levée + `--shadow-md`), pressé,
   focus-visible.
+
+## ChatBubble
+
+La bulle de conversation. `them` = le persona : carte blanche (`--card`, filet `--border`,
+`--shadow-sm`) alignée à gauche, coin bas-gauche resserré. `me` = l'utilisateur : fond
+`--brand-gradient`, texte `--primary-foreground`, alignée à droite, coin bas-droit resserré
+— l'un des trois usages ajoutés à la liste fermée de l'accent. Le parent est une colonne
+flex : la bulle s'aligne d'elle-même (`align-self`), 80 % de largeur au plus.
+
+`typing` rend l'**indicateur de saisie** : trois points qui pulsent à la place du contenu,
+dans une région `role="status"`. Il n'a de sens que côté persona. Son nom accessible est
+du contenu d'app — passe `aria-label` avec le prénom du persona.
+
+**Ne pas l'utiliser** pour un message système ou un état (« Claire est en ligne ») : ce
+n'est pas une réplique. Le texte d'une bulle est du CONTENU — l'emoji y est permis, il reste
+interdit dans l'interface autour.
+
+```tsx
+<div className="flex flex-col gap-space-3">
+  <ChatBubble from="them">Tu m'as manqué hier soir.</ChatBubble>
+  <ChatBubble from="me">Longue journée. Je te raconte ?</ChatBubble>
+  <ChatBubble from="them">Raconte-moi ta journée.</ChatBubble>
+  <ChatBubble from="them" typing aria-label="Claire écrit" />
+</div>
+```
+
+- Props : `from` (`them·me`, obligatoire) · `typing` · plus les attributs d'un `<div>`.
+- Le cycle des points vaut `--duration-typing` (1.2s) ; `prefers-reduced-motion` le coupe.
+- Contraste mesuré par `check-contrast.mjs` : le texte blanc de `me` sur les trois arrêts
+  du dégradé.
 
 ## Pastille
 

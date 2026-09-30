@@ -48,6 +48,8 @@ export { Card } from './components/data-display/Card';
 export type { CardProps } from './components/data-display/Card';
 export { Badge } from './components/data-display/Badge';
 export type { BadgeProps } from './components/data-display/Badge';
+export { ChatBubble } from './components/data-display/ChatBubble';
+export type { ChatBubbleProps } from './components/data-display/ChatBubble';
 export { Pastille } from './components/data-display/Pastille';
 export type { PastilleProps } from './components/data-display/Pastille';
 export { Tooltip } from './components/data-display/Tooltip';

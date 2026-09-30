@@ -9,11 +9,43 @@ const SERIES = [
   { value: 'coulisses', label: 'Coulisses' },
 ];
 
+/* Parcours cœur — contenus d'exemple de l'onboarding. */
+const INTENTIONS = [
+  { value: 'complicite', label: 'Une belle complicité' },
+  { value: 'serieux', label: 'Une relation sérieuse' },
+  { value: 'verra', label: 'On verra bien' },
+];
+const MOMENTS = ['Le matin', 'En soirée', 'Le week-end'];
+const INTERETS = ['Cuisine', 'Randonnée', 'Jazz', 'Voyages', 'Bricolage', 'Cinéma'];
+
+/* Les cases de .ds-option — le balisage interne de Radio et Checkbox, repris tel quel. */
+const CASE_RADIO = <span className="ds-choice__box ds-choice__box--radio"><span className="ds-choice__dot" /></span>;
+const CASE_COCHE = <span className="ds-choice__box"><Icon name="check" size="0.8125rem" strokeWidth={3} /></span>;
+
+/* .ds-steps — le libellé porte l'information, les points ne sont qu'un renfort. */
+function Etapes({ courante, total }: { courante: number; total: number }) {
+  return (
+    <div className="ds-steps">
+      <span className="ds-steps__label">Étape {courante} sur {total}</span>
+      <span className="ds-steps__dots" aria-hidden="true">
+        {Array.from({ length: total }, (_, i) => (
+          <span key={i} className={i + 1 < courante ? 'ds-steps__dot is-done' : i + 1 === courante ? 'ds-steps__dot is-current' : 'ds-steps__dot'} />
+        ))}
+      </span>
+    </div>
+  );
+}
+
 export function FormsPage() {
   const [checked, setChecked] = useState(true);
   const [niveau, setNiveau] = useState('debutant');
   const [sombre, setSombre] = useState(true);
   const [date, setDate] = useState<Date | undefined>(new Date(2026, 8, 24));
+  const [intention, setIntention] = useState('serieux');
+  const [moments, setMoments] = useState<string[]>(['En soirée']);
+  const [interets, setInterets] = useState<string[]>(['Jazz', 'Voyages']);
+  const basculer = (liste: string[], valeur: string) =>
+    liste.includes(valeur) ? liste.filter(v => v !== valeur) : [...liste, valeur];
 
   return (
     <div className="flex flex-col gap-space-7">
@@ -112,6 +144,85 @@ export function FormsPage() {
             </Stack>
           </Block>
         </Grid>
+      </Section>
+
+      <Section title="Option" note="Parcours cœur. Une réponse d'onboarding, pill, qui enveloppe un .ds-choice — toute l'option est cliquable. md = écran à une question, sm = écran à plusieurs groupes. Sélectionnée : bordure --brand-to, libellé en gras --foreground, case cochée — jamais la bordure seule. Classes seules, pas de composant.">
+        <Grid cols={2}>
+          <Block label="md — radio, une question" hint="Tu cherches plutôt… — posée sur la crème, comme dans l'onboarding.">
+            <div className="flex flex-col gap-space-3 rounded-xl bg-background p-space-4">
+              {INTENTIONS.map(o => (
+                <label key={o.value} className="ds-option">
+                  <span className="ds-choice">
+                    <input type="radio" name="intention" value={o.value} checked={intention === o.value} onChange={() => setIntention(o.value)} />
+                    {CASE_RADIO}
+                  </span>
+                  {o.label}
+                </label>
+              ))}
+            </div>
+          </Block>
+          <Block label="sm — case, plusieurs groupes" hint="Tes moments pour discuter">
+            <div className="flex flex-col gap-space-3 rounded-xl bg-background p-space-4">
+              {MOMENTS.map(m => (
+                <label key={m} className="ds-option ds-option--sm">
+                  <span className="ds-choice">
+                    <input type="checkbox" checked={moments.includes(m)} onChange={() => setMoments(basculer(moments, m))} />
+                    {CASE_COCHE}
+                  </span>
+                  {m}
+                </label>
+              ))}
+            </div>
+          </Block>
+        </Grid>
+        <Block label="États forcés" hint="is-hover · is-selected (+ .ds-choice.is-checked) · is-focus · is-disabled — les aides de démo. En vrai, :has(input:checked), :has(input:focus-visible) et :has(input:disabled) posent les mêmes états.">
+          <Grid cols={2}>
+            <div className="flex flex-col gap-space-3 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">md</span>
+              <label className="ds-option"><span className="ds-choice"><input type="radio" name="option-repos" />{CASE_RADIO}</span>Repos</label>
+              <label className="ds-option is-hover"><span className="ds-choice"><input type="radio" name="option-survol" />{CASE_RADIO}</span>Survol</label>
+              <label className="ds-option is-selected"><span className="ds-choice is-checked"><input type="radio" name="option-choisie" />{CASE_RADIO}</span>Sélectionnée</label>
+              <label className="ds-option is-focus"><span className="ds-choice"><input type="radio" name="option-focus" />{CASE_RADIO}</span>Focus</label>
+              <label className="ds-option is-disabled"><span className="ds-choice"><input type="radio" name="option-off" disabled />{CASE_RADIO}</span>Indisponible</label>
+            </div>
+            <div className="flex flex-col gap-space-3 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">sm</span>
+              <label className="ds-option ds-option--sm"><span className="ds-choice"><input type="checkbox" />{CASE_COCHE}</span>Repos</label>
+              <label className="ds-option ds-option--sm is-hover"><span className="ds-choice"><input type="checkbox" />{CASE_COCHE}</span>Survol</label>
+              <label className="ds-option ds-option--sm is-selected"><span className="ds-choice is-checked"><input type="checkbox" />{CASE_COCHE}</span>Sélectionnée</label>
+              <label className="ds-option ds-option--sm is-focus"><span className="ds-choice"><input type="checkbox" />{CASE_COCHE}</span>Focus</label>
+              <label className="ds-option ds-option--sm is-disabled"><span className="ds-choice"><input type="checkbox" disabled />{CASE_COCHE}</span>Indisponible</label>
+            </div>
+          </Grid>
+        </Block>
+      </Section>
+
+      <Section title="Chip" note="Parcours cœur. Un bouton à bascule (aria-pressed), hauteur --chip-h. Sélectionnée : plaque --accent, bordure --primary, libellé --primary-readable semibold. Libellé d'INTERFACE : jamais d'emoji — c'est le badge carte (Data display) qui en porte. Classe seule, pas de composant.">
+        <Block label="Groupe cliquable" hint="Tes centres d'intérêt — clique pour basculer.">
+          <div className="flex flex-wrap items-center gap-space-2 rounded-xl bg-background p-space-4">
+            {INTERETS.map(i => (
+              <button key={i} type="button" className="ds-chip" aria-pressed={interets.includes(i)} onClick={() => setInterets(basculer(interets, i))}>{i}</button>
+            ))}
+          </div>
+        </Block>
+        <Block label="États">
+          <div className="flex flex-wrap items-center gap-space-2 rounded-xl bg-background p-space-4">
+            <button type="button" className="ds-chip">Repos</button>
+            <button type="button" className="ds-chip is-hover">Survol</button>
+            <button type="button" className="ds-chip is-selected">Sélectionnée</button>
+            <button type="button" className="ds-chip is-focus">Focus</button>
+            <button type="button" className="ds-chip" disabled>Indisponible</button>
+          </div>
+        </Block>
+      </Section>
+
+      <Section title="Steps" note="Parcours cœur — la progression par étapes de l'onboarding. Le libellé porte l'information ; les points (aria-hidden) la redoublent : étape courante en capsule de dégradé, étapes faites en dégradé atténué, à venir en --border. Classes seules, pas de composant.">
+        <Block label="2 sur 5, 5 sur 5">
+          <Stack>
+            <Etapes courante={2} total={5} />
+            <Etapes courante={5} total={5} />
+          </Stack>
+        </Block>
       </Section>
 
       <Section title="DatePicker" note="Déclencheur façon Input (même règle de surface) + Calendar en popover. Clic extérieur ou Échap pour fermer. Date unique, pas de plage.">

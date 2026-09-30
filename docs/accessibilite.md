@@ -219,6 +219,31 @@ n'est jamais porté par la seule bordure — `FormField` affiche toujours le mes
 > `@a11y-assume` a été retiré du fichier de marque. Le paragraphe ci-dessus reste vrai de la
 > marque d'exemple, celle que ce document mesure.
 
+### 3.5 · Marque Compagnons IA — la bordure sélectionnée en sombre, `2,52` — À TRANCHER
+
+**L'écart.** L'option (`.ds-option`) et la carte de choix (`.ds-card.is-selected`)
+sélectionnées portent une bordure 1.5px `--brand-to`. En clair elle mesure **8,01** sur
+`--card` ; en sombre, **2,52** sur `--card` et **2,86** contre la page — sous le seuil 3:1
+des contours d'état. `--brand-to` est l'arrêt le plus SOMBRE du dégradé : sur les
+bruns-charbon, c'est lui qui perd le plus de distance.
+
+**Ce qui l'atténue — sur l'option.** La bordure n'y est pas seule : la case cochée se
+remplit du dégradé (son arrêt clair tient 3,54 sur `--card`) et le libellé passe en gras
+`--foreground`. L'état reste lisible sans la bordure.
+
+**Ce qui ne l'atténue pas — sur la carte de choix.** Là, la bordure est le signal visuel
+principal de la sélection. L'écart est réel, et l'`@a11y-assume` posé dans le fichier de
+marque est provisoire. Trois issues :
+
+1. pointer la bordure sélectionnée sur `--primary` (8,01 → 6,44 en clair, 2,52 → **3,54**
+   en sombre) — une règle de `patterns.css`, aucun jeton ne bouge ; la chip le fait déjà ;
+2. doubler la carte d'un indicateur coché (radio visible) — la carte devient le libellé
+   d'un radio, comme l'option ;
+3. assumer l'écart tel quel.
+
+Le garde mesure la paire sous la clé `.ds-option / .ds-card.is-selected — bordure
+--brand-to`.
+
 ## 4. Ce que ce document ne couvre pas
 
 Le contraste des couleurs, et lui seul. Trois points relèvent de l'accessibilité mais pas
@@ -240,6 +265,10 @@ de la mesure faite ici :
   chaque côté), rien d'autre n'est cliquable dans cet intervalle — il n'y a donc aucune
   cible voisine à rater — et les quatre onglets occupent chacun un quart de la largeur, très
   au-delà du minimum en largeur. Le jour où la barre cesse de flotter, l'item reprend 44 px.
+  **Marque Compagnons IA — un second écart, NON TRANCHÉ :** `.ds-chip` mesure `--chip-h`,
+  `2.25rem` (36 px), sous le même rail, et deux chips voisines ne sont séparées que par le
+  gap de leur rangée. Le minimum AA de 2.5.8 (24 px) est tenu ; le rail maison de 44 px ne
+  l'est pas. À valider avec les maquettes.
 
 ---
 

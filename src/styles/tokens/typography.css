@@ -38,6 +38,7 @@
   --text-caption:0.8125rem;   /* 13 — --font-body 500 */
   --text-eyebrow:0.75rem;     /* 12 — --font-body 600 CAPS, tracking .18em */
   --text-chip:0.75rem;        /* 12 — --font-body 700 CAPS, tracking .14em, leading 1 */
+  --text-micro:0.625rem;      /* 10 — HORS LECTURE : compteur de non-lus et libellé de TabBar uniquement */
 
   /* Tracking — en em, il suit la taille. Valeurs CALIBRÉES SUR UNE DISPLAY CONDENSÉE
      : une display large ou une serif demandera moins de resserrement.

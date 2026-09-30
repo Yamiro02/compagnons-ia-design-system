@@ -1,4 +1,4 @@
-import { Badge, Button, Card, EmptyState, Icon, IconButton, Input, Pastille, Separator, Table, TBody, Td, Th, THead, Tooltip, Tr } from '@compagnons-ia/ds';
+import { Avatar, Badge, Button, Card, ChatBubble, EmptyState, Icon, IconButton, Input, Pastille, Separator, Table, TBody, Td, Th, THead, Tooltip, Tr } from '@compagnons-ia/ds';
 import { Block, Grid, Row, Section, Stack } from '../ui';
 
 const TONES = ['coral', 'amber', 'danger', 'warning', 'success', 'neutral', 'accent', 'outline'] as const;
@@ -81,6 +81,20 @@ export function DataDisplayPage() {
             </Card>
           </Grid>
         </Block>
+
+        <Block label="Carte de choix — deux formules" hint="Parcours cœur. .ds-card.is-selected : bordure 1.5px --brand-to (liste fermée de l'accent). Le drapeau est un Badge accent dense + .ds-card__flag, à cheval sur le bord haut — seule .is-selected positionne la carte, le drapeau suppose donc une carte sélectionnée.">
+          <Grid cols={2}>
+            <Card className="is-selected">
+              <Badge tone="accent" pad="dense" className="ds-card__flag">Le plus choisi</Badge>
+              <h4>Formule annuelle</h4>
+              <p className="caption">Facturée une fois par an.</p>
+            </Card>
+            <Card>
+              <h4>Formule mensuelle</h4>
+              <p className="caption">Sans engagement.</p>
+            </Card>
+          </Grid>
+        </Block>
       </Section>
 
       <Section title="Pastille" note="La tuile d'icône du système — une seule pour toutes les tuiles teintées. Les tailles sont nommées PAR CONTEXTE, jamais par mesure : un site d'appel n'écrit jamais un rem.">
@@ -141,6 +155,47 @@ export function DataDisplayPage() {
             <Badge pad="dense" tone="coral" icon={<Icon name="zap" strokeWidth={2.5} />}>Nouveau</Badge>
             <Badge pad="dense" tone="neutral">Brouillon</Badge>
           </Row>
+        </Block>
+
+        <Block label="Badge carte" hint="Parcours cœur. .ds-badge--card — l'étiquette de centre d'intérêt d'un persona : blanche, filetée, faite pour la crème. C'est du CONTENU de persona : l'emoji y est permis. Classe seule — Badge n'a pas de ton card.">
+          <div className="flex flex-wrap items-center gap-space-2 rounded-xl bg-background p-space-4">
+            <span className="ds-badge ds-badge--card">🍳 Cuisine</span>
+            <span className="ds-badge ds-badge--card">🥾 Randonnée</span>
+            <span className="ds-badge ds-badge--card">🎷 Jazz</span>
+            <span className="ds-badge ds-badge--card">✈️ Voyages</span>
+            <span className="ds-badge ds-badge--card">📚 Lecture</span>
+          </div>
+        </Block>
+
+        <Block label="Compteur de non-lus" hint="Parcours cœur. .ds-counter — pastille pleine en dégradé (liste fermée de l'accent), chiffre en --text-micro. Seul, puis dans une ligne de conversation ; le chiffre se double d'un libellé pour les lecteurs d'écran. Classe seule.">
+          <Row label="seul">
+            <span className="ds-counter">1</span>
+            <span className="ds-counter">3</span>
+            <span className="ds-counter">12</span>
+            <span className="ds-counter">99+</span>
+          </Row>
+          <div className="flex items-center gap-space-3 rounded-xl bg-background p-space-4">
+            <Avatar initials="CL" alt="Claire" size="2.75rem" halo={false} />
+            <div className="flex min-w-0 flex-1 flex-col gap-space-1">
+              <span className="text-control font-semibold">Claire</span>
+              <span className="caption truncate">Tu m'as manqué hier soir.</span>
+            </div>
+            <div className="flex flex-col items-end gap-space-1">
+              <span className="caption">21:42</span>
+              <span className="ds-counter">2<span className="sr-only"> messages non lus</span></span>
+            </div>
+          </div>
+        </Block>
+      </Section>
+
+      <Section title="ChatBubble" note="La bulle de conversation — ajout assumé au socle. them = le persona, carte blanche à gauche ; me = l'utilisateur, dégradé de marque à droite (liste fermée de l'accent). typing rend l'indicateur de saisie, dans un role=status. Le texte d'une bulle est du contenu : l'emoji y est permis.">
+        <Block label="Colonne crème — trois bulles et l'indicateur" hint="Le parent est une colonne flex : chaque bulle s'aligne d'elle-même (align-self), 80 % de la largeur au plus.">
+          <div className="flex flex-col gap-space-3 rounded-xl bg-background p-space-4">
+            <ChatBubble from="them">Tu m'as manqué hier soir. 🌙</ChatBubble>
+            <ChatBubble from="me">Longue journée… Je te raconte ?</ChatBubble>
+            <ChatBubble from="them">Raconte-moi ta journée.</ChatBubble>
+            <ChatBubble from="them" typing aria-label="Claire écrit" />
+          </div>
         </Block>
       </Section>
 

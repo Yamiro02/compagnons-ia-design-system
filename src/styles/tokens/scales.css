@@ -27,7 +27,7 @@
   --radius-lg:1.25rem;   /* 20 — standard card (default --radius), dropdowns */
   --radius-xl:1.5rem;    /* 24 — large cards, panels, hero */
   --radius-2xl:1.75rem;  /* 28 — modals, sheets */
-  --radius-pill:9999px;  /* badges, counters — metadata only. NEVER a button, input or tab bar */
+  --radius-pill:9999px;  /* badges, compteurs, chips, options — et, en marque Compagnons IA (doctrine arrondie), tout ce qui se presse ou se remplit : boutons, champs, onglets, tab bar */
   --radius:var(--radius-lg);
 
   /* Control height rail — ONE minimum height for every control (button in all sizes,
@@ -118,6 +118,7 @@
   --choice-box:1.25rem;           /* 20 — la case de .ds-choice, carrée */
   --choice-box-radius:0.4375rem;  /* 7 — squircle sur 20px, où --radius-sm clipperait */
   --choice-dot:0.625rem;          /* 10 — le point du radio */
+  --chip-h:2.25rem;           /* 36 — .ds-chip */
 
   /* Content widths by ROLE — FROM APP CODE. Name the intent, never invent a width. */
   --container-shell:70rem;    /* 1120 — widest shell (hero, landing sections) */
@@ -178,6 +179,7 @@
   --duration-shimmer:1.4s; /* la boucle du squelette et de la barre indéterminée */
   --duration-spin:0.8s;    /* la boucle du spinner */
   --duration-rotate:1s;    /* la rotation générique de .ds-spin, posable sur une icône */
+  --duration-typing:1.2s;     /* cycle de l'indicateur de saisie .ds-typing */
   --ease-standard:cubic-bezier(0.2, 0, 0, 1);  /* @kind other */
 }
 .dark{

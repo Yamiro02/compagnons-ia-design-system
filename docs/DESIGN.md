@@ -11,6 +11,10 @@
 **La règle qui décide :**
 > « à élégance égale, on choisit toujours le plus chaleureux. »
 
+**La voix :** tutoiement — chaleureux et posé. Toute la copie tutoie, l'interface comme les personas : « Choisis… », « Claire t'a répondu », « Réessaie », « Ton email », « Reconnecte-toi » ; « Tu m'as manqué hier soir. », « Raconte-moi ta journée. »
+
+**Les emoji :** permis dans le CONTENU des personas — étiquettes de centres d'intérêt, messages de conversation. Toujours interdits dans l'INTERFACE : boutons, titres, navigation, chips, états, erreurs. Le point médian `·` reste le seul caractère décoratif de l'interface.
+
 ## 2. Support et contexte
 
 **Où ça vit :** PWA mobile-first (installable), web.
@@ -56,10 +60,13 @@
 1. le logo
 2. un mot par titre
 3. le sur-titre
-4. le CTA primaire, un seul par vue
+4. le CTA primaire, un seul par vue — **sauf** CTA répété à l'identique dans une liste de cartes (« Faire connaissance » sur chaque carte de recommandation). La carte mise en avant ne change pas la couleur de son bouton.
 5. le halo
+6. l'état sélectionné d'un contrôle — la bordure de marque d'une option, d'une chip ou d'une carte de choix (`--brand-to` ; la chip, qui porte aussi la plaque `--accent`, prend `--primary`)
+7. la bulle de message de l'utilisateur — fond `--brand-gradient`
+8. le compteur de non-lus — pastille pleine `--brand-gradient`
 
-**Où il n'a jamais le droit :** un fond de page, un grand aplat, une bordure de carte, un fond de bulle de conversation entière.
+**Où il n'a jamais le droit :** un fond de page ni un grand aplat de fond d'écran, une bordure de carte au repos.
 
 **Vérification :** `TOKENS=src/styles/brand-compagnons-ia.css node check-contrast.mjs` — les écarts assumés (contours doux) sont déclarés dans le fichier de marque avec leur raison.
 
@@ -83,11 +90,12 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 **DOCTRINE ARRONDIE — tout ce qui se presse ou se remplit est PILL.** Autre RÈGLE, pas autre valeur → `patterns.css`. Sont pill : boutons et carrés d'icône, champs / selects / déclencheur de date, items d'onglet, de pagination et de barre latérale, croix de toast et de modale, bascule de barre latérale, rail de progression, tuile d'icône de toast, pastilles à TOUTES les tailles.
 **Les exceptions, écrites :** textarea `--radius-lg` (un pill courberait sa première et sa dernière ligne) · items de menu, dropdown et action sheet `--radius-sm` (ce sont des lignes de liste) · case à cocher `--choice-box-radius` (le squircle de marque) · tooltip `--radius-md` · squelette `--radius-sm` (il mime du CONTENU). Cartes, panneaux, modales : ce sont des surfaces, elles gardent leurs rayons.
 **Densité :** rail du socle conservé (48 px, 44 px sous 64rem) — la cible l'exige.
+**Icônes — l'échelle :** `1` · `1.125` · `1.25` · `1.5` rem. `1rem` : contrôle sm, déclencheur de champ, tuile de toast · `1.125rem` : contrôle md (bouton, IconButton) et onglet de TabBar · `1.25rem` : le repli de `.ds-icon`, partout ailleurs · `1.5rem` : pastille de dialogue et de panneau. Hors échelle, dans une tuile de texte : le badge (`0.8125`, dense `0.75`).
 
 ## 6. Motifs signature
 
 **Le halo :** radial grenat très léger, ancré en bas, jamais plein écran.
-**Le dégradé :** CTA + un mot de titre + sur-titre. Grenat → bordeaux, même teinte : il se lit comme une profondeur, pas comme un arc-en-ciel.
+**Le dégradé :** CTA + un mot de titre + sur-titre. Grenat → bordeaux, même teinte : il se lit comme une profondeur, pas comme un arc-en-ciel. En **remplissage**, sans lueur : barre de progression, progression par étapes, case, radio et interrupteur cochés, jour sélectionné du calendrier, bulle de l'utilisateur, compteur de non-lus.
 **La lueur :** `--shadow-glow*` grenat très douce, CTA uniquement.
 **L'ombre :** trois niveaux teintés de `--tone-dark` (noir chaud), jamais du noir pur.
 
@@ -106,8 +114,9 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 
 ## 8. Périmètre du design system
 
-**Ce qui entre :** les 37 composants du socle, plus `TabBar` — un ajout ASSUMÉ (§ 10), la coque d'une PWA mobile que le socle ne portait pas. 38 en tout, aucun retrait.
-**Ce qui n'entre pas :** tout ce qui connaît le métier (carte persona, bulle de conversation, paywall) — ça vit dans l'app.
+**Ce qui entre :** les 37 composants du socle, plus deux ajouts ASSUMÉS (§ 10) : `TabBar`, la coque d'une PWA mobile que le socle ne portait pas, et `ChatBubble`, la bulle de conversation — de la présentation pure, elle ne connaît ni le persona ni le modèle de message. 39 en tout, aucun retrait.
+**En classes, sans composant (pour l'instant) :** `.ds-option`, `.ds-chip`, `.ds-steps`, `.ds-counter`, `.ds-badge--card`, `.ds-card.is-selected` + `.ds-card__flag` — voir `PORTAGE.md`.
+**Ce qui n'entre pas :** tout ce qui connaît le métier (carte persona, paywall) — ça vit dans l'app.
 **Extension métier :** `brand-content.css` NON importé, ses trois jetons non déclarés.
 
 ## 9. Interdits — la liste courte ★
@@ -122,6 +131,7 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 8. Jamais un défaut de design en style inline.
 9. Le grenat n'est jamais un fond de page ni un grand aplat ; le destructif n'est jamais grenat.
 10. Jamais de gris froids — tout neutre est chaud (beige, brun).
+11. Jamais d'emoji dans l'interface — seul le point médian `·` y est décoratif. Le contenu des personas, lui, en a le droit (§ 1).
 
 ## 10. Journal des décisions
 
@@ -151,3 +161,14 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 | 2026-09-02 | `check-contrast.mjs` : **six** paires recâblées sur leur porteuse réelle — `.ds-navlink.is-active`, `.ds-input::placeholder`, `.ds-input.is-error`, `.ds-input — bordure --input vs remplissage`, `.ds-input — remplissage vs page` sur `--card` ; `.ds-sidenav.is-active` sur `--background`. Libellés inchangés (ce sont les clés des `@a11y-assume`) | un garde qui mesure une porteuse que le CSS n'utilise plus est un garde qui ment, même dans le sens sûr. **Règle de tenue** : toute paire dont la porteuse change dans `patterns.css` se recâble dans la foulée |
 | 2026-09-02 | `--pill-danger-fg` sombre → `#f09a94`, réaligné sur son jumeau `--destructive-readable` | les deux jetons étaient identiques avant le changement de rouge ; les laisser diverger aurait créé deux salmons pour un seul rôle |
 | 2026-09-02 | `.ds-cal__day.is-today` recâblée sur `--popover` — dernière fiction connue du garde | le calendrier n'a jamais été posé sur `--card` : celle-là ne venait pas de la doctrine blanche, elle mesurait la mauvaise surface depuis le début. Le garde ne mesure plus que la réalité |
+| 2026-09-30 | Tutoiement acté (§ 1), chaleureux et posé — interface ET personas | décision de l'audit « Parcours cœur » ; remplace l'hypothèse du vouvoiement. La copie de la vitrine du dépôt tutoyait déjà |
+| 2026-09-30 | Emoji permis dans le CONTENU des personas, toujours interdits dans l'INTERFACE (§ 1, § 9) | une étiquette de centre d'intérêt ou un message de persona parle comme une personne ; un bouton, un titre, une chip ou une erreur parlent comme l'app |
+| 2026-09-30 | Liste fermée de l'accent : + état sélectionné d'un contrôle, bulle de l'utilisateur, compteur de non-lus (§ 3) | trois usages attestés par les maquettes du parcours cœur ; restent interdits le grand aplat de fond d'écran et la bordure de carte au repos |
+| 2026-09-30 | Exception au CTA unique : le CTA répété à l'identique dans une liste de cartes (§ 3) | « Faire connaissance » sur chaque carte de recommandation ; la carte mise en avant ne change pas la couleur de son bouton |
+| 2026-09-30 | Échelle d'icône documentée `1 · 1.125 · 1.25 · 1.5` (§ 5) | `1.125` (contrôle md, TabBar) existait dans `patterns.css` sans être écrit dans la charte |
+| 2026-09-30 | `.ds-badge` passe au palier `--text-caption` (était `0.78125rem`, hors échelle) ; `.ds-tabbar__item` lit `--text-micro` (même 10 px) | aucune taille de texte hors de l'échelle nommée |
+| 2026-09-30 | Socle : trois jetons AJOUTÉS — `--text-micro` (10, hors lecture : compteur et TabBar), `--chip-h` (36), `--duration-typing` (1.2s) ; commentaire de `--radius-pill` corrigé | exception autorisée pour la session ; aucun autre jeton du socle ne bouge |
+| 2026-09-30 | `ChatBubble` — 39e composant, second ajout ASSUMÉ (§ 8) : `from` (`them` · `me`), `typing` | la bulle et l'indicateur de saisie reviennent sur chaque écran de conversation ; présentation pure, sans connaissance du métier |
+| 2026-09-30 | Classes du parcours cœur, sans composant : `.ds-option` (md / sm), `.ds-chip`, `.ds-steps`, `.ds-counter`, `.ds-badge--card`, `.ds-card.is-selected` + `.ds-card__flag`, `.ds-bubble` / `.ds-typing` | la promotion en composant est proposée à part, pas appliquée |
+| 2026-09-30 | Délais des points de saisie dérivés du cycle : `calc(var(--duration-typing) / 8)` et `/ 4` au lieu de `150ms` / `300ms` | rendu identique ; une durée écrite en clair dans `patterns.css` fait tomber `check-literals.sh` |
+| 2026-09-30 | `check-contrast.mjs` : + 8 paires — `.ds-chip.is-selected`, `.ds-bubble--me` et `.ds-counter` sur les trois arrêts, bordure sélectionnée `--brand-to` | règle de tenue : un nouvel état porté par une couleur se mesure. La bordure sélectionnée tombe à 2,52 en sombre — `@a11y-assume` posé, **à trancher** (`docs/accessibilite.md` § 3.5) |

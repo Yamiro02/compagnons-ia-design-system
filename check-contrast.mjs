@@ -165,6 +165,7 @@ function pairs(theme, { ROOT, DARK }, fichier) {
   add('Marque-contenu', '.ds-sidenav.is-active', g('--primary-readable'), g(B), 4.5, '15 / 500');
   add('Marque-contenu', '.ds-badge--accent', g('--primary-readable'), g('--accent'), 4.5, '12 / 700');
   add('Marque-contenu', '.ds-banner--info', g('--primary-readable'), g('--accent'), 4.5, '15 / 400');
+  add('Marque-contenu', '.ds-chip.is-selected', g('--primary-readable'), g('--accent'), 4.5, '14 / 600');
   /* Le calendrier est posé sur --popover (.ds-cal), pas sur --card : cette paire-là ne
      suit pas la doctrine blanche, elle mesurait la mauvaise surface DEPUIS LE DÉBUT. En
      clair les deux valent le même blanc, mais en sombre --popover est un cran au-dessus
@@ -195,12 +196,23 @@ function pairs(theme, { ROOT, DARK }, fichier) {
   add('Marque-aplat', '.ds-btn--primary — label sur --brand-to', g('--primary-foreground'), g('--brand-to'), 4.5, '15 / 600');
   add('Marque-aplat', '.ds-btn--danger — label sur --destructive', g('--destructive-foreground'), g('--destructive'), 4.5, '15 / 600');
   add('Marque-aplat', '.ds-cal__day.is-selected', g('--primary-foreground'), g('--primary'), 4.5, '14 / 600');
+  /* La bulle de l'utilisateur et le compteur de non-lus portent du TEXTE blanc sur le
+     dégradé : mesurés sur ses trois arrêts, comme le label du CTA. Le compteur est à
+     10 px bold — aucun régime « gros texte », seuil 4,5. */
+  for (const arret of ['--brand-from', '--brand-via', '--brand-to']) {
+    add('Marque-aplat', `.ds-bubble--me — texte sur ${arret}`, g('--primary-foreground'), g(arret), 4.5, '15 / 400');
+    add('Marque-aplat', `.ds-counter — chiffre sur ${arret}`, g('--primary-foreground'), g(arret), 4.5, '10 / 700');
+  }
   add('Marque-aplat', '.eyebrow / .accent — dégradé clippé en texte', g('--brand-from'), g(B), 4.5, '12 / 600');
 
   add('Non-texte', 'anneau de focus --ring sur --background', g('--ring'), g(B), 3, 'contour 2px');
   add('Non-texte', '.ds-choice coché — aplat --primary', g('--primary'), g(B), 3, 'contrôle');
   add('Non-texte', '.ds-switch actif — piste --primary', g('--primary'), g(B), 3, 'contrôle');
   add('Non-texte', '.ds-progress__bar sur son rail', g('--primary'), g('--surface-alt'), 3, 'graphique');
+  /* L'état SÉLECTIONNÉ d'une option ou d'une carte de choix se lit sur sa bordure
+     --brand-to, posée sur un remplissage --card : c'est la paire la plus serrée des deux
+     côtés de la bordure (--card, puis la page). */
+  add('Non-texte', '.ds-option / .ds-card.is-selected — bordure --brand-to', g('--brand-to'), g(C), 3, 'contour 1.5px');
   add('Non-texte', '.ds-input.is-error — bordure --destructive', g('--destructive'), g(C), 3, 'contour 1.5px');
   add('Non-texte', '.ds-input — bordure --input vs page', g('--input'), g(B), 3, 'contour 1.5px');
   add('Non-texte', '.ds-input — bordure --input vs remplissage', g('--input'), g(C), 3, 'contour 1.5px');

@@ -15,9 +15,10 @@ const NAMES: IconName[] = [
 export function IconsPage() {
   return (
     <div className="flex flex-col gap-space-7">
-      <Section title="Icônes" note="Lucide, exclusivement. Aucun emoji, aucun caractère unicode décoratif — sauf le point médian.">
-        <Block label="Tailles" hint="1rem · 1.25rem (défaut) · 1.5rem. Toujours en rem, jamais en px.">
+      <Section title="Icônes" note="Lucide, exclusivement. Aucun emoji dans l'interface, aucun caractère unicode décoratif — sauf le point médian. (Le contenu des personas, lui, peut porter des emoji.)">
+        <Block label="Tailles" hint="1rem · 1.125rem (contrôle md, TabBar) · 1.25rem (défaut) · 1.5rem. Toujours en rem, jamais en px.">
           <Spec token="size=&quot;1rem&quot;"><Icon name="circle-check" size="1rem" /></Spec>
+          <Spec token="size=&quot;1.125rem&quot; (contrôle md, TabBar)"><Icon name="circle-check" size="1.125rem" /></Spec>
           <Spec token="size=&quot;1.25rem&quot; (défaut)"><Icon name="circle-check" size="1.25rem" /></Spec>
           <Spec token="size=&quot;1.5rem&quot;"><Icon name="circle-check" size="1.5rem" /></Spec>
         </Block>
