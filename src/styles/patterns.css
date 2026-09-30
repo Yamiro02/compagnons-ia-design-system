@@ -75,6 +75,11 @@
 .ds-badge svg{width:var(--ds-icon-size,0.8125rem);height:var(--ds-icon-size,0.8125rem)}
 .ds-badge--dense svg{width:var(--ds-icon-size,0.75rem);height:var(--ds-icon-size,0.75rem)}
 .ds-toast__icon svg{width:var(--ds-icon-size,1rem);height:var(--ds-icon-size,1rem)}
+/* La coche d'une case et le glyphe d'un message d'erreur avaient leur taille ÉCRITE AU SITE
+   D'APPEL — donc hors de portée d'une règle, et invisibles pour qui lit le CSS. Elles
+   rejoignent les créneaux : même valeur rendue, mais la décision est redevenue du CSS. */
+.ds-choice__box svg{width:var(--ds-icon-size,0.8125rem);height:var(--ds-icon-size,0.8125rem)}
+.ds-error svg{width:var(--ds-icon-size,0.875rem);height:var(--ds-icon-size,0.875rem)}
 .ds-pastille--dialogue svg{width:var(--ds-icon-size,1.5rem);height:var(--ds-icon-size,1.5rem)}
 .ds-pastille--panneau svg{width:var(--ds-icon-size,1.5rem);height:var(--ds-icon-size,1.5rem)}
 
@@ -218,6 +223,17 @@ svg.lucide{stroke-width:1.75}
 .ds-input-unit{position:relative;display:block;width:100%}
 .ds-input-unit .ds-input{padding-right:var(--space-7)}
 .ds-input-unit__label{position:absolute;right:1.125rem;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-muted);font-size:var(--text-body-sm)}
+/* L'ICÔNE DU CHAMP — la jumelle GAUCHE de l'unité, et elle suit la même règle : son
+   retrait reprend le padding pill du champ (1.125rem), il ne le devine pas. Le padding
+   réservé vaut --space-7 plus --space-1 : le glyphe fait 1rem, il lui faut son écart au
+   texte. Elle ne se clique pas — pointer-events:none — parce qu'une ACTION dans un champ
+   est un IconButton posé à côté, jamais ce repère.
+   Les deux enveloppes s'imbriquent : .ds-input-icon > .ds-input-unit > input. Le sélecteur
+   descendant couvre donc les deux cas, imbriqué ou non. */
+.ds-input-icon{position:relative;display:block;width:100%}
+.ds-input-icon .ds-input{padding-left:calc(var(--space-7) + var(--space-1))}
+.ds-input-icon__glyph{position:absolute;left:1.125rem;top:50%;transform:translateY(-50%);pointer-events:none;display:inline-flex;color:var(--text-muted)}
+.ds-input-icon__glyph svg{width:var(--ds-icon-size,1rem);height:var(--ds-icon-size,1rem)}
 .ds-textarea{height:auto;min-height:0;resize:vertical;line-height:var(--leading-normal);border-radius:var(--radius-lg)}
 .ds-select{position:relative;display:block}
 .ds-select select{appearance:none;-webkit-appearance:none;padding-right:var(--space-7);cursor:pointer}
@@ -280,8 +296,14 @@ svg.lucide{stroke-width:1.75}
 .ds-option.is-disabled,.ds-option:has(input:disabled){opacity:.5;cursor:not-allowed}
 /* La CHIP : un bouton à bascule (aria-pressed) — centres d'intérêt, filtres. Sélectionnée,
    elle prend la plaque --accent, la bordure --primary et le libellé --primary-readable. Son
-   libellé est de l'INTERFACE : jamais d'emoji (le badge carte, lui, est du contenu). */
-.ds-chip{display:inline-flex;align-items:center;min-height:var(--chip-h);padding:0 var(--space-4);box-sizing:border-box;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-pill);font-family:var(--font-body);font-size:var(--text-body-sm);font-weight:var(--weight-medium);line-height:1;color:var(--foreground);cursor:pointer;outline:none;transition:border-color var(--duration-fast) var(--ease-standard),background-color var(--duration-fast) var(--ease-standard),box-shadow var(--duration-fast) var(--ease-standard)}
+   libellé est de l'INTERFACE : jamais d'emoji (le badge carte, lui, est du contenu).
+   CIBLE TACTILE — la règle du système est « 44 px AU DOIGT », pas à l'œil : la chip se voit à
+   --chip-h (36) et sa zone de toucher déborde de --space-1 en haut et en bas (::before
+   invisible) → 36 + 4 + 4 = 44. Même principe que .ds-tabbar__item. Condition : l'écart
+   VERTICAL entre deux rangées de chips ne descend JAMAIS sous --space-2 (8) — les zones de
+   deux rangées se touchent alors pile, sans se chevaucher. */
+.ds-chip{position:relative;display:inline-flex;align-items:center;min-height:var(--chip-h);padding:0 var(--space-4);box-sizing:border-box;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-pill);font-family:var(--font-body);font-size:var(--text-body-sm);font-weight:var(--weight-medium);line-height:1;color:var(--foreground);cursor:pointer;outline:none;transition:border-color var(--duration-fast) var(--ease-standard),background-color var(--duration-fast) var(--ease-standard),box-shadow var(--duration-fast) var(--ease-standard)}
+.ds-chip::before{content:"";position:absolute;inset-inline:0;inset-block:calc(var(--space-1) * -1)}
 .ds-chip:hover:not(:disabled),.ds-chip.is-hover{border-color:var(--input)}
 .ds-chip.is-selected,.ds-chip[aria-pressed="true"]{border-color:var(--primary);background:var(--accent);color:var(--primary-readable);font-weight:var(--weight-semibold)}
 .ds-chip:focus-visible,.ds-chip.is-focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--ring) 35%,transparent)}
@@ -343,6 +365,18 @@ svg.lucide{stroke-width:1.75}
 /* Le COMPTEUR de non-lus — pastille pleine en dégradé, l'un des trois ajouts de la liste
    fermée de l'accent (docs/DESIGN.md § 3). --text-micro : hors lecture, un chiffre. */
 .ds-counter{flex:none;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:1.125rem;height:1.125rem;padding:0 var(--space-1);border-radius:var(--radius-pill);background:var(--brand-gradient);color:var(--primary-foreground);font-family:var(--font-body);font-size:var(--text-micro);font-weight:var(--weight-bold);line-height:1}
+/* LE POINT DE NON-LU — le compteur sans le compte. Là où `.ds-counter` dit COMBIEN, celui-ci
+   dit SEULEMENT qu'il y a du nouveau : une entrée de liste, un onglet, une cloche. Il porte
+   le dégradé de marque comme son jumeau chiffré — un seul rouge pour « il se passe quelque
+   chose ».
+   IL EST TOUJOURS DÉCORATIF : `aria-hidden` au site d'appel, et l'information est portée à
+   côté, en texte — « 3 messages non lus », ou le compteur lui-même. Un point de couleur seul
+   n'est jamais une information (interdit n° 5 de docs/DESIGN.md).
+   `--ring` : le liseré, à poser quand le point CHEVAUCHE quelque chose — un avatar, une
+   vignette, une icône. Il creuse un contour de la couleur de la carte et détache le point de
+   ce qu'il recouvre ; posé à plat sur une surface, il est inutile. */
+.ds-dot{flex:none;display:inline-block;width:var(--dot);height:var(--dot);border-radius:var(--radius-pill);background:var(--brand-gradient)}
+.ds-dot--ring{box-shadow:0 0 0 2px var(--card)}
 /* La CARTE DE CHOIX sélectionnée (formules) : bordure --primary — comme l'option et la
    chip : --brand-to, l'arrêt sombre du dégradé, tombait à 2,52:1 en thème sombre. Son drapeau est un
    .ds-badge.ds-badge--accent.ds-badge--dense.ds-card__flag, posé à cheval sur le bord haut. */
@@ -431,7 +465,21 @@ svg.lucide{stroke-width:1.75}
 /* En ton info le bandeau est sur --accent : le titre repasse à l'encre pleine. */
 .ds-banner--info .ds-banner__title{color:var(--foreground)}
 .ds-banner__text{font-size:var(--text-caption);line-height:var(--leading-normal);color:var(--text-secondary)}
+/* L'action POSÉE SOUS LE TEXTE (actionPlacement="below"). Elle entre dans la colonne du
+   message au lieu de la serrer par la droite : un libellé long, ou un écran étroit, et le
+   bouton de droite écrasait la ligne de texte. Le bandeau reprend alors l'alignement HAUT
+   — centrer un bloc de deux lignes plus un bouton ferait flotter l'icône. */
+.ds-banner:has(.ds-banner__action){align-items:flex-start}
+.ds-banner__action{margin-top:var(--space-2)}
 .ds-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.75rem;padding:var(--space-6);border:1px dashed var(--border);border-radius:var(--radius-lg);background:var(--card)}
+/* SANS CADRE — le vide posé DANS un contenant qui a déjà sa frontière. Deux cadres
+   emboîtés se lisent comme une erreur de mise en page, pas comme une intention. Le padding
+   reste : c'est lui qui donne au vide sa respiration, pas la bordure. */
+.ds-empty--bare{border:0;background:none}
+/* AVEC HALO — le vide d'un écran entier. Le halo est absolu et inset 0 : il faut donc une
+   référence de position sur le bloc, et remonter le contenu au-dessus de lui. */
+.ds-empty--halo{position:relative;overflow:hidden}
+.ds-empty--halo>:not(.halo){position:relative}
 .ds-empty__main{display:flex;flex-direction:column;gap:0.1875rem;align-items:center}
 .ds-empty__title{margin:0}
 /* 20rem : largeur max d'une colonne de texte courte — une mesure de LISIBILITÉ, pas

@@ -96,7 +96,7 @@ export function NavigationPage() {
           </div>
           <p className="caption">Dans l'app, <code className="mono">dock</code> l'enveloppe dans <code className="mono">.ds-tabbar-dock</code> — <code className="mono">position:fixed</code>, collée en bas de l'écran. Ici on la rend dans le flux : un spécimen ne se fixe pas au viewport de la vitrine.</p>
         </Block>
-        <Block label="États" hint="Repos, survol forcé, actif. Un cinquième onglet est rendu quand même — couper une navigation en silence serait pire — mais signalé en console en développement. Cible tactile : 36 px + 4 px de marge de chaque côté, sous le rail 44 px — écart assumé, voir docs/accessibilite.md.">
+        <Block label="États" hint="Repos, survol forcé, actif. Un cinquième onglet est rendu quand même — couper une navigation en silence serait pire — mais signalé en console en développement. Cible tactile : 36 à l'œil, 44 au doigt — l'item se voit à 2.25rem, ses marges de --space-1 portent le reste. C'est la règle du système, pas un écart : voir docs/accessibilite.md § 4.">
           <div className="rounded-xl bg-background p-space-3" style={{ maxWidth: '24.375rem' }}>
             <div className="ds-tabbar">
               <button type="button" className="ds-tabbar__item is-active" aria-current="page"><Icon name="house" /><span>Accueil</span></button>

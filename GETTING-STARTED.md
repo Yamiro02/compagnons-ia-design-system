@@ -1,5 +1,13 @@
 # Fabriquer le design system d'un client à partir de ce dépôt
 
+> ⚠️ **HISTORIQUE DU TEMPLATE.** Ce document décrit le PORTAGE d'origine — comment le
+> dépôt est né d'un gabarit et ce qu'il fallait remplir. Il n'est plus la source de
+> vérité du projet : pour l'état actuel, lire [`README.md`](README.md),
+> [`docs/DESIGN.md`](docs/DESIGN.md) et [`GOVERNANCE.md`](GOVERNANCE.md). On le garde
+> parce qu'il explique POURQUOI le dépôt est construit ainsi, ce qu'aucun des trois
+> autres ne raconte.
+
+
 Ce dépôt est un **squelette de design system**. Il est bâti en deux couches qui ne se
 mélangent pas — un **socle** générique, et une **marque** — de sorte qu'on en fabrique un
 autre en remplaçant la seconde. La marque livrée, `brand-example.css`, est là pour que la

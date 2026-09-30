@@ -124,7 +124,7 @@
   --font-mono:'DM Mono','Courier New',monospace;                /* @kind font */
 
   /* Grotesque classique → casse d'origine, gras. */
-  --heading-transform:none;
+  --heading-transform:none; /* @kind other */
   --heading-weight:var(--weight-bold);
 
   /* Relief de marque — lueur grenat très douce, réservée au CTA et au point du logo. */

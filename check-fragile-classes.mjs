@@ -52,7 +52,7 @@ const RACINES = process.argv.slice(2).length ? process.argv.slice(2) : ['src', '
 const EXTENSIONS = /\.(?:tsx?|jsx?|mjs)$/;
 const STYLES = process.env.STYLES || [
   'src/styles',
-  'node_modules/@acme/ds/src/styles',
+  'node_modules/@compagnons-ia/ds/src/styles',
 ].find(p => fs.existsSync(p));
 
 /* ══════════════════════════════════════════════════════════════════════════════

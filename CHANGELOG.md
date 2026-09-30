@@ -11,6 +11,78 @@ concordent. Le tag n'est pas le but : c'est le péage.
 
 ---
 
+## 0.3.0 — le système se relit
+
+Aucune rupture d'API. Cinq composants gagnent une prop, une classe entre, et toute la
+documentation cesse de décrire un gabarit qu'on n'est plus.
+
+### Ajouté
+
+- **`Banner`** : `icon` (remplace le glyphe déduit du ton — passez un `<Icon>` nu) et
+  `actionPlacement` (`end` par défaut = le rendu de toujours · `below` fait entrer l'action
+  dans la colonne du message, pour un libellé long ou un écran étroit).
+- **`EmptyState`** : `framed` (défaut `true`) — `false` retire bordure et fond, pour un vide
+  posé dans un contenant qui a déjà sa frontière ; et `halo`, pour le vide d'un écran entier.
+- **`Input`** : `icon`, un glyphe DANS le champ, à gauche. C'est un repère — `aria-hidden`,
+  non cliquable. Combinable avec `unit`.
+- **`.ds-dot`** : le compteur sans le compte, pour le non-lu. Ton de marque, `--ring` en
+  option quand le point chevauche un avatar. Jeton `--dot` (8 px) au § FACULTATIF.
+- **Deux créneaux d'icône** : `.ds-choice__box svg` (0.8125rem) et `.ds-error svg`
+  (0.875rem). Les deux tailles étaient écrites au site d'appel, donc hors de portée du CSS.
+- **`docs/PROMPTS.md` § classes** : les sept classes du parcours cœur, plus `.ds-portrait`
+  et `.ds-dot` — structure, exemple, et ce pour quoi il ne faut PAS les employer.
+
+### Changé
+
+- **`Avatar` retombe sur le monogramme quand l'IMAGE ÉCHOUE**, pas seulement quand `src`
+  est absent : bucket vidé, CDN qui tousse, URL signée expirée. Le navigateur rendait
+  l'icône d'image cassée à l'endroit exact où l'app promet un visage. L'état retient quelle
+  source a échoué, donc une nouvelle `src` retente d'elle-même.
+- **Cible tactile : « 44 px AU DOIGT », pas forcément à l'œil.** `.ds-chip` reste à
+  `--chip-h` (36 px visibles) et gagne une couche `::before` qui déborde de `--space-1` en
+  haut et en bas. Condition écrite : au moins `--space-2` entre deux rangées. Même principe
+  que `.ds-tabbar__item`. L'écart « non tranché » de `docs/accessibilite.md` § 4 est fermé.
+- **`/* @kind other */` rétabli sur 13 jetons** qu'aucun type de Claude Design ne couvre :
+  les cinq `--z-*`, les sept `--duration-*`, `--heading-transform`. Aucune valeur ne change.
+
+### Corrigé
+
+- **Les gardes trouvent Tailwind où qu'il soit.** `check-dead-utilities` et
+  `check-preflight-drift` le cherchaient sous un chemin relatif codé en dur et se
+  dégradaient en AVERTISSEMENT — deux des treize ne vérifiaient plus rien, en silence.
+  Ils passent par `createRequire().resolve`. ⚠ Si vous suivez cette version, relancez
+  `npm install` dans le paquet : les deux gardes exigent maintenant que `tailwindcss` soit
+  réellement résoluble.
+- `check-catalogue` ne prend plus une section de CLASSE pour un composant fantôme : un
+  titre qui commence par un point documente un sélecteur, pas un export.
+- Chemins `@acme` → `@compagnons-ia` dans `check-fragile-classes` et `check-dead-utilities`.
+- **`README.md`** : ce n'est plus « un squelette à remplir ». Imports réels
+  (`brand-compagnons-ia.css`), § Polices réécrit (auto-hébergées, aucun appel réseau),
+  table des points d'entrée refaite, et un encadré qui lève l'ambiguïté de numérotation
+  avec le gabarit.
+- **`src/index.ts`** : l'en-tête annonçait « le TEMPLATE et sa marque d'exemple ».
+- **`docs/accessibilite.md`** : les deux tableaux régénérés (`--table`) — **56 conformes,
+  6 écarts assumés** sur 62 paires ; la prose des § 3.1 à 3.4 décrivait la palette
+  vert-cyan du gabarit, elle décrit maintenant le grenat ; § 3.1 et § 3.4 sont des écarts
+  **fermés** ; le rail est **48 px, 44 sous 64 rem**, il était annoncé à 44 partout.
+- **`docs/DESIGN.md`** : `--ring` entre à la table de la marque · § 4 ne parle plus d'un
+  import Google Fonts provisoire · § 5 tient l'échelle d'icône complète · § 7 nomme le vrai
+  contenu de `demo/src/identity.ts`.
+- `GETTING-STARTED.md` et `PORTAGE.md` portent un bandeau **« historique du template »** :
+  on les garde pour le POURQUOI, ils ne sont plus la source de vérité.
+- `GOVERNANCE.md` : la famille `content` n'existe pas dans `src/components/`.
+- Vitrine : la note de `TabBar` parlait d'un « écart assumé » sur la cible tactile — c'est
+  la règle du système. Le bloc clair/sombre du portrait ne prétend plus montrer un îlot
+  CLAIR dans une page sombre : le thème se pose en `.dark` sur la racine, aucune classe ne
+  le retire, et la vitrine a déjà un mode « Côte à côte » pour ça.
+
+### Retiré
+
+- **`Portage-README.md`** — le README du gabarit, doublon du `README.md` du projet depuis le
+  portage. Aucun fichier du dépôt n'y renvoyait.
+
+---
+
 ## 0.2.0 — le portrait de repli
 
 Une personne sans photo n'a plus l'air d'une image cassée.

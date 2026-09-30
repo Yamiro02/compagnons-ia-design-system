@@ -1,5 +1,9 @@
 /**
- * @compagnons-ia/ds — le TEMPLATE de design system, et sa marque d'exemple.
+ * @compagnons-ia/ds — le design system de Compagnons IA.
+ *
+ * Deux couches, deux imports, toujours : le socle ne porte aucune couleur, la marque ne
+ * porte aucune structure. Il n'existe pas d'entrée qui monte une marque toute seule — celle
+ * qu'une app charge est visible dans son code, jamais implicite.
  *
  * Les styles sont un import séparé, en JS :
  *   import '@compagnons-ia/ds/core.css';

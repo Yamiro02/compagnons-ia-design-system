@@ -1,9 +1,12 @@
 # @compagnons-ia/ds
 
-**Un squelette de design system React, à remplir par projet.** Deux couches qui ne se
-mélangent pas : un **socle** générique — structure, comportements, échelles, rail de
-contrôles, motion, 39 composants React + TypeScript, **zéro couleur** — et une **marque**,
-qui porte les couleurs, les polices, les dégradés et la lueur.
+**Le design system de Compagnons IA.** Deux couches qui ne se mélangent pas : un **socle**
+générique — structure, comportements, échelles, rail de contrôles, motion, 39 composants
+React + TypeScript, **zéro couleur** — et la **marque** du produit, qui porte les couleurs,
+les polices, les dégradés et la lueur.
+
+Le dépôt est né d'un gabarit réutilisable ; il en garde la discipline (socle sans couleur,
+contrat de marque, treize gardes) mais plus le rôle : ici, la marque est **remplie**.
 
 Jetons CSS · couche Tailwind v4 · tout est en `rem`.
 
@@ -13,21 +16,22 @@ implicite.
 
 ```ts
 import '@compagnons-ia/ds/core.css';           // la structure, invariante
-import '@compagnons-ia/ds/brand-example.css';  // la marque — remplacez-la par la vôtre
+import '@compagnons-ia/ds/brand-compagnons-ia.css';  // la marque du produit
 ```
 
 ## Par où commencer
 
 | Vous êtes | Allez voir |
 |---|---|
-| **un agent qui doit produire ce design system** (Claude Design, Claude Code) | **[`PORTAGE.md`](PORTAGE.md)** |
-| **un humain qui monte un projet** | **[`GETTING-STARTED.md`](GETTING-STARTED.md)** |
+| **quiconque ajoute au système** | **[`GOVERNANCE.md`](GOVERNANCE.md)** — ce qui entre, ce qui reste dehors, et la procédure de version |
+| **un agent qui écrit un écran** | **[`docs/PROMPTS.md`](docs/PROMPTS.md)** — le catalogue d'usage, composant par composant et classe par classe |
+| **l'historique du portage** | [`PORTAGE.md`](PORTAGE.md) · [`GETTING-STARTED.md`](GETTING-STARTED.md) — utiles à lire, plus la source de vérité |
 | **quiconque écrit un écran AVEC ce système** | **[`docs/PIEGES.md`](docs/PIEGES.md)** — ce que le code livré fait et qui ne se devine pas |
 
-La marque livrée, `src/styles/brand-example.css`, est **un exemple à remplacer**. Elle
-existe pour que la vitrine s'affiche immédiatement et pour prouver que le socle ne porte
-aucune couleur : sa palette est froide et ses polices sont une serif et une grotesque
-géométrique. Si un pixel chaud apparaît, une valeur de marque est restée dans le socle.
+La marque du produit est `src/styles/brand-compagnons-ia.css` : grenat et crème, Nunito
+Sans auto-hébergée, doctrine arrondie, surfaces blanches. Le socle, lui, ne porte **aucune
+couleur** — `bash check-literals.sh` le prouve à chaque lint. Le contrat qu'une autre
+marque devrait remplir reste lisible dans `src/styles/brand.template.css`.
 
 ## Deux façons de s'en servir
 
@@ -57,8 +61,15 @@ géométrique. Si un pixel chaud apparaît, une valeur de marque est restée dan
 Pas de registry : chaque app épingle une version par un tag git.
 
 ```bash
-npm i github:Yamiro02/compagnons-ia-design-system#v0.2.0
+npm i github:Yamiro02/compagnons-ia-design-system#v0.3.0
 ```
+
+> **Une seule numérotation fait foi ici : celle de ce dépôt.** Elle est repartie de `0.1.0`
+> au portage. Le `CHANGELOG.md` conserve, sous « Historique du gabarit (avant portage) », le
+> journal du squelette dont le dépôt est né — **ses numéros ne se rapportent pas à ce
+> projet** et ne doivent jamais servir à épingler une version. En cas de doute, la vérité
+> est le tag git, et `node check-version.mjs` vérifie que `package.json`, la ligne
+> ci-dessus et le tag concordent.
 
 Cinq **peer dependencies**, à la charge de l'app :
 
@@ -96,7 +107,7 @@ Socle plus marque. Deux lignes, pas une : c'est ce qui rend explicite la marque 
 ```ts
 // src/main.tsx — une app du projet
 import '@compagnons-ia/ds/core.css';
-import '@compagnons-ia/ds/brand-example.css';
+import '@compagnons-ia/ds/brand-compagnons-ia.css';
 ```
 
 ```ts
@@ -193,7 +204,7 @@ par palier de largeur d'écran pour garder une mise en page effective proche de 
 
 ```ts
 import '@compagnons-ia/ds/core.css';
-import '@compagnons-ia/ds/brand-example.css';
+import '@compagnons-ia/ds/brand-compagnons-ia.css';
 import '@compagnons-ia/ds/app-scale.css';   // outils internes desktop uniquement
 ```
 
@@ -257,7 +268,7 @@ de Tailwind, sur laquelle reposent les composants shadcn de ton app.
 > Tailwind. C'est une précaution pour l'avenir — le jour où un composant du DS écrira une classe
 > Tailwind, l'app devra pointer le paquet :
 > ```css
-> @source "../node_modules/@acme/ds/src";
+> @source "../node_modules/@compagnons-ia/ds/src";
 > ```
 
 `tokens/base.css` fournit aussi des classes prêtes à l'emploi : `.display` `.display-xl` `.eyebrow`
@@ -307,10 +318,17 @@ usage : [`PORTAGE.md`](PORTAGE.md).
 
 ## Polices
 
-`src/styles/assets/fonts/` existe et est **vide** : c'est là qu'un projet dépose ses `.woff2`
-auto-hébergés, chargés par les `@font-face` en tête de son fichier de marque. Le socle ne
-connaît que les trois NOMS `--font-display` / `--font-body` / `--font-mono`. (La marque
-d'exemple charge les siennes depuis Google Fonts, le dossier reste donc vide dans le dépôt.)
+**Auto-hébergées, aucun appel réseau.** Les `.woff2` sont dans `src/styles/assets/fonts/` et
+les `@font-face` en tête du fichier de marque :
+
+| Famille | Fichiers | Jeton |
+|---|---|---|
+| Nunito Sans | `400` · `500` · `600` · `700` | `--font-display` **et** `--font-body` |
+| DM Mono | `400` | `--font-mono` |
+
+Le socle ne connaît que les trois NOMS ; les fichiers et les `@font-face` appartiennent à la
+marque. Une marque qui n'aurait pas ses fichiers laisse le dossier vide et déclare ses
+familles autrement — rien du socle ne bouge.
 Pour le logo, préfère le composant `Logo` : il rend le mark en CSS, avec le point en dégradé.
 
 ---

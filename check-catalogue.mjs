@@ -42,7 +42,19 @@ for (const m of index.matchAll(/^export \{[^}]+\} from '\.\/components\/[^/]+\/(
 /* ── 2 · les sections du catalogue ────────────────────────────────────────── */
 const doc = lire('docs/PROMPTS.md');
 const sections = new Set();
-for (const m of doc.matchAll(/^## (.+)$/gm)) sections.add(m[1].trim());
+/* UNE SECTION QUI COMMENCE PAR UN POINT DOCUMENTE UNE CLASSE, PAS UN COMPOSANT.
+   Le catalogue décrit aussi les règles de patterns.css qui n'ont pas de composant React
+   (voir son § classes, et GOVERNANCE.md pour savoir pourquoi elles n'en ont pas). Elles
+   portent le nom du SÉLECTEUR — « ## .ds-chip » — et n'ont donc rien à faire dans la
+   confrontation avec src/index.ts.
+   Le filtre ne peut pas masquer une section fantôme de composant : un fantôme s'appelle
+   « Foo », jamais « .foo ». Et l'inverse tient aussi — un composant exporté sous un nom
+   commençant par un point n'existe pas. */
+for (const m of doc.matchAll(/^## (.+)$/gm)) {
+  const titre = m[1].trim();
+  if (titre.startsWith('.')) continue;
+  sections.add(titre);
+}
 
 for (const c of [...composants].sort()) {
   if (!sections.has(c)) erreurs.push(

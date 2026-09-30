@@ -1,5 +1,13 @@
 # PORTAGE — la fiche à donner à Claude Design
 
+> ⚠️ **HISTORIQUE DU TEMPLATE.** Ce document décrit le PORTAGE d'origine — comment le
+> dépôt est né d'un gabarit et ce qu'il fallait remplir. Il n'est plus la source de
+> vérité du projet : pour l'état actuel, lire [`README.md`](README.md),
+> [`docs/DESIGN.md`](docs/DESIGN.md) et [`GOVERNANCE.md`](GOVERNANCE.md). On le garde
+> parce qu'il explique POURQUOI le dépôt est construit ainsi, ce qu'aucun des trois
+> autres ne raconte.
+
+
 Ce dépôt est un **squelette de design system React**. Il apporte trois choses, et
 seulement trois :
 

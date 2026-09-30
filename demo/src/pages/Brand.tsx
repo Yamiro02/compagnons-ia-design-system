@@ -130,14 +130,14 @@ export function BrandPage() {
             ))}
           </Grid>
         </Block>
-        <Block label="Clair et sombre" hint="Le dégradé mélange les arrêts de marque dans --card, pas dans un blanc nommé : il bascule donc avec le thème. En sombre il reste un brun-grenat doux — le jeton est redéclaré dans .dark, sans quoi une propriété posée sur :root garderait la valeur claire.">
+        <Block label="Le portrait suit le thème" hint="Le dégradé mélange les arrêts de marque dans --card, pas dans un blanc nommé : il bascule donc avec le thème. Le premier spécimen suit la vitrine ; le second force le sombre, où l'initiale quitte .accent pour --primary-readable en aplat (le dégradé clippé y tombait à 1,90:1). Pour voir les deux thèmes CÔTE À CÔTE dans tous les cas, passe la vitrine en « Côte à côte » : un îlot CLAIR dans une page sombre n'existe pas — le thème se pose en .dark sur la racine, et aucune classe ne le retire.">
           <Grid cols={2}>
             <div className="flex flex-col gap-space-2 rounded-xl bg-background p-space-4">
-              <span className="chip text-text-muted">clair</span>
+              <span className="chip text-text-muted">thème courant</span>
               <PortraitDemo ratio="3 / 4" lettre="C" />
             </div>
             <div className="dark flex flex-col gap-space-2 rounded-xl bg-background p-space-4">
-              <span className="chip text-text-muted">sombre</span>
+              <span className="chip text-text-muted">sombre, forcé</span>
               <PortraitDemo ratio="3 / 4" lettre="C" />
             </div>
           </Grid>

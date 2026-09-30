@@ -78,6 +78,13 @@ export function FormsPage() {
             <Input surface="page" placeholder="surface=page — le champ redevient blanc" />
           </div>
         </Block>
+        <Block label="Icône" hint="icon pose un glyphe DANS le champ, à gauche — un repère, pas un bouton : il est aria-hidden et ne se clique pas. Une action dans un champ est un IconButton posé à côté. Combinable avec unit.">
+          <Stack>
+            <Input icon={<Icon name="search" />} placeholder="Rechercher une compagne" />
+            <Input icon={<Icon name="mail" />} type="email" placeholder="ton@email.com" />
+            <Input icon={<Icon name="clock" />} unit="min" inputMode="numeric" placeholder="20" />
+          </Stack>
+        </Block>
         <Block label="Unité" hint="unit pose l'unité dans le champ, à droite, en sourdine — trois caractères au plus. aria-hidden : c'est le libellé du FormField qui la nomme.">
           <Stack>
             <Input unit="kg" inputMode="decimal" placeholder="72" />
@@ -197,7 +204,7 @@ export function FormsPage() {
         </Block>
       </Section>
 
-      <Section title="Chip" note="Parcours cœur. Un bouton à bascule (aria-pressed), hauteur --chip-h. Sélectionnée : plaque --accent, bordure --primary, libellé --primary-readable semibold. Libellé d'INTERFACE : jamais d'emoji — c'est le badge carte (Data display) qui en porte. Classe seule, pas de composant.">
+      <Section title="Chip" note="Parcours cœur. Un bouton à bascule (aria-pressed), hauteur --chip-h : 36 à l'œil, 44 au doigt (zone de toucher ::before de --space-1 en haut et en bas ; au moins --space-2 entre deux rangées). Sélectionnée : plaque --accent, bordure --primary, libellé --primary-readable semibold. Libellé d'INTERFACE : jamais d'emoji — c'est le badge carte (Data display) qui en porte. Classe seule, pas de composant.">
         <Block label="Groupe cliquable" hint="Tes centres d'intérêt — clique pour basculer.">
           <div className="flex flex-wrap items-center gap-space-2 rounded-xl bg-background p-space-4">
             {INTERETS.map(i => (

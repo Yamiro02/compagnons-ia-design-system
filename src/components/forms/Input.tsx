@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import type { InputHTMLAttributes, JSX } from 'react';
+import type { InputHTMLAttributes, JSX, ReactNode } from 'react';
 import { cn } from '../../lib/cn';
 
 /**
@@ -29,10 +29,19 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
    * une unité. `aria-hidden` : c'est au libellé du FormField de la nommer.
    */
   unit?: string;
+  /**
+   * Un glyphe posé DANS le champ, à gauche — la loupe d'une recherche, l'enveloppe d'un
+   * e-mail. Passez un `<Icon>` nu : l'enveloppe, la position et le créneau (1rem) lui sont
+   * posés ici. Il est `aria-hidden` et ne se clique pas : c'est un repère, pas un bouton —
+   * une action DANS un champ est un `IconButton` posé à côté, pas ce slot.
+   * Combinable avec `unit` : les deux enveloppes s'imbriquent, le champ reçoit ses deux
+   * paddings.
+   */
+  icon?: ReactNode;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
-  size = 'md', invalid = false, surface = 'auto', unit, className = '', ...rest
+  size = 'md', invalid = false, surface = 'auto', unit, icon, className = '', ...rest
 }: InputProps, ref): JSX.Element {
   /* La déduction de patterns.css couvre le cas normal : un champ dans une Card, une Modal,
      une ActionSheet, un Dropdown, le pop d'un DatePicker ou la Navbar passe en --background
@@ -48,14 +57,21 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
     invalid && 'is-error',
     className,
   );
-  const champ = <input ref={ref} className={cls} aria-invalid={invalid || undefined} {...rest} />;
-  if (!unit) return champ;
-  /* L'enveloppe n'existe QUE si `unit` est passé : sans elle, le DOM d'hier — un <input>
-     nu — ne bouge pas d'un nœud. */
-  return (
+  const nu = <input ref={ref} className={cls} aria-invalid={invalid || undefined} {...rest} />;
+  /* Les enveloppes n'existent QUE si leur prop est passée : sans elles, le DOM d'hier — un
+     <input> nu — ne bouge pas d'un nœud. Elles s'imbriquent dans cet ordre, l'icône à
+     l'extérieur, pour que le champ reçoive ses deux paddings sans que l'une décale l'autre. */
+  const avecUnite = unit ? (
     <span className="ds-input-unit">
-      {champ}
+      {nu}
       <span className="ds-input-unit__label" aria-hidden="true">{unit}</span>
+    </span>
+  ) : nu;
+  if (!icon) return avecUnite;
+  return (
+    <span className="ds-input-icon">
+      {avecUnite}
+      <span className="ds-input-icon__glyph" aria-hidden="true">{icon}</span>
     </span>
   );
 });

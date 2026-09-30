@@ -32,10 +32,30 @@ export function FeedbackPage() {
             <Banner tone="danger" title="Ça a planté, on réessaie ?">La commande s'est arrêtée avant la fin.</Banner>
           </Stack>
         </Block>
-        <Block label="Avec action">
+        <Block label="Avec action" hint="actionPlacement=&quot;end&quot; (défaut) : l'action est à droite, sur la ligne du texte.">
           <Banner tone="warning" title="Ce tuto date de mars" action={<Button size="sm" variant="secondary">Voir la mise à jour</Button>}>
             La CLI a changé depuis — la méthode reste bonne.
           </Banner>
+        </Block>
+        <Block label="Action sous le texte" hint="actionPlacement=&quot;below&quot; : l'action entre dans la colonne du message. Pour un libellé long, ou un écran étroit, où le bouton de droite écrase la ligne de texte. Le bandeau reprend alors l'alignement haut.">
+          <Banner
+            tone="info"
+            title="Ton essai se termine dans 3 jours"
+            actionPlacement="below"
+            action={<Button size="sm" variant="secondary">Choisir une formule et continuer</Button>}
+          >
+            Tes conversations sont conservées, tu les retrouveras telles quelles.
+          </Banner>
+        </Block>
+        <Block label="Icône choisie" hint="icon remplace le glyphe déduit du ton — un <Icon> nu, le socle lui pose sa classe et son créneau.">
+          <Stack>
+            <Banner tone="info" title="Nouvelle compagne disponible" icon={<Icon name="rocket" />}>
+              Elle est déjà dans ton catalogue.
+            </Banner>
+            <Banner tone="success" title="Crédits rechargés" icon={<Icon name="zap" />}>
+              Tu repars avec 50 réponses.
+            </Banner>
+          </Stack>
         </Block>
       </Section>
 
@@ -62,6 +82,28 @@ export function FeedbackPage() {
               title="Aucun résultat"
               description="Essaie un autre mot-clé."
             />
+          </Block>
+          <Block label="framed={false}" hint="Sans cadre ni fond : le vide posé DANS un contenant qui a déjà sa frontière. Deux cadres emboîtés se lisent comme une erreur de mise en page. Le padding reste.">
+            <div className="rounded-xl border border-border bg-card">
+              <EmptyState
+                framed={false}
+                icon={<Icon name="message-square" />}
+                title="Pas encore de conversation"
+                description="Choisis une compagne dans le catalogue pour commencer."
+              />
+            </div>
+          </Block>
+          <Block label="halo" hint="Le vide d'un écran ENTIER, qu'on veut chaleureux plutôt que clinique. Se combine avec framed={false}.">
+            <div className="rounded-xl bg-background">
+              <EmptyState
+                framed={false}
+                halo
+                icon={<Icon name="house" />}
+                title="Ton accueil est encore vide"
+                description="Tes conversations apparaîtront ici."
+                action={<Button variant="secondary">Voir le catalogue</Button>}
+              />
+            </div>
           </Block>
         </Grid>
       </Section>

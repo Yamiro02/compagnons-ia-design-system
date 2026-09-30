@@ -186,6 +186,24 @@ export function DataDisplayPage() {
             </div>
           </div>
         </Block>
+
+        <Block label="Point de non-lu" hint=".ds-dot — le compteur SANS le compte : il dit qu'il y a du nouveau, pas combien. Toujours aria-hidden, l'information est portée en texte à côté. --ring quand le point chevauche quelque chose : il creuse un contour de la couleur de la carte.">
+          <Row label="nu, puis avec liseré">
+            <span className="ds-dot" aria-hidden="true" />
+            <span className="ds-dot ds-dot--ring" aria-hidden="true" />
+          </Row>
+          <div className="flex items-center gap-space-3 rounded-xl bg-background p-space-4">
+            <span className="relative inline-flex">
+              <Avatar initials="ÉL" alt="Élodie" size="2.75rem" halo={false} />
+              <span className="ds-dot ds-dot--ring absolute right-0 top-0" aria-hidden="true" />
+            </span>
+            <div className="flex min-w-0 flex-1 flex-col gap-space-1">
+              <span className="text-control font-semibold">Élodie<span className="sr-only"> — nouveaux messages</span></span>
+              <span className="caption truncate">Tu fais quoi ce week-end ?</span>
+            </div>
+            <span className="caption">hier</span>
+          </div>
+        </Block>
       </Section>
 
       <Section title="ChatBubble" note="La bulle de conversation — ajout assumé au socle. them = le persona, carte blanche à gauche ; me = l'utilisateur, dégradé de marque à droite (liste fermée de l'accent). typing rend l'indicateur de saisie, dans un role=status. Le texte d'une bulle est du contenu : l'emoji y est permis.">

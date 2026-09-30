@@ -52,6 +52,15 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { createRequire } from 'node:module';
+
+/* TAILWIND SE RÉSOUT PAR LE RÉSOLVEUR DE MODULES, pas par un chemin relatif. Un chemin en
+   dur (`node_modules/tailwindcss/…`) suppose que le paquet est installé JUSTE SOUS le cwd :
+   il rate un `node_modules` hissé, un dépôt imbriqué, ou un lancement depuis un autre
+   dossier — et le garde se dégrade alors en avertissement, donc ne vérifie plus rien, en
+   silence. `createRequire` trouve le paquet où qu'il soit dans la chaîne. */
+const req = createRequire(import.meta.url);
+const resoudre = (spec) => { try { return req.resolve(spec); } catch { return null; } };
 
 const RACINES = process.argv.slice(2).length ? process.argv.slice(2) : ['src', 'demo/src'];
 const EXTENSIONS = /\.(?:tsx?|jsx?|mjs)$/;
@@ -59,9 +68,9 @@ const EXTENSIONS = /\.(?:tsx?|jsx?|mjs)$/;
 /* Le socle depuis sa racine, ou depuis une app qui l'a installé. */
 const THEME = process.env.THEME || [
   'src/styles/theme.css',
-  'node_modules/@acme/ds/src/styles/theme.css',
+  'node_modules/@compagnons-ia/ds/src/styles/theme.css',
 ].find(p => fs.existsSync(p));
-const AMONT = process.env.TAILWIND_THEME || 'node_modules/tailwindcss/theme.css';
+const AMONT = process.env.TAILWIND_THEME || resoudre('tailwindcss/theme.css');
 
 /* ══════════════════════════════════════════════════════════════════════════════
  * ESPACE DE NOMS → UTILITAIRES. La seule table écrite à la main, et elle est courte.

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { HTMLAttributes, JSX } from 'react';
 import { cn } from '../../lib/cn';
 import { BRAND_MONOGRAM, BRAND_NAME } from '../../brand';
@@ -11,6 +12,14 @@ import { BRAND_MONOGRAM, BRAND_NAME } from '../../brand';
  * composant du socle. Le balayage de la palette de recette ne pouvait pas le voir : il lit
  * le CSS calculé, pas le texte rendu par React. Il vient désormais de `src/brand.ts`, et la
  * prop `initials` l'emporte.
+ *
+ * LE REPLI JOUE AUSSI QUAND L'IMAGE ÉCHOUE, pas seulement quand `src` est absent. Un
+ * portrait supprimé du bucket, un CDN qui tousse, une URL signée expirée : le navigateur
+ * rendait alors l'icône d'image cassée, à l'endroit exact où l'app promet un visage. Le
+ * `onError` de l'`<img>` bascule sur le monogramme — le même rendu que « pas de photo »,
+ * qui est déjà soigné. L'état retient QUELLE source a échoué, pas un simple booléen : une
+ * nouvelle `src` retente donc d'elle-même, sans `useEffect` ni `key` au site d'appel. Un
+ * booléen aurait condamné toutes les sources suivantes après un seul échec.
  */
 export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
   /** Cut-out portrait (transparent PNG). */
@@ -35,6 +44,8 @@ export function Avatar({
   src, alt = BRAND_NAME, initials = BRAND_MONOGRAM, size = '4rem', halo = true,
   className = '', style, ...rest
 }: AvatarProps): JSX.Element {
+  const [srcEnÉchec, setSrcEnÉchec] = useState<string | undefined>(undefined);
+  const montrerImage = Boolean(src) && srcEnÉchec !== src;
   return (
     <span
       className={cn(className)}
@@ -46,11 +57,16 @@ export function Avatar({
           position: 'absolute', inset: '-35%', borderRadius: 'var(--radius-pill)', background: AVATAR_HALO,
         }} />
       ) : null}
-      {src ? (
-        <img src={src} alt={alt} style={{
-          position: 'relative', width: '100%', height: '100%', objectFit: 'cover',
-          objectPosition: 'top center', borderRadius: 'var(--radius-pill)',
-        }} />
+      {montrerImage ? (
+        <img
+          src={src}
+          alt={alt}
+          onError={() => setSrcEnÉchec(src)}
+          style={{
+            position: 'relative', width: '100%', height: '100%', objectFit: 'cover',
+            objectPosition: 'top center', borderRadius: 'var(--radius-pill)',
+          }}
+        />
       ) : (
         <span aria-label={alt} role="img" style={{
           position: 'relative', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',

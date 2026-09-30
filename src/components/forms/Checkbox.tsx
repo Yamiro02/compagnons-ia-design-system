@@ -38,7 +38,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
         {...rest}
       />
       <span className="ds-choice__box">
-        <Icon name={indeterminate ? 'minus' : 'check'} size="0.8125rem" strokeWidth={3} />
+        {/* Sans taille : le créneau .ds-choice__box svg rend 0.8125rem (patterns.css). */}
+        <Icon name={indeterminate ? 'minus' : 'check'} strokeWidth={3} />
       </span>
       {label ? <span>{label}</span> : null}
     </label>

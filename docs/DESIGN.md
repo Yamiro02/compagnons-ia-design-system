@@ -51,6 +51,7 @@
 |---|---|---|---|
 | `--primary` | grenat clair `#a03b58` | grenat éclairci `#b95370` | LA couleur d'action, remplissage seulement |
 | `--primary-readable` | bordeaux `#8f2d42` | rose `#e79db2` | liens, icônes, libellés actifs — ≥4,5:1 sur les six surfaces |
+| `--ring` | `#a03b58` | `#d98ca0` | l'anneau de focus — il S'ÉCLAIRCIT en sombre, contrairement à `--primary` : un anneau doit se voir sur la page, pas se fondre dedans |
 | `--destructive` / `--destructive-readable` | `#c53030` / `#9e2222` | `#d04444` / `#f09a94` | rouge franc, jamais confondu avec le grenat ; en sombre le jumeau lisible reste ORANGÉ pour tenir la distance avec le rose `--primary-readable` |
 | `--pill-danger-bg` / `--pill-danger-fg` | `rgba(197,48,48,.13)` / `#9e2222` | (fond hérité) / `#f0a08b` | la pilule de danger, accordée au rouge |
 | `--brand-from/via/to` | `#a03b58 → #98344d → #8f2d42` | `#b95370 → #ac4762 → #9f3b54` | dégradé signature discret, même teinte ; s'il tire vers le kitsch → aplat (même valeur ×3) |
@@ -83,7 +84,7 @@
 
 Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule famille display/body : l'épure passe par la hiérarchie de graisse, pas par un contraste de faces.
 
-**Graisses à charger :** 400 · 500 · 600 · 700 (rien d'autre). ⚠ Import Google Fonts PROVISOIRE — déposer les .woff2 dans `src/styles/assets/fonts/` et basculer sur les `@font-face` commentés en tête du fichier de marque.
+**Graisses chargées :** Nunito Sans 400 · 500 · 600 · 700, DM Mono 400 — rien d'autre. **Auto-hébergées** : les `.woff2` sont dans `src/styles/assets/fonts/` et les `@font-face` en tête du fichier de marque. Aucun appel réseau à Google Fonts.
 
 ## 5. Espacement, rayons, rail
 
@@ -91,7 +92,8 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 **DOCTRINE ARRONDIE — tout ce qui se presse ou se remplit est PILL.** Autre RÈGLE, pas autre valeur → `patterns.css`. Sont pill : boutons et carrés d'icône, champs / selects / déclencheur de date, items d'onglet, de pagination et de barre latérale, croix de toast et de modale, bascule de barre latérale, rail de progression, tuile d'icône de toast, pastilles à TOUTES les tailles.
 **Les exceptions, écrites :** textarea `--radius-lg` (un pill courberait sa première et sa dernière ligne) · items de menu, dropdown et action sheet `--radius-sm` (ce sont des lignes de liste) · case à cocher `--choice-box-radius` (le squircle de marque) · tooltip `--radius-md` · squelette `--radius-sm` (il mime du CONTENU). Cartes, panneaux, modales : ce sont des surfaces, elles gardent leurs rayons.
 **Densité :** rail du socle conservé (48 px, 44 px sous 64rem) — la cible l'exige.
-**Icônes — l'échelle :** `1` · `1.125` · `1.25` · `1.5` rem. `1rem` : contrôle sm, déclencheur de champ, tuile de toast · `1.125rem` : contrôle md (bouton, IconButton) et onglet de TabBar · `1.25rem` : le repli de `.ds-icon`, partout ailleurs · `1.5rem` : pastille de dialogue et de panneau. Hors échelle, dans une tuile de texte : le badge (`0.8125`, dense `0.75`).
+**Cible tactile : au moins 44 px AU DOIGT, pas forcément à l'œil.** La partie visible peut être plus petite si la zone de toucher atteint 44 px : l'onglet de `TabBar` par ses marges d'item, la chip par une couche `::before` qui déborde de `--space-1` en haut et en bas (36 + 4 + 4), à condition d'au moins `--space-2` (8 px) entre deux rangées de chips. Détail : `docs/accessibilite.md` § 4.
+**Icônes — l'échelle :** `1` · `1.125` · `1.25` · `1.5` rem. `1rem` : contrôle sm, déclencheur de champ, tuile de toast · `1.125rem` : contrôle md (bouton, IconButton) et onglet de TabBar · `1.25rem` : le repli de `.ds-icon`, partout ailleurs · `1.5rem` : pastille de dialogue et de panneau. Hors échelle, dans une petite tuile : le badge (`0.8125`, dense `0.75`), la coche d'une case (`0.8125`) et le glyphe d'un message d'erreur (`0.875`). **Tous sont des CRÉNEAUX CSS** — aucune taille n'est écrite au site d'appel ; `size` y reste la surcharge optique, pas le réglage normal.
 
 ## 6. Motifs signature
 
@@ -111,12 +113,12 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 **Mark en CSS ou en SVG :** CSS (mot-marque Nunito Sans bold + point carré arrondi en dégradé grenat).
 **La pastille :** le carré en dégradé par défaut.
 **Casse du mot-marque :** casse mixte, suit `--heading-transform:none` — rien à surcharger.
-**Contenu vitrine :** `demo/src/identity.ts` — prénom d'exemple « Bernard », lieu « Lyon · France ».
+**Contenu vitrine :** `demo/src/identity.ts` — prénom d'exemple « Alex », lieu « Ville · Pays ». Ce sont des CONTENUS d'application, pas des jetons : `npm run rebrand` ne les touche pas, ils s'éditent à la main.
 
 ## 8. Périmètre du design system
 
 **Ce qui entre :** les 37 composants du socle, plus deux ajouts ASSUMÉS (§ 10) : `TabBar`, la coque d'une PWA mobile que le socle ne portait pas, et `ChatBubble`, la bulle de conversation — de la présentation pure, elle ne connaît ni le persona ni le modèle de message. 39 en tout, aucun retrait.
-**En classes, sans composant (pour l'instant) :** `.ds-option`, `.ds-chip`, `.ds-steps`, `.ds-counter`, `.ds-badge--card`, `.ds-card.is-selected` + `.ds-card__flag`, `.ds-portrait` — voir `PORTAGE.md`.
+**En classes, sans composant (pour l'instant) :** `.ds-option`, `.ds-chip`, `.ds-steps`, `.ds-counter`, `.ds-badge--card`, `.ds-card.is-selected` + `.ds-card__flag`, `.ds-portrait`, `.ds-dot` — voir `PORTAGE.md`, et `docs/PROMPTS.md` § classes pour leur usage.
 **L'exception du portrait en sombre :** l'initiale quitte `.accent` et prend `--primary-readable` en aplat (`.dark .ds-portrait>:not(.halo)`) — le dégradé clippé tombe à 1,90:1 sur la vignette prune, contre 5,16:1 pour le jumeau lisible ; assombrir la vignette plafonne à 2,59 et l'aplatit. Règle scopée au portrait, aucune classe générique dupliquée.
 **Ce qui n'entre pas :** tout ce qui connaît le métier (carte persona, paywall) — ça vit dans l'app.
 **Extension métier :** `brand-content.css` NON importé, ses trois jetons non déclarés.
@@ -177,3 +179,4 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 | 2026-09-30 | Bordure sélectionnée (option, carte de choix) : `--primary` au lieu de `--brand-to` ; l'`@a11y-assume` posé le même jour est retiré | `--brand-to`, l'arrêt le plus sombre du dégradé, tombait à 2,52:1 sur `--card` en sombre ; `--primary` tient 6,44 en clair et 3,54 en sombre. Même bordure que la chip : un seul rouge pour « sélectionné ». Écart à reporter dans la vitrine Claude Design |
 | 2026-09-30 | `--gradient-portrait` + `.ds-portrait` : le repli d'une vignette sans photo, déclaré en clair ET en sombre | la maquette l'écrivait en dur en mélangeant dans `--tone-light-alt`, qui vaut `#ffffff` dans les deux thèmes — la vignette restait rose clair en sombre. La base du mélange devient `--card`. Une classe, pas un composant : trois écrans du même produit ne passent pas le test 2 de `GOVERNANCE.md` |
 | 2026-09-30 | En sombre, l'initiale du portrait quitte `.accent` pour `--primary-readable` en aplat | le dégradé clippé mesure 1,90:1 sur la vignette prune (mi-ton sur mi-ton) contre 3,91 en clair ; assombrir la vignette plafonne à 2,59 et l'aplatit à 1,06 d'amplitude. Le jumeau lisible donne 5,16. Règle SCOPÉE au portrait (`.dark .ds-portrait>:not(.halo)`), qui ne nomme pas la classe fragile |
+| 2026-09-30 | Cible tactile : au moins 44 px AU DOIGT, pas forcément à l'œil (§ 5). La chip reste à 36 px visibles et gagne une zone de toucher invisible de `--space-1` en haut et en bas | la maquette A3 tient la chip à 36 px ; la règle se tient au doigt, comme la `TabBar` par ses marges d'item. Condition : au moins `--space-2` entre deux rangées de chips. L'écart « non tranché » de `docs/accessibilite.md` § 4 est fermé |

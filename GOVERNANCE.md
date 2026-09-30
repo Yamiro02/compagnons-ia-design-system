@@ -61,7 +61,7 @@ carrés identiques pour `sm`, `md` et `lg` pendant quatre versions.
 ## Si les quatre passent
 
 1. Il rejoint sa **famille** dans `src/components/` — `actions`, `forms`, `data-display`,
-   `feedback`, `navigation`, `overlays`, `brand`, `icons`, `content`.
+   `feedback`, `navigation`, `overlays`, `brand`, `icons`.
 2. Il s'exporte depuis `src/index.ts`, **avec son type de props**.
 3. Il **apparaît dans la vitrine le jour même**, avec ses états — repos, survol, focus,
    pressé, désactivé. Un composant qui n'est pas dans la démo n'existe pas : personne ne

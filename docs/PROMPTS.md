@@ -161,6 +161,10 @@ portrait, posé bas, jamais centré derrière un titre.
 - Props : `src` · `alt` · `initials` (monogramme de repli) · `size` (longueur CSS, rem) ·
   `halo` (défaut `true`).
 - Les défauts (`alt`, `initials`) viennent de `src/brand.ts`.
+- **Le repli joue aussi quand l'IMAGE ÉCHOUE**, pas seulement quand `src` est absent :
+  portrait supprimé du bucket, CDN qui tousse, URL signée expirée. Le navigateur rendait
+  l'icône d'image cassée à l'endroit exact où l'app promet un visage ; c'est désormais le
+  monogramme. Rien à faire au site d'appel — et une nouvelle `src` retente d'elle-même.
 
 ## Halo
 
@@ -392,10 +396,20 @@ champ (c'est `FormField error`).
 ```tsx
 <Banner tone="warning" title="Ce tuto date de mars">La CLI a changé depuis — la méthode reste bonne.</Banner>
 <Banner tone="info" title="Nouvelle série en ligne" action={<Button variant="secondary" size="sm">Voir</Button>} />
+<Banner tone="info" title="Ton essai se termine dans 3 jours" icon={<Icon name="clock" />}
+  actionPlacement="below" action={<Button size="sm" variant="secondary">Choisir une formule</Button>}>
+  Tes conversations sont conservées.
+</Banner>
 ```
 
 - Props : `tone` (`danger·warning·success·info`, défaut `info`) · `title` · `children`
-  (corps) · `action` (contrôle à droite).
+  (corps) · `action` · `actionPlacement` (`end` défaut · `below`) · `icon`.
+- **`actionPlacement`** : `end` (défaut) met l'action à droite, sur la ligne du texte —
+  le rendu de toujours. `below` la fait entrer dans la colonne du message, et le bandeau
+  reprend l'alignement HAUT. À choisir quand le libellé est long ou l'écran étroit : à
+  droite, le bouton écrase la colonne de texte.
+- **`icon`** remplace le glyphe déduit du ton. Passez un `<Icon>` **nu** : la classe, la
+  position et le créneau lui sont posés par le composant.
 
 ## EmptyState
 
@@ -414,9 +428,16 @@ chargement (c'est `Skeleton`).
   title="Aucun résultat" description="Essaie un autre mot-clé." />
 ```
 
-- Props : `icon` (glyphe nu — la Pastille par défaut l'enveloppe) · `tile` (v0.3.0 : la
-  tuile complète, quand `panneau brand outlined` ne convient pas ; `icon` est alors
-  ignoré) · `title` (requis) · `description` · `action`.
+- Props : `icon` (glyphe nu — la Pastille par défaut l'enveloppe) · `tile` (la tuile
+  complète, quand `panneau brand outlined` ne convient pas ; `icon` est alors ignoré) ·
+  `title` (requis) · `description` · `action` · `framed` (défaut `true`) · `halo`
+  (défaut `false`).
+- **`framed={false}`** retire la bordure tiretée et le fond, garde le padding. À utiliser
+  quand le vide est DANS un contenant qui a déjà sa frontière — une carte, un panneau, un
+  écran : deux cadres emboîtés se lisent comme une erreur de mise en page, pas comme une
+  intention.
+- **`halo`** pose un `Halo` centré derrière le contenu — le vide d'un écran entier, qu'on
+  veut chaleureux plutôt que clinique. Se combine avec `framed={false}`.
 
 ## Progress
 
@@ -631,7 +652,10 @@ mise en page, le champ est `--card` ; dans une porteuse blanche, il repasse en
 <Input unit="kg" inputMode="decimal" placeholder="72" />
 ```
 
-- Props : `size` (`sm·md·lg`) · `invalid` · `surface` (`auto` défaut = la déduction de
+- **`icon`** pose un glyphe DANS le champ, à gauche — la loupe d'une recherche,
+  l'enveloppe d'un e-mail. C'est un REPÈRE : `aria-hidden`, non cliquable. Une ACTION dans
+  un champ est un `IconButton` posé à côté, jamais ce slot. Combinable avec `unit`.
+- Props : `size` (`sm·md·lg`) · `invalid` · `icon` · `surface` (`auto` défaut = la déduction de
   `patterns.css` décide · `card` force le crème `--background` hors d'une vraie Card ·
   `page` force le blanc `--card` là où la déduction aurait mis du crème — un îlot crème
   posé dans une Card) · `unit` + attributs natifs. Même prop sur `Textarea`, `Select` et
@@ -1022,3 +1046,164 @@ d'actions (c'est `Dropdown` / `ActionSheet`).
   le piège de focus tient la frappe.
 - États rendus : les trois phases, avec et sans icône, succès et erreur, feuille basse
   sous 64rem.
+
+---
+
+# classes
+
+**Des règles CSS, sans composant React.** Elles vivent dans `src/styles/patterns.css` et
+s'écrivent à la main dans le JSX. Elles n'ont pas de composant parce qu'elles n'ont pas
+passé les quatre tests de [`GOVERNANCE.md`](../GOVERNANCE.md) — le plus souvent le
+deuxième : plusieurs écrans **du même produit** ne comptent pas pour deux produits. Le jour
+où un second produit les demande, elles montent ; en attendant, une classe coûte une règle,
+un composant coûte un fichier, un export, une section et une décision à chaque hésitation.
+
+**La règle qui vaut pour toutes** : aucune ne porte de couleur en dur, aucune n'invente une
+mesure. Si vous en recopiez une, recopiez sa STRUCTURE — c'est là que sont les pièges.
+
+## .ds-option
+
+Le grand choix d'un écran de questionnaire — une case ou un radio, un libellé, toute la
+largeur. `--sm` pour un écran qui pose plusieurs groupes.
+
+```tsx
+<label className="ds-option">
+  <span className="ds-choice">
+    <input type="radio" name="rythme" />
+    <span className="ds-choice__box ds-choice__box--radio"><span className="ds-choice__dot" /></span>
+  </span>
+  Tous les jours
+</label>
+```
+
+- Sélection : `:has(input:checked)` la détecte seule — `.is-selected` n'est qu'une aide de
+  spécimen. Bordure `--primary`, libellé en graisse pleine.
+- L'anneau de focus est sur l'OPTION, pas sur la case : `.ds-option:has(input:focus-visible)`
+  l'allume et éteint celui de `.ds-choice__box`, sinon on en voyait deux.
+- Vitrine : Formulaires § Option.
+
+## .ds-chip
+
+Un bouton à bascule — centres d'intérêt, filtres.
+
+```tsx
+<button type="button" className="ds-chip" aria-pressed={choisi} onClick={basculer}>Cuisine</button>
+```
+
+- L'état vit dans **`aria-pressed`**, pas dans une classe : `.is-selected` est l'aide de
+  spécimen. Sélectionnée : plaque `--accent`, bordure `--primary`, libellé
+  `--primary-readable` semibold.
+- **Libellé d'INTERFACE : jamais d'emoji.** Celui qui en porte est `.ds-badge--card`, qui
+  est du contenu.
+- **Cible tactile** : 36 px à l'œil, 44 au doigt par une couche `::before` invisible.
+  Condition : au moins `--space-2` entre deux rangées. Voir `docs/accessibilite.md` § 4.
+- Vitrine : Formulaires § Chip.
+
+## .ds-steps
+
+La progression d'un parcours en plusieurs écrans.
+
+```tsx
+<div className="ds-steps">
+  <span className="ds-steps__label">Étape 2 sur 5</span>
+  <span className="ds-steps__dots" aria-hidden="true">
+    <span className="ds-steps__dot is-done" /><span className="ds-steps__dot is-current" />
+    <span className="ds-steps__dot" /><span className="ds-steps__dot" /><span className="ds-steps__dot" />
+  </span>
+</div>
+```
+
+- **C'est le LIBELLÉ qui porte l'information**, pas les points : ils sont `aria-hidden`.
+  Une rangée de points seule ne dit rien à un lecteur d'écran, et rien du tout à qui ne
+  distingue pas les deux teintes.
+- Vitrine : Formulaires § Steps.
+
+## .ds-counter
+
+Le compteur de non-lus : une pastille pleine en dégradé, avec un **chiffre**.
+
+```tsx
+<span className="ds-counter">2<span className="sr-only"> messages non lus</span></span>
+```
+
+- Le chiffre se double **toujours** d'un libellé en `sr-only` : « 2 » seul ne dit pas de
+  quoi.
+- Au-delà de 99, écrivez `99+` — la pastille a un `min-width`, elle s'allonge proprement.
+- Vitrine : Data display § Compteur de non-lus.
+
+## .ds-dot
+
+Le compteur **sans le compte** : il dit qu'il y a du nouveau, pas combien.
+
+```tsx
+<span className="ds-dot" aria-hidden="true" />
+<span className="ds-dot ds-dot--ring" aria-hidden="true" />
+```
+
+- **Toujours `aria-hidden`**, et l'information portée en texte à côté (`sr-only`, ou le
+  libellé de la ligne). Un point de couleur seul n'est jamais une information — interdit
+  n° 5 de `docs/DESIGN.md`.
+- **`--ring`** quand le point CHEVAUCHE quelque chose — un avatar, une vignette, une
+  icône : il creuse un contour de la couleur de la carte et détache le point de ce qu'il
+  recouvre. Posé à plat sur une surface, il est inutile.
+- **Ne pas l'utiliser** pour une présence (« en ligne ») : ce produit n'en a pas, et un
+  point vert voudrait dire autre chose. Le non-lu, et rien d'autre.
+- Taille : `--dot` (8 px), redéclarable par la marque.
+- Vitrine : Data display § Point de non-lu.
+
+## .ds-badge--card
+
+L'étiquette de centre d'intérêt posée sur une carte de persona — blanche, faite pour la
+crème.
+
+```tsx
+<span className="ds-badge ds-badge--card">🌿 Jardinage</span>
+```
+
+- **Seul endroit du système où un emoji est permis** : c'est du CONTENU fourni par la base,
+  pas un libellé d'interface. La chip, elle, n'en porte jamais.
+- Vitrine : Data display § Badge.
+
+## .ds-card.is-selected + .ds-card__flag
+
+La carte de choix sélectionnée — les formules d'abonnement.
+
+```tsx
+<div className="ds-card ds-card--interactive is-selected">
+  <span className="ds-badge ds-badge--accent ds-badge--dense ds-card__flag">Recommandé</span>
+  …
+</div>
+```
+
+- La bordure sélectionnée est `--primary`, **la même que la chip** : un seul rouge pour
+  « sélectionné » dans tout le système.
+- Le drapeau est un `Badge` `accent dense` plus la classe de position — pas une nouvelle
+  boîte.
+- Vitrine : Data display § Card.
+
+## .ds-bubble / .ds-typing
+
+Rendues par le composant `ChatBubble` — voir sa section. Les classes sont documentées ici
+pour qui compose une bulle à la main ; dans une app, passez par le composant.
+
+## .ds-portrait
+
+La vignette d'une personne **sans photo**, et qui n'a jamais l'air cassée.
+
+```tsx
+<span className="ds-portrait" style={{ aspectRatio: '3 / 4' }}>
+  <Halo placement="center" />
+  <span className="accent">{prenom.charAt(0).toUpperCase()}</span>
+</span>
+```
+
+- **Le ratio vient du site d'appel** — `aspectRatio` ou `height`. La classe n'en impose
+  aucun : une vignette n'a pas de proportion universelle.
+- ⚠️ **Le nœud `.accent` ne porte RIEN d'autre** : ni classe, ni style. La typo lui arrive
+  par héritage du conteneur. Tout ce qu'on pose à côté d'elle casse le clip en silence —
+  c'est le piège de [`docs/PIEGES.md`](PIEGES.md), et `check-fragile-classes.mjs` le
+  surveille.
+- **Rien à faire pour le sombre** : l'initiale y quitte `.accent` pour `--primary-readable`
+  toute seule, par une règle scopée au portrait.
+- Avec photo, c'est la même boîte : un `<img>` à la place des deux enfants.
+- Vitrine : Marque § Portrait de repli.

@@ -119,6 +119,7 @@
   --choice-box-radius:0.4375rem;  /* 7 — squircle sur 20px, où --radius-sm clipperait */
   --choice-dot:0.625rem;          /* 10 — le point du radio */
   --chip-h:2.25rem;           /* 36 — .ds-chip */
+  --dot:0.5rem;               /* 8 — .ds-dot, la pastille de non-lu */
 
   /* Content widths by ROLE — FROM APP CODE. Name the intent, never invent a width. */
   --container-shell:70rem;    /* 1120 — widest shell (hero, landing sections) */
@@ -135,11 +136,11 @@
                             et panneau ensemble : le scrim de Modal/ActionSheet est --z-modal.
                             À 50, elle passait SOUS le tiroir (60) : présente, focus piégé
                             dedans, et invisible.) */
-  --z-navbar:30;
-  --z-popover:40;
-  --z-scrim:50;
-  --z-drawer:60;
-  --z-modal:70;
+  --z-navbar:30; /* @kind other */
+  --z-popover:40; /* @kind other */
+  --z-scrim:50; /* @kind other */
+  --z-drawer:60; /* @kind other */
+  --z-modal:70; /* @kind other */
 
   /* Ombres — trois niveaux teintés d'encre, jamais du noir pur.
      La GÉOMÉTRIE (décalage, flou, opacité) appartient au socle et ne se substitue pas ;
@@ -173,13 +174,13 @@
      est de la marque et n'est donc pas ici.
      Elles étaient 48 littéraux inline dans patterns.css : changer le tempo du système
      demandait 48 remplacements, et personne ne le faisait. */
-  --duration-fast:150ms;   /* survol, focus, changement de couleur */
-  --duration-base:200ms;   /* transition standard : fond, bordure, ombre, largeur */
-  --duration-slow:300ms;   /* installation d'un panneau — modale, feuille, tiroir */
-  --duration-shimmer:1.4s; /* la boucle du squelette et de la barre indéterminée */
-  --duration-spin:0.8s;    /* la boucle du spinner */
-  --duration-rotate:1s;    /* la rotation générique de .ds-spin, posable sur une icône */
-  --duration-typing:1.2s;     /* cycle de l'indicateur de saisie .ds-typing */
+  --duration-fast:150ms; /* @kind other */   /* survol, focus, changement de couleur */
+  --duration-base:200ms; /* @kind other */   /* transition standard : fond, bordure, ombre, largeur */
+  --duration-slow:300ms; /* @kind other */   /* installation d'un panneau — modale, feuille, tiroir */
+  --duration-shimmer:1.4s; /* @kind other */ /* la boucle du squelette et de la barre indéterminée */
+  --duration-spin:0.8s; /* @kind other */    /* la boucle du spinner */
+  --duration-rotate:1s; /* @kind other */    /* la rotation générique de .ds-spin, posable sur une icône */
+  --duration-typing:1.2s; /* @kind other */     /* cycle de l'indicateur de saisie .ds-typing */
   --ease-standard:cubic-bezier(0.2, 0, 0, 1);  /* @kind other */
 }
 .dark{

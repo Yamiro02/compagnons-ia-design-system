@@ -318,6 +318,7 @@
   /* --sidebar-head-h:3rem; */          /* socle : 48 — en-tête du tiroir */
   /* --sidenav-h:2.75rem; */           /* socle : 44 — un lien de tiroir, au seuil tactile */
   /* --page-min:2.5rem; */              /* socle : 40 — carré minimum d'un bouton de pagination */
+  /* --dot:0.5rem; */                   /* socle : 8 — la pastille de non-lu, .ds-dot */
   /* --tabs-radius:0.875rem; */         /* socle : 14 — l'arrondi PROPRE à la barre d'onglets.
                                            Il ne suit pas --radius-* : le changer ne touche
                                            ni les cartes ni les boutons. */

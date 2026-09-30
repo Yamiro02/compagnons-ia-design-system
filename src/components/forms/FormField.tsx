@@ -27,8 +27,9 @@ export function FormField({
         </label>
       ) : null}
       {children}
+      {/* L'icône d'erreur est SANS taille : le créneau .ds-error svg rend 0.875rem. */}
       {error ? (
-        <span className="ds-error"><Icon name="circle-alert" size="0.875rem" strokeWidth={2.5} />{error}</span>
+        <span className="ds-error"><Icon name="circle-alert" strokeWidth={2.5} />{error}</span>
       ) : help ? <span className="ds-help">{help}</span> : null}
     </div>
   );

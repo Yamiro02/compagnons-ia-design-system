@@ -22,10 +22,19 @@
  * Usage : node check-preflight-drift.mjs
  */
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
+
+/* TAILWIND SE RÉSOUT PAR LE RÉSOLVEUR DE MODULES, pas par un chemin relatif. Un chemin en
+   dur (`node_modules/tailwindcss/…`) suppose que le paquet est installé JUSTE SOUS le cwd :
+   il rate un `node_modules` hissé par un workspace, un dépôt imbriqué, ou un lancement
+   depuis un autre dossier — et le garde se dégrade alors en avertissement, donc ne vérifie
+   plus rien, en silence. `createRequire` trouve le paquet où qu'il soit dans la chaîne. */
+const req = createRequire(import.meta.url);
+const resoudre = (spec) => { try { return req.resolve(spec); } catch { return null; } };
 
 const COPIE = 'src/styles/tokens/preflight.css';
-const AMONT = 'node_modules/tailwindcss/preflight.css';
-const PKG = 'node_modules/tailwindcss/package.json';
+const AMONT = resoudre('tailwindcss/preflight.css');
+const PKG = resoudre('tailwindcss/package.json');
 
 const fin = (n = 0) => process.exit(n);
 
