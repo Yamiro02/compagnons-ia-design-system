@@ -259,6 +259,13 @@ de la mesure faite ici :
   très en dessous de 3:1. C'est un usage courant et non couvert stricto sensu par 1.4.11
   (l'état reste identifiable par le curseur et le focus), mais il mérite d'être connu.
 - **2.4.7, 1.4.12, 1.4.10.** Focus, espacement du texte, redimensionnement : hors mesure.
+  **Une exception écrite à l'anneau de focus** (v0.7.0) : un titre ou une zone de contenu
+  (`h1`–`h6`, `main`, `section`, `article`) en `tabindex="-1"` et sans `role` n'affiche
+  pas l'anneau quand une app y place le focus par programme — le titre d'une étape, pour
+  que le lecteur d'écran annonce le changement. 2.4.7 demande un focus visible pour ce qui
+  **s'utilise au clavier** ; ce titre n'est ni dans l'ordre de tabulation ni actionnable,
+  et l'annonce ne dépend pas de l'anneau. La portée est volontairement étroite : un
+  `tabindex="-1"` sur un widget (tabindex itinérant, `role` posé) garde son anneau.
 - **2.5.8 Taille de la cible (minimum) — la règle : 44 px AU DOIGT, pas forcément à l'œil.**
   Toute cible offre au moins 44 px de zone de toucher ; sa partie VISIBLE peut être plus
   petite. Le rail des contrôles (`--control-md`) vaut **48 px** sur toutes les largeurs

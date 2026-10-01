@@ -7,7 +7,9 @@ import { useFieldDescribedBy } from './field-context';
  *  Chaque poignée est un `role="slider"` focusable ; le groupe est nommé par le libellé
  *  visible. Clavier : flèches (± step), Page↑/↓ (± un dixième de la plage), Début/Fin.
  *  Pointeur : glisser une poignée, ou cliquer la piste — la poignée la plus proche y va.
- *  Les deux poignées ne se croisent jamais. */
+ *  Les deux poignées ne se croisent jamais. `onChange` suit chaque cran ; `onChangeEnd`
+ *  (v0.7.0) n'est appelé qu'une fois l'interaction FINIE — c'est lui qu'on branche sur un
+ *  enregistrement serveur. */
 export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   /** Libellé visible, à gauche de l'en-tête — il nomme le groupe. */
   label: ReactNode;
@@ -17,6 +19,14 @@ export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, '
   step?: number;
   value: [number, number];
   onChange?: (value: [number, number]) => void;
+  /**
+   * La fin d'une interaction (v0.7.0) — pour ENREGISTRER sans appeler le serveur à chaque
+   * cran. Appelé une fois : au relâchement du pointeur (ou à l'annulation du geste), au
+   * relâchement de la touche (flèche, Page, Début / Fin — une flèche maintenue fait des
+   * dizaines de crans et UN appel), ou quand la poignée perd le focus en pleine frappe.
+   * Jamais si la valeur n'a pas bougé depuis le début de l'interaction.
+   */
+  onChangeEnd?: (value: [number, number]) => void;
   /** Mise en forme d'UNE valeur : `aria-valuetext` des poignées et bornes par défaut. */
   formatValue?: (value: number) => string;
   /** La valeur affichée à droite de l'en-tête. Défaut : « a – b » via `formatValue`. */
@@ -28,8 +38,10 @@ export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, '
   disabled?: boolean;
 }
 
+const TOUCHES = new Set(['ArrowRight', 'ArrowUp', 'ArrowLeft', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End']);
+
 export function RangeSlider({
-  label, min, max, step = 1, value, onChange, formatValue = String, display, bounds,
+  label, min, max, step = 1, value, onChange, onChangeEnd, formatValue = String, display, bounds,
   thumbLabels = ['Minimum', 'Maximum'], disabled = false, className = '', ...rest
 }: RangeSliderProps): JSX.Element {
   const labelId = useId();
@@ -41,6 +53,21 @@ export function RangeSlider({
      deux sont confondues : c'est la DIRECTION qui décide, sinon la poignée du dessus
      resterait bloquée contre l'autre. */
   const drag = useRef<{ index: 0 | 1 | undefined; x: number } | null>(null);
+  /* L'INTERACTION EN COURS — sa valeur de départ, et la dernière valeur ÉMISE. La dernière
+     est tenue ici, pas lue dans `value` : au relâchement, le parent n'a pas forcément
+     encore rendu le dernier cran, et onChangeEnd enregistrerait l'avant-dernier. */
+  const depart = useRef<[number, number] | null>(null);
+  const dernier = useRef<[number, number]>(value);
+  const commencer = () => {
+    if (depart.current) return;
+    depart.current = value;
+    dernier.current = value;
+  };
+  const terminer = () => {
+    const d = depart.current;
+    depart.current = null;
+    if (d && (d[0] !== dernier.current[0] || d[1] !== dernier.current[1])) onChangeEnd?.(dernier.current);
+  };
 
   const [a, b] = value;
   const span = max - min || 1;
@@ -50,7 +77,9 @@ export function RangeSlider({
   const poser = (index: 0 | 1, v: number) => {
     const borne = index === 0 ? Math.min(snap(v), b) : Math.max(snap(v), a);
     if (borne === value[index]) return;
-    onChange?.(index === 0 ? [borne, b] : [a, borne]);
+    const suivant: [number, number] = index === 0 ? [borne, b] : [a, borne];
+    dernier.current = suivant;
+    onChange?.(suivant);
   };
 
   const depuisPointeur = (clientX: number) => {
@@ -68,7 +97,12 @@ export function RangeSlider({
     }[e.key];
     if (cible === undefined) return;
     e.preventDefault();
+    commencer();
     poser(index, cible);
+  };
+  /* Fin d'une action clavier : la touche relâchée, pas chaque répétition. */
+  const finClavier = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (TOUCHES.has(e.key)) terminer();
   };
 
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
@@ -82,6 +116,7 @@ export function RangeSlider({
     e.preventDefault();
     track.current!.setPointerCapture(e.pointerId);
     drag.current = { index, x: e.clientX };
+    commencer();
     if (index !== undefined) {
       thumbs.current[index]?.focus();
       if (surPoignee === undefined) poser(index, v);
@@ -99,7 +134,7 @@ export function RangeSlider({
     poser(d.index, depuisPointeur(e.clientX));
   };
 
-  const finDrag = () => { drag.current = null; };
+  const finDrag = () => { drag.current = null; terminer(); };
 
   const bornes = bounds === undefined ? [formatValue(min), formatValue(max)] : bounds;
 
@@ -141,6 +176,10 @@ export function RangeSlider({
             className="ds-range__thumb"
             style={{ left: pct(v) + '%' }}
             onKeyDown={disabled ? undefined : auClavier(i as 0 | 1)}
+            onKeyUp={disabled ? undefined : finClavier}
+            /* Le focus change de poignée PENDANT un glisser (poignées confondues) : ce blur-là
+               ne termine rien, c'est le relâchement qui le fera. */
+            onBlur={() => { if (!drag.current) terminer(); }}
           />
         ))}
       </div>

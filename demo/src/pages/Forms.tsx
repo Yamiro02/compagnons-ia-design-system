@@ -1,6 +1,6 @@
 import { useRef, useState, type KeyboardEvent } from 'react';
 import { IDENTITY } from '../identity';
-import { Calendar, Checkbox, DatePicker, FormField, Icon, IconButton, Input, Radio, RangeSlider, Select, Switch, Textarea } from '@compagnons-ia/ds';
+import { Button, Calendar, Checkbox, DatePicker, FormField, Icon, IconButton, Input, Radio, RangeSlider, Select, Switch, Textarea } from '@compagnons-ia/ds';
 import { Block, Grid, Row, Section, Stack } from '../ui';
 
 const SERIES = [
@@ -130,6 +130,47 @@ function BarreDeSaisie() {
       <IconButton label="Envoyer" variant="primary" size="sm" disabled={!texte.trim()} onClick={() => setTexte('')}>
         <Icon name="arrow-right" />
       </IconButton>
+    </div>
+  );
+}
+
+/* onChange suit chaque cran ; onChangeEnd n'arrive qu'à la fin de l'interaction — c'est lui
+   qu'on branche sur l'enregistrement. Les deux compteurs montrent l'écart. */
+function CurseurEnregistre() {
+  const [age, setAge] = useState<[number, number]>([35, 50]);
+  const [crans, setCrans] = useState(0);
+  const [enregistre, setEnregistre] = useState<[number, number] | null>(null);
+  const [appels, setAppels] = useState(0);
+  return (
+    <Stack>
+      <RangeSlider label="Tranche d'âge" min={25} max={65} value={age}
+        onChange={v => { setAge(v); setCrans(n => n + 1); }}
+        onChangeEnd={v => { setEnregistre(v); setAppels(n => n + 1); }}
+        formatValue={v => `${v} ans`} display={`${age[0]} – ${age[1]} ans`} bounds={['25 ans', '65 ans et +']} />
+      <span className="text-meta text-text-muted" aria-live="polite">
+        onChange : {crans} cran{crans > 1 ? 's' : ''} · onChangeEnd : {appels} appel{appels > 1 ? 's' : ''}
+        {enregistre ? ` · enregistré ${enregistre[0]} – ${enregistre[1]} ans` : ''}
+      </span>
+    </Stack>
+  );
+}
+
+/* Le changement d'étape : le focus va sur le TITRE de l'étape (tabIndex -1), pour qu'un
+   lecteur d'écran l'annonce. Le titre n'affiche pas d'anneau — il n'est pas actionnable ;
+   le bouton, lui, garde le sien. */
+const ETAPES = ['Ton prénom', 'Ta date de naissance', 'Tes centres d\'intérêt', 'Tes moments pour discuter', 'Ta compagne'];
+function ChangementEtape() {
+  const [etape, setEtape] = useState(1);
+  const titre = useRef<HTMLHeadingElement>(null);
+  const suivante = () => {
+    setEtape(e => (e % ETAPES.length) + 1);
+    requestAnimationFrame(() => titre.current?.focus());
+  };
+  return (
+    <div className="flex flex-col gap-space-4">
+      <Etapes courante={etape} total={ETAPES.length} />
+      <h3 ref={titre} tabIndex={-1}>{ETAPES[etape - 1]}</h3>
+      <Button variant="secondary" size="sm" onClick={suivante}>Étape suivante</Button>
     </div>
   );
 }
@@ -410,6 +451,16 @@ export function FormsPage() {
             <Etapes courante={5} total={5} />
           </Stack>
         </Block>
+        <Block label="Changement d'étape — le focus sur le titre" hint="« Étape suivante » place le focus sur le TITRE de l'étape (tabIndex -1), pour qu'un lecteur d'écran annonce le changement. Le titre n'affiche pas d'anneau — il n'est ni dans l'ordre de tabulation ni actionnable (base.css, v0.7.0) ; le bouton garde le sien. Essaie au clavier : Tab jusqu'au bouton, Entrée. Le premier îlot suit la vitrine, le second force le sombre.">
+          <Grid cols={2}>
+            {[false, true].map(dark => (
+              <div key={String(dark)} className={`${dark ? 'dark ' : ''}flex flex-col gap-space-3 rounded-xl bg-background p-space-4`}>
+                <span className="chip text-text-muted">{dark ? 'sombre, forcé' : 'thème courant'}</span>
+                <ChangementEtape />
+              </div>
+            ))}
+          </Grid>
+        </Block>
       </Section>
 
       <Section title="RangeSlider" note="Le curseur de PLAGE — la tranche d'âge de l'onboarding. Deux poignées role=slider dans un groupe nommé par le libellé ; la portion choisie porte --brand-gradient en remplissage, sans lueur, sur un rail --border (--surface-alt en sombre). Poignée 24 à l'œil, 44 au doigt. Clavier : flèches, Page↑/↓, Début/Fin ; pointeur : glisser, ou cliquer la piste.">
@@ -425,6 +476,16 @@ export function FormsPage() {
               <RangeSlider label="Tranche d'âge" min={25} max={65} value={ageSombre} onChange={setAgeSombre}
                 formatValue={v => `${v} ans`} display={`${ageSombre[0]} – ${ageSombre[1]} ans`} bounds={['25 ans', '65 ans et +']} />
             </div>
+          </Grid>
+        </Block>
+        <Block label="onChangeEnd — enregistrer à la fin" hint="onChange suit chaque cran ; onChangeEnd n'est appelé qu'une fois l'interaction finie : poignée relâchée, touche relâchée (une flèche maintenue = des dizaines de crans, un appel), ou poignée quittée en pleine frappe — et jamais si la valeur n'a pas bougé. C'est lui qu'on branche sur le serveur. Le premier îlot suit la vitrine, le second force le sombre.">
+          <Grid cols={2}>
+            {[false, true].map(dark => (
+              <div key={String(dark)} className={`${dark ? 'dark ' : ''}flex flex-col gap-space-3 rounded-xl bg-background p-space-4`}>
+                <span className="chip text-text-muted">{dark ? 'sombre, forcé' : 'thème courant'}</span>
+                <CurseurEnregistre />
+              </div>
+            ))}
           </Grid>
         </Block>
         <Block label="Désactivé, sans bornes" hint="disabled : opacité .5, poignées hors tabulation. bounds={false} retire la ligne des bornes.">

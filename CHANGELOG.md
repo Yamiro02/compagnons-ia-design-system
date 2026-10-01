@@ -11,6 +11,34 @@ concordent. Le tag n'est pas le but : c'est le péage.
 
 ---
 
+## 0.7.0 — enregistrer, annoncer
+
+Remonté par l'app. Tout est optionnel ; un changement de rendu, ciblé, signalé ⚠.
+
+### Ajouté
+
+- **`Icon` — `heart`** (51 glyphes) : « Mes préférences de rencontre ».
+- **`RangeSlider` — `onChangeEnd?: (value: [number, number]) => void`** : la fin d'une
+  interaction, pour enregistrer sans appeler le serveur à chaque cran. Appelé une fois au
+  relâchement du pointeur (ou à l'annulation du geste), au relâchement de la touche —
+  flèche, Page, Début / Fin : une flèche maintenue fait des dizaines de crans et UN appel —,
+  ou quand la poignée perd le focus en pleine frappe. Jamais si la valeur n'a pas bougé.
+  La valeur passée est la dernière émise, tenue par le composant.
+- Vitrine : compteurs `onChange` / `onChangeEnd` sur un curseur, et un changement d'étape
+  qui place le focus sur le titre — clair et sombre forcé.
+
+### ⚠ Changé
+
+- **`base.css` : pas d'anneau de focus sur un titre ou une zone de contenu en
+  `tabindex="-1"` sans `role`** — `h1`–`h6`, `main`, `section`, `article`. Le cas : le
+  titre d'une étape, focalisé par programme pour que le lecteur d'écran annonce le
+  changement. Il n'est ni dans l'ordre de tabulation ni actionnable (WCAG 2.4.7 ne vise
+  que ce qui s'utilise au clavier). Rien ne change pour les éléments interactifs, les
+  `tabindex="0"`, ni les widgets à tabindex itinérant (chips radio, `role="option"`,
+  poignées), qui passent par `-1` et gardent leur anneau.
+
+---
+
 ## 0.6.0 — les petits manques du web
 
 Remontés par l'app pendant la construction de ses composants. Tout ajout est optionnel :

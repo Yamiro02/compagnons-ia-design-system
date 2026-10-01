@@ -61,6 +61,16 @@ p{margin:0;text-wrap:pretty}
 a{color:var(--primary-readable);text-decoration:none;transition:color var(--duration-fast) var(--ease-standard)}
 a:hover{color:color-mix(in srgb,var(--primary-readable) 80%,var(--foreground))}
 a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+/* LE TITRE FOCALISÉ PAR PROGRAMME — v0.7.0. Une app place le focus sur le titre d'une étape
+   (`tabIndex={-1}` + `.focus()`) pour qu'un lecteur d'écran annonce le changement d'étape.
+   Ce titre n'est ni dans l'ordre de tabulation ni actionnable : l'anneau n'y montrerait
+   rien d'utilisable — et WCAG 2.4.7 ne le demande que pour ce qui s'utilise au clavier. La
+   lecture, elle, ne dépend pas de l'anneau.
+   LA PORTÉE EST ÉTROITE, ET C'EST LE POINT. Pas « tout tabindex="-1" » : les widgets à
+   tabindex itinérant (chips radio, role="option", poignées) passent justement par -1, et
+   leur anneau est obligatoire. Seuls les titres et les zones de contenu, en -1, SANS role.
+   Spécificité 0,3,0 : elle passe devant la règle du dessus (0,2,0), même couche. */
+:where(h1,h2,h3,h4,h5,h6,main,section,article)[tabindex="-1"]:not([role]):focus-visible{outline:none}
 code,pre,kbd,samp{font-family:var(--font-mono)}
 img{max-width:100%;display:block}
 ::selection{background:color-mix(in srgb,var(--primary) 24%,transparent)}

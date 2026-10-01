@@ -73,6 +73,14 @@ l'horodatage d'une conversation, « il y a 2 min » ; `eyebrow` / `text-eyebrow`
 sur-titre, en capitales espacées. Un horodatage en `text-eyebrow` s'écrit « 2 1 : 4 2 ».
 `text-meta` est dans `PALIERS_TYPO` : `cn()` le garde à côté d'une couleur `text-*`.
 
+**Le focus sur un titre d'étape** (v0.7.0) : pour qu'un lecteur d'écran annonce un
+changement d'étape, l'app place le focus sur le TITRE de l'étape — `<h1 tabIndex={-1}>` +
+`.focus()`. Ce titre n'affiche pas d'anneau : `base.css` l'éteint pour
+`h1`–`h6`, `main`, `section` et `article` en `tabindex="-1"` **sans `role`** — ni dans
+l'ordre de tabulation, ni actionnables. Tout le reste garde son anneau, y compris les
+widgets à tabindex itinérant (chips radio, `role="option"`, poignées), qui passent par
+`-1`. Ne focalisez donc pas un `<div>` générique : visez le titre.
+
 ---
 
 # actions
@@ -805,7 +813,7 @@ lueur. Contrôlé : `value` + `onChange`.
 ```
 
 - Props : `label` (requis, nomme le groupe) · `min` · `max` · `step` (défaut 1) · `value`
-  (`[number, number]`) · `onChange` · `formatValue` (une valeur → texte : `aria-valuetext`
+  (`[number, number]`) · `onChange` · `onChangeEnd` (v0.7.0) · `formatValue` (une valeur → texte : `aria-valuetext`
   et bornes par défaut) · `display` (la valeur de l'en-tête, défaut « a – b ») · `bounds`
   (`[gauche, droite]`, `false` les retire) · `thumbLabels` (défaut `['Minimum',
   'Maximum']`) · `disabled` + attributs d'un `<div>`.
@@ -815,6 +823,17 @@ lueur. Contrôlé : `value` + `onChange`.
 - Clavier : flèches (± `step`), Page↑ / Page↓ (± un dixième de la plage), Début / Fin.
   Pointeur : glisser une poignée, ou cliquer la piste — la poignée la plus proche y va.
   Deux poignées confondues : c'est la direction du premier mouvement qui choisit.
+- **`onChange` suit chaque cran ; `onChangeEnd` (v0.7.0) suit la FIN de l'interaction** —
+  c'est lui qu'on branche sur l'enregistrement serveur. Appelé une fois : au relâchement
+  du pointeur (ou à l'annulation du geste), au relâchement de la touche — une flèche
+  maintenue fait des dizaines de crans et UN appel —, ou quand la poignée perd le focus en
+  pleine frappe. Jamais si la valeur n'a pas bougé depuis le début de l'interaction (un
+  appui sans glisser, Fin déjà au maximum). La valeur passée est la dernière émise, pas
+  celle de `value` au moment du relâchement.
+  ```tsx
+  <RangeSlider label="Tranche d'âge" min={25} max={65} value={age} onChange={setAge}
+    onChangeEnd={enregistrerPreferences} />
+  ```
 - Mesures : poignée 24 (`--space-5`) à l'œil, **44 au doigt** (`::before`) ; piste 4
   (`--space-1`). Rail `--border` en clair, `--surface-alt` en sombre : sur `--border`, la
   portion choisie tombait à 2,56:1 en sombre ; sur `--surface-alt`, en clair, le rail
@@ -906,7 +925,7 @@ l'Input. `forwardRef` sur le `<textarea>` natif — la ref reste branchée avec 
 ## Icon
 
 LE système d'icônes : Lucide, exclusivement. Jamais un emoji, jamais un SVG dessiné à la
-main. 50 glyphes typés (`IconName`) — un nom hors du type est une erreur TypeScript, et
+main. 51 glyphes typés (`IconName`) — un nom hors du type est une erreur TypeScript, et
 c'est voulu.
 
 **Ne pas** chercher `youtube` ou `instagram` ici : les icônes de PLATEFORME vivent dans
@@ -929,7 +948,7 @@ enregistrée `inherits: false`, une règle de conteneur est inerte, et c'est vou
 ```
 
 **Ce que le catalogue ne couvre pas se passe en `glyph`.** Lucide compte ~1500 tracés ;
-le catalogue en cure 50 glyphes. Pour le reste, l'app importe le tracé et le socle lui applique
+le catalogue en cure 51 glyphes. Pour le reste, l'app importe le tracé et le socle lui applique
 ses propres règles — même grille, même épaisseur. Plus besoin de publier une version du
 design system pour une icône.
 
