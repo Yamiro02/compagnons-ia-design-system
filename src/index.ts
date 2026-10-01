@@ -29,7 +29,7 @@ export type { IconButtonProps } from './components/actions/IconButton';
 
 /* forms */
 export { Input } from './components/forms/Input';
-export type { InputProps } from './components/forms/Input';
+export type { InputProps, InputAction } from './components/forms/Input';
 export { Textarea } from './components/forms/Textarea';
 export type { TextareaProps } from './components/forms/Textarea';
 export { Select } from './components/forms/Select';

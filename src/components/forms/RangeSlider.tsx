@@ -1,6 +1,7 @@
 import { useId, useRef } from 'react';
 import type { HTMLAttributes, JSX, KeyboardEvent, PointerEvent, ReactNode } from 'react';
 import { cn } from '../../lib/cn';
+import { useFieldDescribedBy } from './field-context';
 
 /** Curseur de PLAGE — deux poignées sur une piste, une valeur `[a, b]`. Contrôlé.
  *  Chaque poignée est un `role="slider"` focusable ; le groupe est nommé par le libellé
@@ -32,6 +33,8 @@ export function RangeSlider({
   thumbLabels = ['Minimum', 'Maximum'], disabled = false, className = '', ...rest
 }: RangeSliderProps): JSX.Element {
   const labelId = useId();
+  /* Les messages d'un FormField parent (erreur, puis aide) — v0.5.0, posés sur chaque poignée. */
+  const describedBy = useFieldDescribedBy();
   const track = useRef<HTMLDivElement>(null);
   const thumbs = useRef<(HTMLDivElement | null)[]>([]);
   /* La poignée tenue par le pointeur. `undefined` le temps du premier mouvement quand les
@@ -134,6 +137,7 @@ export function RangeSlider({
             aria-valuenow={v}
             aria-valuetext={formatValue(v)}
             aria-disabled={disabled || undefined}
+            aria-describedby={describedBy}
             className="ds-range__thumb"
             style={{ left: pct(v) + '%' }}
             onKeyDown={disabled ? undefined : auClavier(i as 0 | 1)}

@@ -11,6 +11,62 @@ concordent. Le tag n'est pas le but : c'est le péage.
 
 ---
 
+## 0.5.0 — les écrans d'auth
+
+Origine : maquettes « Parcours cœur », écrans AUTH 1 à 5b. Tout ajout est optionnel ; deux
+changements de rendu, signalés ⚠ ci-dessous.
+
+### Ajouté
+
+- **`Input` — `action?: InputAction`**, avec `InputAction = { icon: ReactNode; label: string;
+  onClick: () => void; pressed?: boolean }` (type exporté). Un vrai `<button type="button">`
+  DANS le champ, à droite : `aria-label` et `title` = `label`, `aria-pressed` quand
+  `pressed` est passé. 40 dans un champ md, 32 dans un sm, 44 au doigt ; hauteur du champ
+  inchangée, `padding-right` réservé `--space-7`, comme l'unité. Désactivé avec le champ.
+  Distinct de `unit`, qui reste un repère `aria-hidden` ; passés ensemble, `action`
+  l'emporte (avertissement en développement). Classes `.ds-input-action`,
+  `.ds-input-action__btn`.
+  **Doctrine mise à jour** : une action DANS un champ n'agit que sur la valeur du champ
+  (afficher / masquer, effacer) ; toute autre action reste un `IconButton` posé à côté.
+- **`Icon` — `eye-off`** entre au catalogue (49 glyphes) : la bascule du mot de passe.
+- **`Select` — `placeholder?: string`** : une option vide désactivée en tête, en
+  `--text-muted` tant que rien n'est choisi ; choisie d'office sans `value` ni
+  `defaultValue`. Classe `.ds-select--placeholder` sur l'enveloppe.
+- **`FormField` — `group?: boolean`** : racine `role="group"` nommée par le libellé
+  (`<span>`), pour plusieurs contrôles sous un libellé (la date en trois `Select`).
+- **`FormField` relie ses messages au contrôle** : les ids `${htmlFor}-error` et
+  `${htmlFor}-help` (générés sans `htmlFor`) passent par contexte, et `Input`,
+  `Textarea`, `Select`, `DatePicker` (`triggerProps['aria-describedby']`, nouveau champ
+  optionnel), `Checkbox` et `RangeSlider` les posent dans leur `aria-describedby` — erreur,
+  puis aide, puis celui de l'appelant. Un lecteur d'écran annonçait « invalide » sans dire
+  pourquoi.
+- **`Checkbox` — `error?: ReactNode`** : `.ds-error` sous la case, aligné sur le texte du
+  libellé (`.ds-choice__error`) ; la case reçoit `aria-invalid` et cite le message. Une
+  enveloppe `.ds-choice-field` n'apparaît que si `error` est passé.
+- **`Checkbox` et `Radio` — libellé sur plusieurs lignes** : `.ds-choice__label` ; la case
+  s'aligne sur la PREMIÈRE ligne (`align-items:flex-start` + un retrait de
+  `(case − 1lh) / 2`). Sur une ligne, rendu identique au pixel.
+- `check-contrast.mjs` : + `.ds-input-action__btn — icône --text-muted sur le champ`
+  (6,34 / 5,78, seuil 3) — **59 conformes sur 65**, écarts assumés inchangés (6).
+- Vitrine : mot de passe à œil, recherche à effacer, date de naissance en trois `Select`,
+  erreur + aide, cases en erreur à libellé long — en thème courant et en sombre forcé.
+
+### ⚠ Changé
+
+- **`FormField` : une erreur ne REMPLACE plus l'aide.** Quand `error` et `help` sont passés
+  ensemble, les deux s'affichent — l'erreur d'abord, collée au champ ; l'aide ensuite, le
+  rappel de la règle (AUTH 5a). Ne bouge que pour un appelant qui passait déjà les deux.
+- **`Select` : padding droit 48 → 40**, ce que demande le chevron (retrait 16 + glyphe 16
+  + air 8). Seul effet visible : un libellé long se coupe 8 px plus loin. C'est ce qui
+  permet à trois `Select` côte à côte sur 390 px (92 / 139 / 111 px) d'afficher « Jour »,
+  « septembre » et « Année » sans les couper.
+
+### Corrigé
+
+- `package-lock.json` portait encore la version 0.2.0 ; il suit `package.json`.
+
+---
+
 ## 0.4.0 — les hauteurs tombent sur la grille
 
 Origine : maquettes « Parcours cœur », session du 01/10/2026. **⚠ Changements de RENDU** :

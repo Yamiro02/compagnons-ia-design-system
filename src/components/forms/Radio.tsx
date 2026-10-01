@@ -15,7 +15,8 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio({
     <label className={cn('ds-choice', disabled && 'is-disabled', className)}>
       <input ref={ref} type="radio" disabled={disabled} {...rest} />
       <span className="ds-choice__box ds-choice__box--radio"><span className="ds-choice__dot" /></span>
-      {label ? <span>{label}</span> : null}
+      {/* .ds-choice__label : le rond s'aligne sur la PREMIÈRE ligne d'un libellé long. */}
+      {label ? <span className="ds-choice__label">{label}</span> : null}
     </label>
   );
 });

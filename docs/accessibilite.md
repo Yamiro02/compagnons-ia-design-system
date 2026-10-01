@@ -63,7 +63,7 @@ Une sortie vide = la règle tient. Aujourd'hui : vide.
 
 ## 2. Les paires conformes
 
-58 paires sur 64, dans les deux thèmes.
+59 paires sur 65, dans les deux thèmes.
 
 | Paire | contenu | seuil | clair | sombre |
 |---|---|--:|--:|--:|
@@ -120,6 +120,7 @@ Une sortie vide = la règle tient. Aujourd'hui : vide.
 | `anneau de focus --ring sur --background` | contour 2px | 3 | 5,93 | 7,26 |
 | `.ds-choice coché — aplat --primary` | contrôle | 3 | 5,93 | 4,01 |
 | `.ds-switch actif — piste --primary` | contrôle | 3 | 5,93 | 4,01 |
+| `.ds-input-action__btn — icône --text-muted sur le champ` | icône | 3 | 6,34 | 5,78 |
 | `.ds-progress__bar sur son rail` | graphique | 3 | 5,68 | 3,20 |
 | `.ds-range__fill sur son rail` | graphique | 3 | 4,75 | 3,20 |
 | `.ds-range__thumb — bordure --primary sur la page` | contour 2px | 3 | 5,93 | 4,01 |
@@ -255,7 +256,7 @@ de la mesure faite ici :
   Toute cible offre au moins 44 px de zone de toucher ; sa partie VISIBLE peut être plus
   petite. Le rail des contrôles (`--control-md`) vaut **48 px** sur toutes les largeurs
   d'écran (v0.4.0 — il ne descend plus à 44 sous 64 rem) : il tient le seuil à l'œil comme
-  au doigt. Trois composants voient moins que 44 et touchent au moins 44 — ce sont trois
+  au doigt. Quatre composants voient moins que 44 et touchent au moins 44 — ce sont quatre
   applications de la règle :
   - **`.ds-tabbar__item`**, l'onglet de la `TabBar` mobile, se voit à `2.25rem` (36 px) :
     la barre est une capsule FLOTTANTE, et à 44 px de haut par item elle mangerait le
@@ -271,6 +272,10 @@ de la mesure faite ici :
     alors pile, sans se chevaucher.
   - **`.ds-range__thumb`**, la poignée du `RangeSlider`, se voit à 24 px (`--space-5`) ; son
     `::before` déborde de `0.625rem` tout autour : **24 + 10 + 10 = 44 px** au doigt.
+  - **`.ds-input-action__btn`**, le bouton DANS un champ (l'œil du mot de passe, v0.5.0), se
+    voit à 40 px dans un champ md et à 32 dans un champ sm ; son `::before` le porte à
+    **44 px** au doigt dans les deux cas. Il ne chevauche aucune autre cible : à sa gauche,
+    le champ lui-même, dont il sert la valeur.
 
   **Un écart assumé, et il est écrit :** les contrôles **`sm`** — bouton, champ,
   bouton-icône — se voient ET se touchent à **40 px** (`--control-sm`, `--icon-control-sm`),

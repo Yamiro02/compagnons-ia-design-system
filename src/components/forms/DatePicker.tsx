@@ -3,6 +3,7 @@ import type { HTMLAttributes, JSX, KeyboardEvent as ReactKeyboardEvent, ReactNod
 import { cn } from '../../lib/cn';
 import { Icon } from '../icons/Icon';
 import { Calendar } from './Calendar';
+import { useFieldDescribedBy } from './field-context';
 
 /**
  * Input-styled trigger (calendar icon) + Calendar in a popover (Dropdown mechanics:
@@ -76,6 +77,8 @@ export interface DatePickerTriggerApi {
     'aria-haspopup': 'dialog';
     'aria-expanded': boolean;
     'aria-controls'?: string;
+    /** Les messages du FormField parent (v0.5.0) — absent hors d'un FormField. */
+    'aria-describedby'?: string;
   };
 }
 
@@ -97,6 +100,8 @@ export const DatePicker = forwardRef<HTMLSpanElement, DatePickerProps>(function 
      l'appelant — la ref ne présume plus de sa balise, elle ne sert qu'au focus. */
   const triggerRef = useRef<HTMLElement | null>(null);
   const popId = useId();
+  /* Les messages du FormField parent (erreur, puis aide) — v0.5.0. */
+  const describedBy = useFieldDescribedBy();
   useEffect(() => {
     if (!open) return;
     const onDoc = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
@@ -128,6 +133,7 @@ export const DatePicker = forwardRef<HTMLSpanElement, DatePickerProps>(function 
     /* Pointer un id non rendu serait un lien mort pour le lecteur d'écran : la prop
        n'existe que quand le popover existe. */
     'aria-controls': open ? popId : undefined,
+    'aria-describedby': describedBy,
   };
   return (
     <span className={cn('ds-datepicker', className)} ref={poserRefs} {...rest}>

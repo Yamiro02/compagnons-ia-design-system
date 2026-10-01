@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import type { JSX, TextareaHTMLAttributes } from 'react';
 import { cn } from '../../lib/cn';
+import { useFieldDescribedBy } from './field-context';
 
 /** Multi-line field. Auto height (no min-height), vertical resize only. Radius --radius-lg,
  *  the documented exception to the rounded doctrine: a pill would bend its first and last line.
@@ -20,9 +21,11 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea({
-  invalid = false, rows = 4, surface = 'auto', className = '', ...rest
+  invalid = false, rows = 4, surface = 'auto', className = '', 'aria-describedby': ariaDescribedBy, ...rest
 }: TextareaProps, ref): JSX.Element {
+  /* Les messages du FormField parent (erreur, puis aide) — v0.5.0. */
+  const describedBy = useFieldDescribedBy(undefined, ariaDescribedBy);
   const cls = cn('ds-input', 'ds-textarea', surface === 'card' && 'ds-input--on-card', surface === 'page' && 'ds-input--on-page', invalid && 'is-error', className);
-  return <textarea ref={ref} className={cls} rows={rows} aria-invalid={invalid || undefined} {...rest} />;
+  return <textarea ref={ref} className={cls} rows={rows} aria-invalid={invalid || undefined} {...rest} aria-describedby={describedBy} />;
 });
 Textarea.displayName = 'Textarea';

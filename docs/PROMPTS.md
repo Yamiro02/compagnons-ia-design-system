@@ -578,10 +578,25 @@ immédiat (c'est `Switch`).
 <Checkbox label="Option indisponible" disabled />
 ```
 
+```tsx
+<Checkbox label="Je certifie avoir 18 ans ou plus" checked={majeur}
+  onChange={e => setMajeur(e.target.checked)} error="Coche cette case pour continuer." />
+```
+
 - Props : `label` · `indeterminate` (case d'en-tête de sélection multiple : propriété DOM
-  posée par ref, trait `minus` à la place de la coche, `aria-checked="mixed"`) + les
-  attributs natifs (`checked`, `defaultChecked`, `onChange`, `disabled`…).
-- États rendus : décochée, cochée, indéterminée, hover, focus-visible, désactivée.
+  posée par ref, trait `minus` à la place de la coche, `aria-checked="mixed"`) · `error`
+  (v0.5.0) + les attributs natifs (`checked`, `defaultChecked`, `onChange`, `disabled`…).
+- **`error`** (v0.5.0) : le message `.ds-error` SOUS la case, en retrait de la case plus
+  l'écart — il s'aligne sur le TEXTE du libellé. La case reçoit `aria-invalid="true"` et
+  cite le message dans son `aria-describedby`. La case elle-même ne change pas de couleur
+  (maquette AUTH 2d) : le message porte l'erreur, en couleur + icône + texte. Sans `error`,
+  le DOM ne change pas ; avec, une enveloppe `.ds-choice-field` entoure le `<label>`
+  (`className` reste posé sur le `<label>`).
+- **Libellé sur plusieurs lignes** (v0.5.0) : la case reste en face de la PREMIÈRE ligne
+  (`.ds-choice__label`, aligné par `1lh`). Sur une ligne, rendu inchangé au pixel.
+- Dans un `FormField` (groupe de cases, par exemple), la case cite aussi l'erreur et l'aide
+  du champ, après son propre message.
+- États rendus : décochée, cochée, indéterminée, hover, focus-visible, désactivée, en erreur.
 
 ## DatePicker
 
@@ -612,7 +627,8 @@ un `<input type="hidden">` porte la date en ISO (`YYYY-MM-DD`) pour la soumissio
   `{ open, value, triggerProps }` et rend l'élément de son choix en **étalant
   `triggerProps`** dessus — ref, clic, clavier, ARIA. C'est l'étalement qui est le
   contrat : par lui le socle garde la ref (retour de focus sur Échap et sur sélection)
-  et pose l'ARIA lui-même (`aria-haspopup` / `aria-expanded` / `aria-controls`), qui
+  et pose l'ARIA lui-même (`aria-haspopup` / `aria-expanded` / `aria-controls`, et
+  `aria-describedby` dans un `FormField` — v0.5.0), qui
   cesse d'être la charge de l'app. L'élément doit être **focusable et recevoir `ref`** —
   un `<button type="button">` nu, pas un composant sans `forwardRef` (le `Button` du
   socle n'en a pas : la ref s'y perdrait, et le retour de focus avec).
@@ -628,8 +644,12 @@ un `<input type="hidden">` porte la date en ISO (`YYYY-MM-DD`) pour la soumissio
 
 ## FormField
 
-Enveloppe libellé + contrôle + aide/erreur. Une erreur **remplace** le texte d'aide et
-porte toujours couleur + icône + texte.
+Enveloppe libellé + contrôle + erreur + aide. Une erreur porte toujours couleur + icône +
+texte. **Erreur ET aide** (v0.5.0) : quand les deux sont fournies, les deux s'affichent —
+l'erreur d'abord, collée au champ qu'elle qualifie (l'information nouvelle, lue en
+premier), puis l'aide à sa place habituelle (le rappel stable de la règle, qui dit comment
+corriger). Avant la v0.5.0, l'erreur remplaçait l'aide : on perdait la règle au moment
+exact où on en avait besoin.
 
 **Ne pas** poser un libellé à la main au-dessus d'un champ : c'est ce composant qui tient
 l'anatomie.
@@ -641,9 +661,34 @@ l'anatomie.
 <FormField label="Ton email" htmlFor="mail2" error="Ça a planté, on réessaie ?">
   <Input id="mail2" invalid defaultValue="pas-un-email" />
 </FormField>
+<FormField label="Nouveau mot de passe" htmlFor="mdp"
+  error="Mot de passe trop faible : ajoute une majuscule et un chiffre."
+  help="8 caractères minimum, avec une majuscule, une minuscule et un chiffre.">
+  <Input id="mdp" type="password" invalid />
+</FormField>
+<FormField group label="Date de naissance" error="Indique ta date de naissance.">
+  <div className="grid gap-space-2" style={{ gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.5fr) minmax(0,1.2fr)' }}>
+    <Select aria-label="Jour" placeholder="Jour" options={jours} invalid />
+    <Select aria-label="Mois" placeholder="Mois" options={mois} invalid />
+    <Select aria-label="Année" placeholder="Année" options={annees} invalid />
+  </div>
+</FormField>
 ```
 
-- Props : `label` · `htmlFor` · `help` · `error` · `required` (astérisque `--primary`).
+- Props : `label` · `htmlFor` · `help` · `error` · `required` (astérisque `--primary`) ·
+  `group` (v0.5.0).
+- **Les messages sont RELIÉS au contrôle** (v0.5.0) : leurs ids passent par contexte, et
+  `Input`, `Textarea`, `Select`, `DatePicker`, `Checkbox` et `RangeSlider` les posent dans
+  leur `aria-describedby` — erreur d'abord, puis aide, puis celui que l'appelant a passé.
+  Un lecteur d'écran annonce « invalide » ET pourquoi. Les ids valent
+  `${htmlFor}-error` et `${htmlFor}-help` (générés sans `htmlFor`) : un contrôle MAISON
+  y pointe à la main. `FormField` ne pose pas `aria-invalid` — c'est `invalid` sur le
+  contrôle, qui porte aussi la bordure.
+- **`group`** (v0.5.0) : plusieurs contrôles sous un seul libellé — la date en trois
+  `Select`, une liste de cases. La racine devient `role="group"` nommé par le libellé (un
+  `<span>`, plus un `<label>` : il ne vise aucun contrôle unique) ; chaque contrôle porte
+  son propre nom (`aria-label`) et cite l'erreur et l'aide du groupe. `htmlFor` n'y sert
+  plus qu'à fixer les ids.
 
 ## Input
 
@@ -661,22 +706,44 @@ mise en page, le champ est `--card` ; dans une porteuse blanche, il repasse en
 <Input invalid defaultValue="pas-un-email" />
 <Input size="lg" placeholder="CTA de héros" />
 <Input unit="kg" inputMode="decimal" placeholder="72" />
+<Input type={visible ? 'text' : 'password'}
+  action={{
+    icon: <Icon name={visible ? 'eye-off' : 'eye'} />,
+    label: 'Afficher le mot de passe',
+    pressed: visible,
+    onClick: () => setVisible(v => !v),
+  }} />
 ```
 
 - **`icon`** pose un glyphe DANS le champ, à gauche — la loupe d'une recherche,
-  l'enveloppe d'un e-mail. C'est un REPÈRE : `aria-hidden`, non cliquable. Une ACTION dans
-  un champ est un `IconButton` posé à côté, jamais ce slot. Combinable avec `unit`.
+  l'enveloppe d'un e-mail. C'est un REPÈRE : `aria-hidden`, non cliquable — jamais une
+  action. Combinable avec `unit` et `action`.
+- **`action`** (v0.5.0) — `{ icon, label, onClick, pressed? }` (type `InputAction`) : un
+  VRAI bouton DANS le champ, à droite, distinct de `unit` qui reste un repère `aria-hidden`.
+  `<button type="button">` (il ne soumet jamais le formulaire), `aria-label` et `title` =
+  `label`, `aria-pressed` quand `pressed` est passé — c'est alors une bascule. **40** dans
+  un champ md, **32** dans un champ sm, **44 au doigt** dans les deux ; la hauteur du champ
+  ne bouge pas. Désactivé avec le champ. `unit` et `action` occupent la même place :
+  passés ensemble, `action` l'emporte (avertissement en développement).
+- **LA DOCTRINE DE L'ACTION DANS UN CHAMP** (v0.5.0, remplace « une action dans un champ
+  est un `IconButton` posé à côté ») : une action DANS le champ n'agit que sur la **valeur
+  du champ lui-même** — afficher / masquer un mot de passe, effacer une recherche. Une
+  seule par champ. Tout ce qui fait AUTRE CHOSE — envoyer, lancer la recherche, copier
+  ailleurs, ouvrir un sélecteur — reste un `IconButton` posé **à côté**. La recette du
+  mot de passe : un libellé CONSTANT (« Afficher le mot de passe »), `pressed` qui suit
+  l'état, l'icône (`eye` / `eye-off`) et le `type` du champ qui suivent `pressed`.
 - **Hauteurs** (v0.4.0) : `md` **48** — le champ d'un formulaire ; `sm` **40** — la barre de
   recherche, la barre de saisie du chat ; `lg` **52**, site vitrine uniquement.
 - Props : `size` (`sm·md·lg`) · `invalid` · `icon` · `surface` (`auto` défaut = la déduction de
   `patterns.css` décide · `card` force le crème `--background` hors d'une vraie Card ·
   `page` force le blanc `--card` là où la déduction aurait mis du crème — un îlot crème
-  posé dans une Card) · `unit` + attributs natifs. Même prop sur `Textarea`, `Select` et
-  `DatePicker`.
+  posé dans une Card) · `unit` · `action` (v0.5.0) + attributs natifs. Même `surface` sur
+  `Textarea`, `Select` et `DatePicker`.
 - **`unit`** (v0.3.0) : l'unité — « kg », « € », « min » — posée DANS le champ, à
   droite, en sourdine. **Trois caractères au plus** ; plus long, c'est un suffixe de
   libellé, pas une unité. Elle est `aria-hidden` : le libellé du `FormField` la nomme.
-- États rendus : repos, focus, invalide, désactivé — sur les deux surfaces.
+- États rendus : repos, focus, invalide, désactivé — sur les deux surfaces ; l'action au
+  repos, survolée, basculée, focus-visible, désactivée.
 
 ## Radio
 
@@ -693,6 +760,8 @@ Bouton radio — le seul contrôle circulaire du système. Toujours dans un grou
 
 - Props : `label` + attributs natifs (`name`, `value`, `checked`, `onChange`,
   `disabled`…).
+- Libellé sur plusieurs lignes (v0.5.0) : le rond reste en face de la PREMIÈRE ligne,
+  comme pour `Checkbox`. Sur une ligne, rendu inchangé.
 - États rendus : au repos, sélectionné, hover, focus-visible, désactivé.
 
 ## RangeSlider
@@ -737,7 +806,7 @@ lueur. Contrôlé : `value` + `onChange`.
 
 ## Select
 
-Select **natif** sur le rail 3rem, avec un chevron Lucide. Même silhouette qu'Input et
+Select **natif** sur le rail 48, avec un chevron Lucide. Même silhouette qu'Input et
 Button md. `forwardRef` sur le `<select>` natif.
 
 **Ne pas** le remplacer par un menu custom : le natif gagne au clavier et au tactile.
@@ -745,10 +814,20 @@ Button md. `forwardRef` sur le `<select>` natif.
 ```tsx
 <Select options={[{ value: 'build', label: 'Build' }, { value: 'tuto', label: 'Tuto' }]} defaultValue="build" />
 <Select options={[{ value: 'a', label: 'A' }]} invalid />
+<Select aria-label="Jour" placeholder="Jour" options={jours} />
 ```
 
-- Props : `options` (`{value, label}[]`) · `invalid` · `surface` (`auto·page·card`, voir Input) + attributs
-  natifs.
+- Props : `options` (`{value, label}[]`) · `invalid` · `surface` (`auto·page·card`, voir Input) ·
+  `placeholder` (v0.5.0) + attributs natifs.
+- **`placeholder`** (v0.5.0) — l'invite : « Jour », « Mois », « Année ». Une option vide
+  et DÉSACTIVÉE en tête, affichée en `--text-muted` tant que rien n'est choisi (même paire
+  de contraste que le placeholder d'un champ) ; les vraies options restent en
+  `--foreground`. Sans `value` ni `defaultValue`, l'invite est choisie d'office. En
+  contrôlé, `value=""` l'affiche. Désactivée : un choix fait ne revient pas à « rien ».
+- **Le padding droit suit le chevron** (v0.5.0) : 40 (retrait 16 + glyphe 16 + air 8), il
+  valait 48. Trois `Select` côte à côte sur 390 px (grille 1 / 1.5 / 1.2) mesurent 92 /
+  139 / 111 px : « Jour », « septembre » et « Année » tiennent — à 48, les trois étaient
+  coupés.
 - États rendus : repos, focus, invalide, désactivé — sur les deux surfaces.
 
 ## Switch
@@ -791,7 +870,7 @@ vertical uniquement. Même règle de `surface` que l'Input. `forwardRef` sur le
 ## Icon
 
 LE système d'icônes : Lucide, exclusivement. Jamais un emoji, jamais un SVG dessiné à la
-main. 48 glyphes typés (`IconName`) — un nom hors du type est une erreur TypeScript, et
+main. 49 glyphes typés (`IconName`) — un nom hors du type est une erreur TypeScript, et
 c'est voulu.
 
 **Ne pas** chercher `youtube` ou `instagram` ici : les icônes de PLATEFORME vivent dans
@@ -814,7 +893,7 @@ enregistrée `inherits: false`, une règle de conteneur est inerte, et c'est vou
 ```
 
 **Ce que le catalogue ne couvre pas se passe en `glyph`.** Lucide compte ~1500 tracés ;
-le catalogue en cure 48 glyphes. Pour le reste, l'app importe le tracé et le socle lui applique
+le catalogue en cure 49 glyphes. Pour le reste, l'app importe le tracé et le socle lui applique
 ses propres règles — même grille, même épaisseur. Plus besoin de publier une version du
 design system pour une icône.
 

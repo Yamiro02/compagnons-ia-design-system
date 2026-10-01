@@ -239,13 +239,40 @@ svg.lucide{stroke-width:1.75}
 .ds-input-icon .ds-input{padding-left:calc(var(--space-7) + var(--space-1))}
 .ds-input-icon__glyph{position:absolute;left:1.125rem;top:50%;transform:translateY(-50%);pointer-events:none;display:inline-flex;color:var(--text-muted)}
 .ds-input-icon__glyph svg{width:var(--ds-icon-size,1rem);height:var(--ds-icon-size,1rem)}
+/* L'ACTION DU CHAMP — v0.5.0. Un vrai bouton DANS le champ, à droite : l'œil du mot de passe,
+   la croix qui efface. Il n'agit que sur la valeur du champ ; une action qui fait autre chose
+   est un IconButton posé à côté (docs/PROMPTS.md § Input). Il prend la place de l'unité et
+   réserve le même --space-7 : 40 de bouton + 4 de retrait + 4 d'air. La hauteur du champ
+   ne bouge pas — le bouton est absolu, centré, plus petit que le champ.
+   CIBLE TACTILE : 40 à l'œil dans un champ md, 32 dans un champ sm ; ::before porte les deux
+   à 44 au doigt. Repos --text-muted (la méta d'un champ, comme l'unité), survol et bascule
+   active --foreground ; icône au repli 1.25rem de .ds-icon. */
+.ds-input-action{position:relative;display:block;width:100%}
+.ds-input-action .ds-input{padding-right:var(--space-7)}
+.ds-input-action__btn{position:absolute;right:var(--space-1);top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;justify-content:center;width:var(--icon-control-sm);height:var(--icon-control-sm);padding:0;border:0;border-radius:var(--radius-pill);background:transparent;color:var(--text-muted);cursor:pointer;outline:none;transition:color var(--duration-fast) var(--ease-standard),box-shadow var(--duration-fast) var(--ease-standard)}
+.ds-input-action__btn::before{content:"";position:absolute;inset:-0.125rem}
+.ds-input-action__btn:hover:not(:disabled),.ds-input-action__btn.is-hover,.ds-input-action__btn[aria-pressed="true"]{color:var(--foreground)}
+.ds-input-action__btn:focus-visible,.ds-input-action__btn.is-focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--ring) 35%,transparent)}
+.ds-input-action__btn:disabled{cursor:not-allowed}
+.ds-input-action:has(.ds-input--sm) .ds-input-action__btn{width:var(--space-6);height:var(--space-6)}
+.ds-input-action:has(.ds-input--sm) .ds-input-action__btn::before{inset:-0.375rem}
 /* Le textarea porte AUSSI .ds-input, donc son padding-block:0 : un champ multiligne n'a pas
    de hauteur de rail, il retrouve ici son air vertical (la valeur d'avant la v0.4.0). Il ne
    prend pas l'arrondi pill — --radius-lg, 20. */
 .ds-textarea{height:auto;min-height:0;padding-block:0.6875rem;resize:vertical;line-height:var(--leading-normal);border-radius:var(--radius-lg)}
 .ds-select{position:relative;display:block}
-.ds-select select{appearance:none;-webkit-appearance:none;padding-right:var(--space-7);cursor:pointer}
+/* LE PADDING DROIT SUIT LE CHEVRON — v0.5.0 : son retrait (--space-4) + le glyphe (1rem) +
+   un air de --space-2 = 40. Il valait --space-7 (48) : 8 px de trop, et c'est ce qui coupait
+   « Jour », « Année » et « septembre » dans la date en trois colonnes, sur 390 px. */
+.ds-select select{appearance:none;-webkit-appearance:none;padding-right:calc(var(--space-4) + 1rem + var(--space-2));cursor:pointer}
 .ds-select__chev{position:absolute;right:var(--space-4);top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-muted)}
+/* L'INVITE DU SELECT — v0.5.0 (« Jour », « Mois », « Année »). Tant que l'option vide est
+   choisie, le texte est en --text-muted, comme le placeholder d'un champ (même paire de
+   contraste). Les vraies options gardent --foreground : sans la seconde règle, la liste
+   déroulée hériterait du gris dans certains navigateurs. Scopé à .ds-select--placeholder,
+   posé par la prop : un select qui a une VRAIE option de valeur vide ne grisonne pas. */
+.ds-select--placeholder select:has(option[value=""]:checked){color:var(--text-muted)}
+.ds-select--placeholder select:has(option[value=""]:checked) option:not([value=""]){color:var(--foreground)}
 .ds-choice{display:inline-flex;align-items:center;gap:0.5625rem;cursor:pointer;font-size:var(--text-body-sm);color:var(--foreground);line-height:var(--leading-snug);position:relative}
 .ds-choice input{position:absolute;opacity:0;width:0;height:0}
 .ds-choice__box{flex:none;display:inline-flex;align-items:center;justify-content:center;width:var(--choice-box);height:var(--choice-box);border:1.5px solid var(--input);background:var(--background);border-radius:var(--choice-box-radius);color:var(--primary-foreground);transition:background var(--duration-fast) var(--ease-standard),border-color var(--duration-fast) var(--ease-standard),box-shadow var(--duration-fast) var(--ease-standard)}
@@ -271,6 +298,17 @@ svg.lucide{stroke-width:1.75}
 .ds-choice.is-indeterminate .ds-choice__box>*{opacity:1}
 .ds-choice input:focus-visible+.ds-choice__box,.ds-choice.is-focus .ds-choice__box{box-shadow:0 0 0 3px color-mix(in srgb,var(--ring) 35%,transparent)}
 .ds-choice.is-disabled{opacity:.5;cursor:not-allowed}
+/* LE LIBELLÉ SUR PLUSIEURS LIGNES — v0.5.0. Checkbox et Radio posent .ds-choice__label : la
+   case s'aligne en HAUT, et le libellé descend de la moitié de l'écart entre la case et UNE
+   ligne de texte (1lh). Sur une ligne, le rendu est celui d'hier au pixel — la ligne reste
+   centrée sur la case ; sur trois, la case reste en face de la PREMIÈRE, au lieu de flotter
+   au milieu du paragraphe. Un .ds-choice écrit à la main sans cette classe ne bouge pas. */
+.ds-choice:has(>.ds-choice__label){align-items:flex-start}
+.ds-choice__label{margin-top:calc((var(--choice-box) - 1lh) / 2)}
+/* L'ERREUR D'UNE CASE — v0.5.0. Sous la case, en retrait de la case plus l'écart du
+   .ds-choice (0.5625rem) : le message s'aligne sur le TEXTE du libellé, pas sur la case. */
+.ds-choice-field{display:flex;flex-direction:column;gap:var(--space-1)}
+.ds-choice__error{padding-left:calc(var(--choice-box) + 0.5625rem)}
 .ds-choice__dot{width:var(--choice-dot);height:var(--choice-dot);border-radius:var(--radius-pill);background:var(--brand-gradient)}
 .ds-switch{display:inline-flex;align-items:center;gap:0.5625rem;cursor:pointer;font-size:var(--text-body-sm);position:relative}
 .ds-switch input{position:absolute;opacity:0;width:0;height:0}

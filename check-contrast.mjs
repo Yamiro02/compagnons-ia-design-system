@@ -223,6 +223,9 @@ function pairs(theme, { ROOT, DARK }, fichier) {
   add('Non-texte', 'anneau de focus --ring sur --background', g('--ring'), g(B), 3, 'contour 2px');
   add('Non-texte', '.ds-choice coché — aplat --primary', g('--primary'), g(B), 3, 'contrôle');
   add('Non-texte', '.ds-switch actif — piste --primary', g('--primary'), g(B), 3, 'contrôle');
+  /* L'ACTION DU CHAMP (v0.5.0) — l'œil du mot de passe : une icône de CONTRÔLE au repos en
+     --text-muted, sur le remplissage du champ (--card). Seuil 3 : un graphique non textuel. */
+  add('Non-texte', '.ds-input-action__btn — icône --text-muted sur le champ', g('--text-muted'), g(C), 3, 'icône');
   add('Non-texte', '.ds-progress__bar sur son rail', g('--primary'), g('--surface-alt'), 3, 'graphique');
   /* LE CURSEUR DE PLAGE (v0.4.0). La portion choisie porte le dégradé, mesurée sur
      --primary comme la barre de progression. Son rail est --border en clair et

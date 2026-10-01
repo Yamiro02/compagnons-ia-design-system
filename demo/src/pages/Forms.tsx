@@ -73,6 +73,68 @@ function ChipsRadio({ label }: { label: string }) {
   );
 }
 
+/* Écrans d'auth — contenus d'exemple (maquettes AUTH 1, 2d, 5a). */
+const JOURS = Array.from({ length: 31 }, (_, i) => ({ value: String(i + 1), label: String(i + 1) }));
+const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+  .map((m, i) => ({ value: String(i + 1), label: m }));
+const ANNEES = Array.from({ length: 83 }, (_, i) => ({ value: String(2008 - i), label: String(2008 - i) }));
+
+/* Le mot de passe et son œil — la recette de `action` : une BASCULE (pressed), un libellé
+   constant, l'icône et le type du champ qui suivent l'état. surface="page" : les spécimens
+   sont posés dans un îlot crème, à l'intérieur d'une carte (voir « L'îlot on-page »). */
+function MotDePasse({ id, label, error, help, defaultValue }: { id: string; label: string; error?: string; help?: string; defaultValue?: string }) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <FormField label={label} htmlFor={id} error={error} help={help}>
+      <Input
+        id={id}
+        surface="page"
+        type={visible ? 'text' : 'password'}
+        autoComplete="new-password"
+        invalid={Boolean(error)}
+        defaultValue={defaultValue}
+        action={{
+          icon: <Icon name={visible ? 'eye-off' : 'eye'} />,
+          label: 'Afficher le mot de passe',
+          pressed: visible,
+          onClick: () => setVisible(v => !v),
+        }}
+      />
+    </FormField>
+  );
+}
+
+/* La date de naissance en trois Select — un FormField `group`, chaque Select nommé par son
+   aria-label. Grille 1 / 1.5 / 1.2, celle de la maquette AUTH 2d. */
+function DateNaissance({ id, error }: { id: string; error?: string }) {
+  return (
+    <FormField group label="Date de naissance" htmlFor={id} error={error}>
+      <div className="grid gap-space-2" style={{ gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.5fr) minmax(0,1.2fr)' }}>
+        <Select surface="page" aria-label="Jour" placeholder="Jour" options={JOURS} invalid={Boolean(error)} />
+        <Select surface="page" aria-label="Mois" placeholder="Mois" options={MOIS} invalid={Boolean(error)} />
+        <Select surface="page" aria-label="Année" placeholder="Année" options={ANNEES} invalid={Boolean(error)} />
+      </div>
+    </FormField>
+  );
+}
+
+/* Les consentements de l'inscription — l'erreur sous chaque case, alignée sur son texte. */
+function Consentements() {
+  const [majeur, setMajeur] = useState(false);
+  const [cgu, setCgu] = useState(false);
+  const [nouvelles, setNouvelles] = useState(true);
+  return (
+    <div className="flex flex-col gap-space-3">
+      <Checkbox label="Je certifie avoir 18 ans ou plus" checked={majeur} onChange={e => setMajeur(e.target.checked)}
+        error={majeur ? undefined : 'Coche cette case pour continuer.'} />
+      <Checkbox label={<>J'accepte les <a href="#forms">CGU</a> et la <a href="#forms">politique de confidentialité</a></>}
+        checked={cgu} onChange={e => setCgu(e.target.checked)} error={cgu ? undefined : 'Accepte les CGU pour continuer.'} />
+      <Checkbox label="Je veux recevoir un mot de Claire par e-mail, une fois par semaine au plus — je peux me désinscrire à tout moment."
+        checked={nouvelles} onChange={e => setNouvelles(e.target.checked)} />
+    </div>
+  );
+}
+
 export function FormsPage() {
   const [checked, setChecked] = useState(true);
   const [niveau, setNiveau] = useState('debutant');
@@ -117,7 +179,7 @@ export function FormsPage() {
             <Input surface="page" placeholder="surface=page — le champ redevient blanc" />
           </div>
         </Block>
-        <Block label="Icône" hint="icon pose un glyphe DANS le champ, à gauche — un repère, pas un bouton : il est aria-hidden et ne se clique pas. Une action dans un champ est un IconButton posé à côté. Combinable avec unit.">
+        <Block label="Icône" hint="icon pose un glyphe DANS le champ, à gauche — un repère, pas un bouton : il est aria-hidden et ne se clique pas. Une action dans le champ passe par action (ci-dessous). Combinable avec unit et action.">
           <Stack>
             <Input icon={<Icon name="search" />} placeholder="Rechercher une compagne" />
             <Input icon={<Icon name="mail" />} type="email" placeholder="ton@email.com" />
@@ -130,6 +192,20 @@ export function FormsPage() {
             <Input unit="€" inputMode="decimal" placeholder="49" />
             <Input unit="min" inputMode="numeric" invalid defaultValue="beaucoup" />
           </Stack>
+        </Block>
+        <Block label="Action dans le champ" hint="action pose un VRAI bouton à droite, distinct de unit (un repère aria-hidden) : aria-label, aria-pressed quand c'est une bascule, jamais submit. 40 dans un champ md, 32 dans un sm, 44 au doigt ; le champ garde sa hauteur. Il n'agit que sur la valeur du champ — afficher / masquer, effacer ; une action qui fait autre chose est un IconButton posé à côté. Le premier îlot suit la vitrine, le second force le sombre.">
+          <Grid cols={2}>
+            {[false, true].map(dark => (
+              <div key={String(dark)} className={`${dark ? 'dark ' : ''}flex flex-col gap-space-4 rounded-xl bg-background p-space-4`}>
+                <span className="chip text-text-muted">{dark ? 'sombre, forcé' : 'thème courant'}</span>
+                <MotDePasse id={dark ? 'mdp-sombre' : 'mdp-clair'} label="Mot de passe" defaultValue="voilier-du-port" />
+                <Input size="sm" surface="page" icon={<Icon name="search" />} defaultValue="Claire"
+                  action={{ icon: <Icon name="x" />, label: 'Effacer la recherche', onClick: () => undefined }} />
+                <Input disabled surface="page" type="password" defaultValue="indisponible"
+                  action={{ icon: <Icon name="eye" />, label: 'Afficher le mot de passe', pressed: false, onClick: () => undefined }} />
+              </div>
+            ))}
+          </Grid>
         </Block>
       </Section>
 
@@ -145,7 +221,7 @@ export function FormsPage() {
         </Block>
       </Section>
 
-      <Section title="Select" note="Select natif sur le rail 3rem, avec un chevron Lucide.">
+      <Section title="Select" note="Select natif sur le rail 48, avec un chevron Lucide. placeholder pose une invite (« Jour ») en --text-muted tant que rien n'est choisi.">
         <Block label="Repos, focus, erreur, désactivé">
           <Stack>
             <Select options={SERIES} defaultValue="build" />
@@ -154,6 +230,20 @@ export function FormsPage() {
             <Select options={SERIES} disabled defaultValue="build" />
             <Select options={SERIES} surface="card" defaultValue="coulisses" />
           </Stack>
+        </Block>
+        <Block label="Invite — date de naissance" hint="Maquette AUTH 2d : trois Select côte à côte (grille 1 / 1.5 / 1.2), dans un FormField group — le groupe est nommé par le libellé, chaque Select par son aria-label, et l'erreur est citée par les trois. Mesuré sur un écran de 390 px (358 de contenu) : 92 / 139 / 111 px, « Jour », « septembre » et « Année » tiennent. La vitrine, elle, empile ses marges : sous 600 px de large, ces colonnes-ci sont plus étroites qu'à l'écran. Le premier îlot suit la vitrine, le second force le sombre.">
+          <Grid cols={2}>
+            <div className="flex flex-col gap-space-4 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">thème courant</span>
+              <DateNaissance id="naissance-clair" />
+              <DateNaissance id="naissance-clair-err" error="Indique ta date de naissance." />
+            </div>
+            <div className="dark flex flex-col gap-space-4 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">sombre, forcé</span>
+              <DateNaissance id="naissance-sombre" />
+              <DateNaissance id="naissance-sombre-err" error="Indique ta date de naissance." />
+            </div>
+          </Grid>
         </Block>
       </Section>
 
@@ -190,6 +280,18 @@ export function FormsPage() {
             </Stack>
           </Block>
         </Grid>
+        <Block label="Checkbox — erreur et libellé long" hint="Maquette AUTH 2d. error pose le message SOUS la case, aligné sur le texte du libellé ; la case reçoit aria-invalid et cite le message. Sur plusieurs lignes, la case reste en face de la PREMIÈRE ligne. Coche une case : son erreur disparaît. Le premier îlot suit la vitrine, le second force le sombre.">
+          <Grid cols={2}>
+            <div className="flex flex-col gap-space-3 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">thème courant</span>
+              <Consentements />
+            </div>
+            <div className="dark flex flex-col gap-space-3 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">sombre, forcé</span>
+              <Consentements />
+            </div>
+          </Grid>
+        </Block>
       </Section>
 
       <Section title="Option" note="Parcours cœur. Une réponse d'onboarding, pill, qui enveloppe un .ds-choice — toute l'option est cliquable. Hauteur 48 et texte 15 dans les deux tailles ; md = écran à une question, sm = écran à plusieurs groupes (écart case-libellé et graisse plus serrés). Sélectionnée : bordure --primary, libellé en gras --foreground, case cochée — jamais la bordure seule. Classes seules, pas de composant.">
@@ -352,7 +454,7 @@ export function FormsPage() {
         </Grid>
       </Section>
 
-      <Section title="FormField" note="Une erreur remplace le texte d'aide et porte toujours couleur + icône + texte.">
+      <Section title="FormField" note="Une erreur porte toujours couleur + icône + texte. Avec une aide, les deux s'affichent : l'erreur d'abord, collée au champ, puis l'aide — le rappel de la règle. Les deux sont citées par le contrôle (aria-describedby), erreur en premier.">
         <Grid cols={2}>
           <Block label="Aide">
             <FormField label="Ton email" htmlFor="mail-help" help="Un build décortiqué par semaine. Zéro spam.">
@@ -375,7 +477,23 @@ export function FormsPage() {
             </FormField>
           </Block>
         </Grid>
-        <Row label="rail partagé — bouton md, input et select s'alignent à 3rem">
+        <Block label="Erreur et aide, ensemble" hint="Maquette AUTH 5a : l'erreur dit ce qui ne va pas, l'aide redit la règle. Le premier îlot suit la vitrine, le second force le sombre.">
+          <Grid cols={2}>
+            <div className="flex flex-col gap-space-4 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">thème courant</span>
+              <MotDePasse id="nouveau-clair" label="Nouveau mot de passe" defaultValue="voilier"
+                error="Mot de passe trop faible : ajoute une majuscule et un chiffre."
+                help="8 caractères minimum, avec une majuscule, une minuscule et un chiffre." />
+            </div>
+            <div className="dark flex flex-col gap-space-4 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">sombre, forcé</span>
+              <MotDePasse id="nouveau-sombre" label="Nouveau mot de passe" defaultValue="voilier"
+                error="Mot de passe trop faible : ajoute une majuscule et un chiffre."
+                help="8 caractères minimum, avec une majuscule, une minuscule et un chiffre." />
+            </div>
+          </Grid>
+        </Block>
+        <Row label="rail partagé — bouton md, input et select s'alignent à 48">
           <Input placeholder="ton@email.com" />
           <Select options={SERIES} defaultValue="build" />
         </Row>

@@ -3,7 +3,7 @@ import { Block, Section, Spec } from '../ui';
 
 const NAMES: IconName[] = [
   'check', 'x', 'chevron-down', 'chevron-right', 'chevron-left', 'arrow-right',
-  'arrow-up-right', 'arrow-down', 'play', 'eye', 'clock', 'calendar', 'copy',
+  'arrow-up-right', 'arrow-down', 'play', 'eye', 'eye-off', 'clock', 'calendar', 'copy',
   'search', 'menu', 'mail', 'triangle-alert', 'info', 'circle-check',
   'circle-alert', 'circle-x', 'terminal', 'code', 'zap', 'plus', 'minus', 'trash-2',
   'external-link', 'loader-circle', 'github', 'folder',

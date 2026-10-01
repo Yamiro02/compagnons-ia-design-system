@@ -2,7 +2,7 @@ import type { CSSProperties, JSX } from 'react';
 import {
   ArrowDown, ArrowRight, ArrowUpRight, BookOpen, Calendar, Check, ChevronDown,
   ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, CircleAlert, CircleCheck,
-  CircleX, Clock, Code, Copy, Dumbbell, Ellipsis, ExternalLink, Eye, FileText, Folder,
+  CircleX, Clock, Code, Copy, Dumbbell, Ellipsis, ExternalLink, Eye, EyeOff, FileText, Folder,
   Info, LayoutDashboard, LoaderCircle, Mail, Menu, MessageSquare, Minus,
   PanelLeft, Play, Plus, Quote, Rocket, Search, Settings, SlidersHorizontal,
   Terminal, Trash2, TrendingUp, TriangleAlert, User, Video, X, Zap,
@@ -28,7 +28,7 @@ import { House } from './compat-glyphs';
  */
 export type IconName =
   | 'check' | 'x' | 'chevron-down' | 'chevron-right' | 'chevron-left'
-  | 'arrow-right' | 'arrow-up-right' | 'arrow-down' | 'play' | 'eye' | 'clock'
+  | 'arrow-right' | 'arrow-up-right' | 'arrow-down' | 'play' | 'eye' | 'eye-off' | 'clock'
   | 'calendar' | 'copy' | 'search' | 'menu' | 'mail' | 'triangle-alert' | 'info'
   | 'circle-check' | 'circle-alert' | 'circle-x' | 'terminal' | 'code' | 'zap'
   | 'plus' | 'minus' | 'trash-2' | 'external-link' | 'loader-circle'
@@ -101,6 +101,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   'arrow-down': ArrowDown,
   'play': Play,
   'eye': Eye,
+  'eye-off': EyeOff,
   'clock': Clock,
   'calendar': Calendar,
   'copy': Copy,
