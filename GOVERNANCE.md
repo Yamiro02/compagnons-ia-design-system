@@ -144,7 +144,10 @@ dans la séquence.
 
 L'ordre, sans exception :
 
-1. `package.json` → `version`
+1. `package.json` → `version`, **et `package-lock.json` avec lui** — ses DEUX champs, la
+   racine `version` et `packages[""].version` : `npm install --package-lock-only` les
+   réécrit sans toucher aux dépendances. Un bump à la main oublie le lock : il a dérivé
+   jusqu'à 0.2.0 pendant que le paquet passait trois versions, sans qu'aucun garde le voie
 2. `README.md` → la ligne `npm i …#vX.Y.Z`
 3. `CHANGELOG.md` → la section de la version, avec ses **⚠ ruptures**
 4. **les gardes, premier passage** — les DOUZE autres, plus `npm run demo:build` et
@@ -159,7 +162,13 @@ L'ordre, sans exception :
 
 ### À quel moment lancer les gardes — et pourquoi il y a DEUX passages
 
-`check-version.mjs` **ne peut pas** passer avant le tag : il exige que `vX.Y.Z` existe.
+`check-version.mjs` contrôle **quatre** endroits qui doivent dire le même numéro :
+`package.json`, les deux champs de version de `package-lock.json`, la ligne
+d'installation du `README.md`, et l'existence du tag. Les trois premiers peuvent — et
+doivent — être verts dès l'étape 4 : lancé seul à ce moment-là, il ne doit tomber QUE sur
+le tag. S'il signale aussi le lock ou le README, c'est l'étape 1 ou 2 qui a été sautée.
+
+Il **ne peut pas** passer avant le tag : il exige que `vX.Y.Z` existe.
 C'est son travail — un README qui envoie sur un tag absent produit une installation qui
 échoue chez l'utilisateur. Une fois `package.json` bumpé, ce garde est donc rouge par
 construction jusqu'à l'étape 6.
@@ -169,7 +178,7 @@ Ce n'est pas une entorse à signaler à chaque lot, c'est la séquence :
 | Quand | Quoi | Attendu |
 |---|---|---|
 | avant le tag (4) | les douze autres gardes + `npm run demo:build` + `npm run build` | tous verts |
-| avant le tag (4) | `check-version.mjs` | **rouge**, et c'est correct : le tag n'existe pas encore |
+| avant le tag (4) | `check-version.mjs` | **rouge sur le tag seul**, et c'est correct : le tag n'existe pas encore. Rouge sur le lock ou le README : étape 1 ou 2 à refaire |
 | après le tag (7) | `npm run lint` en entier | **les treize verts** |
 | puis (8) | `git push --follow-tags` | — |
 
@@ -183,8 +192,9 @@ voulu : `lint` doit rester lançable sans construire la vitrine. Il est dans `np
 donc joué à l'étape 4, et par la CI. Ne conclus jamais de la lecture du seul script `lint`
 qu'un garde ne tourne pas.
 
-**C'est un job de CI bloquant, pas une checklist.** `check-version.mjs` compare les trois —
-version, README, existence du tag — et fait tomber le build s'ils divergent. La procédure
+**C'est un job de CI bloquant, pas une checklist.** `check-version.mjs` compare les quatre —
+version, lock (deux champs), README, existence du tag — et fait tomber le build s'ils
+divergent. La procédure
 écrite a échoué trois fois de suite ; c'est pour ça que le contrôle existe.
 
 ```bash
