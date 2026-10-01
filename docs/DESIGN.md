@@ -19,7 +19,7 @@
 
 **Où ça vit :** PWA mobile-first (installable), web.
 **Thème principal :** clair. Le sombre est livré à parité et garde la chaleur du clair — bruns-charbon, jamais nightclub.
-**Densité :** confortable — texte généreux, contrastes forts, cibles tactiles larges (le rail 44 px du socle est conservé).
+**Densité :** confortable — texte généreux, contrastes forts, cibles tactiles larges (contrôles à 48, compacts à 40, toujours 44 au doigt pour ce qui conclut un écran — § 5).
 **Écran de référence :** mobile 390 px ; le desktop est secondaire.
 
 ## 3. Couleur → `src/styles/brand-compagnons-ia.css` ★
@@ -91,14 +91,30 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 **Rayons :** tels quels — le socle rend déjà les gros rayons voulus (cartes 20, panneaux 24, modales 28). Deux redéclarations seulement, en fin de fichier de marque : `--tabs-radius` et `--pagination-radius` → `--radius-pill` (une barre carrée sur des items pill laisse déborder l'item dans ses coins).
 **DOCTRINE ARRONDIE — tout ce qui se presse ou se remplit est PILL.** Autre RÈGLE, pas autre valeur → `patterns.css`. Sont pill : boutons et carrés d'icône, champs / selects / déclencheur de date, items d'onglet, de pagination et de barre latérale, croix de toast et de modale, bascule de barre latérale, rail de progression, tuile d'icône de toast, pastilles à TOUTES les tailles.
 **Les exceptions, écrites :** textarea `--radius-lg` (un pill courberait sa première et sa dernière ligne) · items de menu, dropdown et action sheet `--radius-sm` (ce sont des lignes de liste) · case à cocher `--choice-box-radius` (le squircle de marque) · tooltip `--radius-md` · squelette `--radius-sm` (il mime du CONTENU). Cartes, panneaux, modales : ce sont des surfaces, elles gardent leurs rayons.
-**Densité :** rail du socle conservé (48 px, 44 px sous 64rem) — la cible l'exige.
-**Cible tactile : au moins 44 px AU DOIGT, pas forcément à l'œil.** La partie visible peut être plus petite si la zone de toucher atteint 44 px : l'onglet de `TabBar` par ses marges d'item, la chip par une couche `::before` qui déborde de `--space-1` en haut et en bas (36 + 4 + 4), à condition d'au moins `--space-2` (8 px) entre deux rangées de chips. Détail : `docs/accessibilite.md` § 4.
+**Hauteurs — multiples de 4, posées, jamais déduites.** Toute hauteur de composant se déclare (`min-height` ou `height`, `padding-block:0`) ; le padding ne règle que l'air latéral. Les hauteurs émergentes (padding + interligne) tombaient hors grille : champ 44,8 · bouton lg 52,5 · option sm 46,5 · badge 29. Le rail ne varie plus avec la largeur d'écran.
+
+| Jeton | Valeur | Qui |
+|---|---|---|
+| `--control-md` | 48 | bouton, champ, select, option (md **et** sm), barre d'onglets |
+| `--control-sm` | 40 | bouton `sm`, champ `sm`, chip (`--chip-h`) |
+| `--control-lg` | 52 | **site vitrine uniquement** — CTA de héros, plus employé dans l'app |
+| `--icon-control-sm/md/lg` | 40 · 48 · 56 | bouton-icône |
+| `--badge-h` · `--badge-h-dense` · `.ds-badge--lg` | 28 · 24 · 32 | badge de statut · dense · étiquette d'intérêt de fiche persona |
+| `--switch-h` · knob | 28 · 20 (inset 4) | interrupteur |
+| compteur de non-lus | 20 | `.ds-counter` |
+
+**La règle d'usage 48 / 40 :**
+- **48 (`--control-md`)** — ce qui CONCLUT un écran ou se REMPLIT dans un formulaire : CTA de bas d'écran, « Payer », « Envoyer », « Supprimer mon compte », champs, selects, options.
+- **40 (`--control-sm`)** — ce qui vit À L'INTÉRIEUR d'un composant ou d'une barre : bouton dans une bannière ou une carte (« Voir l'abonnement », « Faire connaissance », « Ajouter une photo »), barre de recherche, barre de saisie du chat + bouton envoyer, chips.
+
+**Arrondi :** pill conservé sur tout ce qui se presse (boutons, champs d'une ligne, options, chips) — 8, 12 et 16 px testés et rejetés. Le textarea garde `--radius-lg` (20).
+**Cible tactile : au moins 44 px AU DOIGT, pas forcément à l'œil.** La partie visible peut être plus petite si la zone de toucher atteint 44 px : l'onglet de `TabBar` par ses marges d'item, la chip par une couche `::before` qui déborde de `--space-1` en haut et en bas (40 + 4 + 4 = 48), à condition d'au moins `--space-2` (8 px) entre deux rangées de chips ; la poignée du curseur de plage (24 à l'œil, 44 au doigt). **Écart assumé :** un contrôle `sm` (bouton, champ, bouton-icône) se voit ET se touche à 40 — sous la règle maison, au-dessus du minimum WCAG 2.5.8 (24). Il vit dans un composant ou une barre, jamais comme cible qui conclut un écran. Détail : `docs/accessibilite.md` § 4.
 **Icônes — l'échelle :** `1` · `1.125` · `1.25` · `1.5` rem. `1rem` : contrôle sm, déclencheur de champ, tuile de toast · `1.125rem` : contrôle md (bouton, IconButton) et onglet de TabBar · `1.25rem` : le repli de `.ds-icon`, partout ailleurs · `1.5rem` : pastille de dialogue et de panneau. Hors échelle, dans une petite tuile : le badge (`0.8125`, dense `0.75`), la coche d'une case (`0.8125`) et le glyphe d'un message d'erreur (`0.875`). **Tous sont des CRÉNEAUX CSS** — aucune taille n'est écrite au site d'appel ; `size` y reste la surcharge optique, pas le réglage normal.
 
 ## 6. Motifs signature
 
 **Le halo :** radial grenat très léger, ancré en bas, jamais plein écran.
-**Le dégradé :** CTA + un mot de titre + sur-titre. Grenat → bordeaux, même teinte : il se lit comme une profondeur, pas comme un arc-en-ciel. En **remplissage**, sans lueur : barre de progression, progression par étapes, case, radio et interrupteur cochés, jour sélectionné du calendrier, bulle de l'utilisateur, compteur de non-lus.
+**Le dégradé :** CTA + un mot de titre + sur-titre. Grenat → bordeaux, même teinte : il se lit comme une profondeur, pas comme un arc-en-ciel. En **remplissage**, sans lueur : barre de progression, progression par étapes, case, radio et interrupteur cochés, portion choisie du curseur de plage, jour sélectionné du calendrier, bulle de l'utilisateur, compteur de non-lus.
 **La lueur :** `--shadow-glow*` grenat très douce, CTA uniquement.
 **L'ombre :** trois niveaux teintés de `--tone-dark` (noir chaud), jamais du noir pur.
 
@@ -117,7 +133,7 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 
 ## 8. Périmètre du design system
 
-**Ce qui entre :** les 37 composants du socle, plus deux ajouts ASSUMÉS (§ 10) : `TabBar`, la coque d'une PWA mobile que le socle ne portait pas, et `ChatBubble`, la bulle de conversation — de la présentation pure, elle ne connaît ni le persona ni le modèle de message. 39 en tout, aucun retrait.
+**Ce qui entre :** les 37 composants du socle, plus trois ajouts ASSUMÉS (§ 10) : `TabBar`, la coque d'une PWA mobile que le socle ne portait pas, `ChatBubble`, la bulle de conversation — de la présentation pure, elle ne connaît ni le persona ni le modèle de message —, et `RangeSlider`, le curseur de plage à deux poignées. 40 en tout, aucun retrait.
 **En classes, sans composant (pour l'instant) :** `.ds-option`, `.ds-chip`, `.ds-steps`, `.ds-counter`, `.ds-badge--card`, `.ds-card.is-selected` + `.ds-card__flag`, `.ds-portrait`, `.ds-dot` — voir `PORTAGE.md`, et `docs/PROMPTS.md` § classes pour leur usage.
 **L'exception du portrait en sombre :** l'initiale quitte `.accent` et prend `--primary-readable` en aplat (`.dark .ds-portrait>:not(.halo)`) — le dégradé clippé tombe à 1,90:1 sur la vignette prune, contre 5,16:1 pour le jumeau lisible ; assombrir la vignette plafonne à 2,59 et l'aplatit. Règle scopée au portrait, aucune classe générique dupliquée.
 **Ce qui n'entre pas :** tout ce qui connaît le métier (carte persona, paywall) — ça vit dans l'app.
@@ -180,3 +196,9 @@ Grotesque humaniste, ronde et chaleureuse → casse d'origine + gras. Une seule 
 | 2026-09-30 | `--gradient-portrait` + `.ds-portrait` : le repli d'une vignette sans photo, déclaré en clair ET en sombre | la maquette l'écrivait en dur en mélangeant dans `--tone-light-alt`, qui vaut `#ffffff` dans les deux thèmes — la vignette restait rose clair en sombre. La base du mélange devient `--card`. Une classe, pas un composant : trois écrans du même produit ne passent pas le test 2 de `GOVERNANCE.md` |
 | 2026-09-30 | En sombre, l'initiale du portrait quitte `.accent` pour `--primary-readable` en aplat | le dégradé clippé mesure 1,90:1 sur la vignette prune (mi-ton sur mi-ton) contre 3,91 en clair ; assombrir la vignette plafonne à 2,59 et l'aplatit à 1,06 d'amplitude. Le jumeau lisible donne 5,16. Règle SCOPÉE au portrait (`.dark .ds-portrait>:not(.halo)`), qui ne nomme pas la classe fragile |
 | 2026-09-30 | Cible tactile : au moins 44 px AU DOIGT, pas forcément à l'œil (§ 5). La chip reste à 36 px visibles et gagne une zone de toucher invisible de `--space-1` en haut et en bas | la maquette A3 tient la chip à 36 px ; la règle se tient au doigt, comme la `TabBar` par ses marges d'item. Condition : au moins `--space-2` entre deux rangées de chips. L'écart « non tranché » de `docs/accessibilite.md` § 4 est fermé |
+| 2026-10-01 | Hauteurs en multiples de 4, posées (`min-height` + `padding-block:0`), jamais déduites du padding (§ 5). `--control-md` 48 fixe (fin du 44 sous 64rem), `--control-sm` 40 devient une vraie taille, `--control-lg` 52 réservé au site vitrine ; chip 40 en texte 15 ; bouton-icône 40 · 48 · 56 ; badge 28 ; compteur 20 ; interrupteur 28 (inset 4) ; option 48 dans les deux tailles, texte 15 | maquettes « Parcours cœur » du 01/10 : les hauteurs émergentes tombaient hors grille (44,8 · 52,5 · 46,5 · 29 · 38 / 42 · 18 · 26) et `--control-sm` n'était qu'un alias. Règle d'usage 48 / 40 écrite au § 5 |
+| 2026-10-01 | `--icon-control-lg` 48 → 56 | à 48, `md` et `lg` auraient rendu le même carré — la prop qui ment de `GOVERNANCE.md` |
+| 2026-10-01 | Option : `padding-block:var(--space-2)` plutôt que 0 | sans effet sur une ligne (le `min-height` décide), il garde de l'air à un libellé qui passe à la ligne |
+| 2026-10-01 | Contrôles `sm` à 40, sous la règle maison des 44 au doigt — écart ASSUMÉ (§ 5) | ce sont des contrôles internes à un composant ou une barre ; WCAG 2.5.8 (24) est tenu |
+| 2026-10-01 | `.ds-badge--lg` (32, texte 14) — l'étiquette d'intérêt de la fiche persona ; `Badge pad="lg"` | nommée `--lg` et non `--md` : `pad="md"` est déjà le défaut à 28 |
+| 2026-10-01 | `RangeSlider` — 40e composant, troisième ajout ASSUMÉ (§ 8) ; sa portion choisie rejoint les remplissages en dégradé (§ 6) | la tranche d'âge de l'onboarding (A5). Générique : aucun mot du métier dans son nom, aucune donnée métier. Rail `--border` en clair, `--surface-alt` en sombre : sur `--border` la portion choisie tombait à 2,56:1 en sombre, et `--surface-alt` disparaissait dans la crème en clair |

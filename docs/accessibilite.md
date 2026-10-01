@@ -63,7 +63,7 @@ Une sortie vide = la règle tient. Aujourd'hui : vide.
 
 ## 2. Les paires conformes
 
-56 paires sur 62, dans les deux thèmes.
+58 paires sur 64, dans les deux thèmes.
 
 | Paire | contenu | seuil | clair | sombre |
 |---|---|--:|--:|--:|
@@ -80,7 +80,7 @@ Une sortie vide = la règle tient. Aujourd'hui : vide.
 | `.ds-sidenav.is-active` | 15 / 500 | 4,5 | 7,38 | 8,73 |
 | `.ds-badge--accent` | 12 / 700 | 4,5 | 6,50 | 6,40 |
 | `.ds-banner--info` | 15 / 400 | 4,5 | 6,50 | 6,40 |
-| `.ds-chip.is-selected` | 14 / 600 | 4,5 | 6,50 | 6,40 |
+| `.ds-chip.is-selected` | 15 / 600 | 4,5 | 6,50 | 6,40 |
 | `.ds-cal__day.is-today` | 14 / 700 | 4,5 | 8,01 | 7,33 |
 | `.ds-portrait — initiale sur la vignette` | 52 / 700 | 3 | 3,91 | 5,81 |
 | `.ds-pastille--brand — icône` | icône | 3 | 7,09 | 6,70 |
@@ -121,6 +121,8 @@ Une sortie vide = la règle tient. Aujourd'hui : vide.
 | `.ds-choice coché — aplat --primary` | contrôle | 3 | 5,93 | 4,01 |
 | `.ds-switch actif — piste --primary` | contrôle | 3 | 5,93 | 4,01 |
 | `.ds-progress__bar sur son rail` | graphique | 3 | 5,68 | 3,20 |
+| `.ds-range__fill sur son rail` | graphique | 3 | 4,75 | 3,20 |
+| `.ds-range__thumb — bordure --primary sur la page` | contour 2px | 3 | 5,93 | 4,01 |
 | `.ds-option / .ds-chip / .ds-card.is-selected — bordure --primary` | contour 1.5px | 3 | 6,44 | 3,54 |
 | `.ds-input.is-error — bordure --destructive` | contour 1.5px | 3 | 5,47 | 3,59 |
 
@@ -251,9 +253,10 @@ de la mesure faite ici :
 - **2.4.7, 1.4.12, 1.4.10.** Focus, espacement du texte, redimensionnement : hors mesure.
 - **2.5.8 Taille de la cible (minimum) — la règle : 44 px AU DOIGT, pas forcément à l'œil.**
   Toute cible offre au moins 44 px de zone de toucher ; sa partie VISIBLE peut être plus
-  petite. Le rail des contrôles (`--control-md`) vaut **48 px**, ramené à **44 px sous 64 rem** — il tient donc le seuil à l'œil comme au doigt, sur les deux tailles d'écran. Deux
-  composants voient moins que 44 et touchent 44 — ce sont deux applications de la règle,
-  plus deux exceptions :
+  petite. Le rail des contrôles (`--control-md`) vaut **48 px** sur toutes les largeurs
+  d'écran (v0.4.0 — il ne descend plus à 44 sous 64 rem) : il tient le seuil à l'œil comme
+  au doigt. Trois composants voient moins que 44 et touchent au moins 44 — ce sont trois
+  applications de la règle :
   - **`.ds-tabbar__item`**, l'onglet de la `TabBar` mobile, se voit à `2.25rem` (36 px) :
     la barre est une capsule FLOTTANTE, et à 44 px de haut par item elle mangerait le
     contenu qu'elle survole. Au doigt, l'item vaut **44 px** marges comprises (36 + 4 px de
@@ -261,12 +264,19 @@ de la mesure faite ici :
     a donc aucune cible voisine à rater — et les quatre onglets occupent chacun un quart de
     la largeur, très au-delà du minimum en largeur. Le jour où la barre cesse de flotter,
     l'item reprend 44 px à l'œil.
-  - **`.ds-chip`** (marque Compagnons IA) se voit à `--chip-h`, `2.25rem` (36 px) —
-    maquette A3 inchangée. Une couche invisible (`::before`) étend sa zone de toucher de
-    `--space-1` en haut et en bas : **36 + 4 + 4 = 44 px** au doigt. Condition : l'écart
-    VERTICAL entre deux rangées de chips ne descend jamais sous `--space-2` (8 px) — les
-    zones de deux rangées se touchent alors pile, sans se chevaucher. L'écart qui était
-    ouvert ici est **fermé**.
+  - **`.ds-chip`** (marque Compagnons IA) se voit à `--chip-h`, `2.5rem` (40 px, v0.4.0).
+    Une couche invisible (`::before`) étend sa zone de toucher de `--space-1` en haut et en
+    bas : **40 + 4 + 4 = 48 px** au doigt. Condition : l'écart VERTICAL entre deux rangées de
+    chips ne descend jamais sous `--space-2` (8 px) — les zones de deux rangées se touchent
+    alors pile, sans se chevaucher.
+  - **`.ds-range__thumb`**, la poignée du `RangeSlider`, se voit à 24 px (`--space-5`) ; son
+    `::before` déborde de `0.625rem` tout autour : **24 + 10 + 10 = 44 px** au doigt.
+
+  **Un écart assumé, et il est écrit :** les contrôles **`sm`** — bouton, champ,
+  bouton-icône — se voient ET se touchent à **40 px** (`--control-sm`, `--icon-control-sm`),
+  sous la règle maison des 44. Ils restent au-dessus du minimum de WCAG 2.5.8 (24 px), et la
+  règle d'usage les cantonne à l'intérieur d'un composant ou d'une barre (`docs/DESIGN.md`
+  § 5) : ce qui conclut un écran est en `md`, à 48.
 
 ---
 

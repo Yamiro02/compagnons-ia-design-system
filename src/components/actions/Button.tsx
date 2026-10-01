@@ -10,7 +10,7 @@ import { Spinner } from '../feedback/Spinner';
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** primary = brand CTA (glow) · secondary = white/ink outline · ghost = bare · danger = destructive. */
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
-  /** Shared control rail: every size has min-height 3rem (2.75rem under 64rem); sm tightens padding + type; lg (3.25rem) is the hero CTA. */
+  /** Rail de contrôles, multiples de 4 (v0.4.0) : md 48 conclut un écran · sm 40 vit dans un composant ou une barre · lg 52, CTA de héros du site vitrine uniquement. */
   size?: 'sm' | 'md' | 'lg';
   /**
    * The surface the button sits on — the escape hatch to the surface deduction of

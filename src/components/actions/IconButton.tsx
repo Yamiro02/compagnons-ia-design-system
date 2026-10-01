@@ -2,9 +2,9 @@ import type { ButtonHTMLAttributes, ElementType, JSX, ReactNode } from 'react';
 import { cva } from 'class-variance-authority';
 
 /**
- * Square icon-only button on the shared control rail: every size renders the same
- * square (3rem, 2.75rem under 64rem) — `size` is kept for API compatibility.
- * Always pass `label` — it becomes aria-label and title. Never a pill.
+ * Square icon-only button on its own rail, three real squares (v0.4.0) : sm 40 · md 48 ·
+ * lg 56 — sm et md calés sur --control-sm / --control-md, pour s'aligner sur un bouton de
+ * même taille. Always pass `label` — it becomes aria-label and title. Pill radius.
  */
 export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**

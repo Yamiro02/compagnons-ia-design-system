@@ -11,6 +11,84 @@ concordent. Le tag n'est pas le but : c'est le péage.
 
 ---
 
+## 0.4.0 — les hauteurs tombent sur la grille
+
+Origine : maquettes « Parcours cœur », session du 01/10/2026. **⚠ Changements de RENDU** :
+presque tous les contrôles changent de hauteur, d'où le saut de mineure. Aucune prop
+retirée, aucune rupture de type.
+
+### ⚠ Changé — la règle : une hauteur se POSE, elle ne se déduit plus
+
+Toute hauteur de composant est un multiple de 4, posée explicitement (`min-height` ou
+`height`, `padding-block:0`) ; le padding ne règle plus que l'air latéral. Les hauteurs
+émergentes tombaient hors grille : champ 44,8 · bouton lg 52,5 · option sm 46,5 · badge 29 ·
+bouton-icône 38 / 42 · compteur 18 · interrupteur 26.
+
+| Jeton | Avant | Après |
+|---|---|---|
+| `--control-md` | 48 · **44 sous 64 rem** | **48 partout** — la media query est retirée |
+| `--control-sm` | alias de `--control-md` | **40**, une vraie taille |
+| `--control-lg` | 52 · 48 sous 64 rem | 52 partout — **site vitrine uniquement** |
+| `--chip-h` | 36 | **40** |
+| `--badge-h` | 29 | **28** |
+| `--icon-control-sm / md / lg` | 38 / 42 / 48 | **40 / 48 / 56** |
+| `--switch-h` · `--switch-inset` | 26 · 3 | **28 · 4** (knob 20 inchangé) |
+
+Ce qui bouge à l'écran :
+- **Mobile (sous 64 rem)** : boutons, champs, selects, barre d'onglets, pagination et lignes
+  d'ActionSheet passent de 44 à **48**.
+- **`Button size="sm"`** et **`Input size="sm"`** : 40 au lieu de 48 — `sm` ne changeait
+  jusqu'ici que le padding et l'icône.
+- **`IconButton`** : sm 40, md 48, **lg 56**. lg monte d'un cran : à 48 il aurait valu md,
+  et la prop aurait menti à nouveau (`GOVERNANCE.md`, test 4).
+- **`.ds-option`** : 48 dans les deux tailles, texte **15** (`--text-control`) dans les deux
+  — la taille md perd son 18. `padding-block:var(--space-2)` plutôt que 0 : sans effet sur
+  une ligne, il garde de l'air à un libellé qui passe à la ligne.
+- **`.ds-chip`** : 40, texte **15** (était 14). Zone de toucher : 40 + 4 + 4 = 48.
+- **`Badge`** : 28 (était 29), `padding-block:0`. **`.ds-counter`** : 20 (était 18).
+- **`Switch`** : piste 28.
+- **`Textarea`** : inchangé à l'écran. Il porte aussi `.ds-input`, donc le nouveau
+  `padding-block:0` : il retrouve son air vertical par sa propre règle. Rayon `--radius-lg`.
+- Arrondi : **pill conservé** sur tout ce qui se presse — 8, 12 et 16 px testés, rejetés.
+
+**La règle d'usage 48 / 40**, écrite dans `docs/DESIGN.md` § 5 : 48 pour ce qui conclut un
+écran ou se remplit (CTA de bas d'écran, « Payer », « Envoyer », champs, options) ; 40
+pour ce qui vit dans un composant ou une barre (bouton de bannière ou de carte, barre de
+recherche, barre de saisie du chat, chips).
+
+⚠ **Écart assumé, écrit dans `docs/accessibilite.md` § 4** : un contrôle `sm` se voit et se
+touche à 40, sous la règle maison des 44 au doigt (au-dessus du minimum WCAG 2.5.8, 24).
+
+### Ajouté
+
+- **`RangeSlider`** — 40e composant, troisième ajout assumé (`docs/DESIGN.md` § 8). Deux
+  poignées `role="slider"` dans un groupe nommé par le libellé, `value: [a, b]`, `min`,
+  `max`, `step`, `formatValue`, `display`, `bounds`, `thumbLabels`, `disabled`. Clavier :
+  flèches, Page↑/↓, Début/Fin ; pointeur : glisser, ou cliquer la piste. Les poignées ne se
+  croisent pas. Classes `.ds-range*`. La portion choisie rejoint la liste des remplissages en
+  dégradé. Poignée 24 à l'œil, 44 au doigt.
+  Rail `--border` en clair, **`--surface-alt` en sombre** (`.dark .ds-range__rail`) : sur
+  `--border`, la portion choisie tombait à 2,56:1 en sombre — refusé par `check-contrast`.
+- **`.ds-badge--lg`** et **`Badge pad="lg"`** — 32, texte 14 : l'étiquette d'intérêt de la
+  fiche persona, à combiner avec `.ds-badge--card`. Nommée `--lg` et non `--md` : `pad="md"`
+  est déjà le défaut à 28.
+- `check-contrast.mjs` : + 2 paires (`.ds-range__fill sur son rail`, `.ds-range__thumb —
+  bordure --primary sur la page`) — **58 conformes sur 64**, écarts assumés inchangés (6).
+  `.ds-chip.is-selected` mesurée en 15 / 600.
+- Vitrine : la règle 48 / 40 (Actions), `RangeSlider` et le badge carte `lg` en thème courant
+  et en sombre forcé, hauteurs mises à jour dans toutes les légendes.
+
+### Corrigé
+
+- `README.md` renvoyait l'usage des classes vers `PORTAGE.md`, historique ; il pointe
+  `docs/PROMPTS.md` § classes. `PORTAGE.md` décrit les deux modes de la chip.
+- `IconButton` : son commentaire d'en-tête annonçait trois carrés identiques et « jamais
+  pill » ; `Pastille` ne se dit plus jumelle au pixel de l'`IconButton` md.
+- `brand.template.css` § 4.2 : le « piège » de la media query n'existe plus, les défauts
+  annoncés suivent les nouvelles valeurs.
+
+---
+
 ## 0.3.1 — la chip apprend le choix unique
 
 Aucune rupture. Un sélecteur s'ajoute, rien ne change à l'écran pour l'existant.

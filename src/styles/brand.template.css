@@ -284,25 +284,17 @@
                                    et le radio, qui l'emploient pour être ronds. */
 
   /* ---------- 4.2 · RAIL DE CONTRÔLES ----------
-     UNE hauteur minimale pour tout contrôle : bouton dans ses trois tailles, champ, select,
-     barre d'onglets. Les carrés du bouton-icône ont leur propre rail, à trois tailles réelles.
-
-     LE PIÈGE, ET IL EST À VOUS : le socle REDÉCLARE --control-md et --control-lg dans un
-     `@media (max-width:64rem)` — 2.75rem, soit la cible tactile de 44px. Comme votre fichier
-     arrive APRÈS le socle, un `--control-md` posé ici en `:root` nu gagne AUSSI sous 64rem
-     et efface la cible tactile sans rien signaler. Si vous changez ces deux-là, répétez le
-     media query dans votre fichier :
-
-         @media (max-width:64rem){ :root{ --control-md:…; --control-lg:…; } }
-
-     --control-sm vaut `var(--control-md)` dans le socle et suit donc tout seul ; ne le
-     redéclarez que pour DÉCROCHER le bouton sm du rail commun. */
-  /* --control-sm:var(--control-md); */ /* socle : alias — le bouton sm tient le rail */
-  /* --control-md:3rem; */              /* socle : 48 · 44 sous 64rem — voir le piège ci-dessus */
-  /* --control-lg:3.25rem; */           /* socle : 52 · 48 sous 64rem — CTA héros uniquement */
-  /* --icon-control-sm:2.375rem; */     /* socle : 38 */
-  /* --icon-control-md:2.625rem; */     /* socle : 42 */
-  /* --icon-control-lg:3rem; */         /* socle : 48 */
+     Deux tailles de contrôle, multiples de 4, IDENTIQUES sur toutes les largeurs d'écran
+     (v0.4.0 — le socle ne redéclare plus rien sous 64rem, il n'y a plus de media query à
+     répéter ici). md 48 : ce qui conclut un écran ou se remplit ; sm 40 : ce qui vit dans
+     un composant ou une barre ; lg 52 : site vitrine uniquement. Les carrés du bouton-icône
+     ont leur propre rail, à trois tailles réelles. Gardez des multiples de 4. */
+  /* --control-sm:2.5rem; */            /* socle : 40 — dans un composant ou une barre */
+  /* --control-md:3rem; */              /* socle : 48 — conclut un écran, se remplit */
+  /* --control-lg:3.25rem; */           /* socle : 52 — site vitrine uniquement */
+  /* --icon-control-sm:2.5rem; */       /* socle : 40 */
+  /* --icon-control-md:3rem; */         /* socle : 48 */
+  /* --icon-control-lg:3.5rem; */       /* socle : 56 */
 
   /* ---------- 4.3 · DIMENSIONS DE COMPOSANTS ----------
      Vingt mesures, une par décision de forme. Elles n'ont AUCUN effet les unes sur les

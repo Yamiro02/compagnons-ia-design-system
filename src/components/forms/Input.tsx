@@ -46,9 +46,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
   /* La déduction de patterns.css couvre le cas normal : un champ dans une Card, une Modal,
      une ActionSheet, un Dropdown, le pop d'un DatePicker ou la Navbar passe en --background
      tout seul. `surface` n'est là que pour les conteneurs qu'elle ne connaît pas. */
-  /* Le rail passe par des classes, jamais par un style inline : `--control-sm`
-     aliase `--control-md` depuis le rail unique, mais la classe reste pour l'API
-     et pour le jour où le rail redivergerait. */
+  /* Le rail passe par des classes, jamais par un style inline : sm 40, md 48, lg 52
+     (site vitrine uniquement) — v0.4.0, --control-sm est redevenu une vraie taille. */
   const cls = cn(
     'ds-input',
     size !== 'md' && 'ds-input--' + size,

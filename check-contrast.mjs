@@ -165,7 +165,7 @@ function pairs(theme, { ROOT, DARK }, fichier) {
   add('Marque-contenu', '.ds-sidenav.is-active', g('--primary-readable'), g(B), 4.5, '15 / 500');
   add('Marque-contenu', '.ds-badge--accent', g('--primary-readable'), g('--accent'), 4.5, '12 / 700');
   add('Marque-contenu', '.ds-banner--info', g('--primary-readable'), g('--accent'), 4.5, '15 / 400');
-  add('Marque-contenu', '.ds-chip.is-selected', g('--primary-readable'), g('--accent'), 4.5, '14 / 600');
+  add('Marque-contenu', '.ds-chip.is-selected', g('--primary-readable'), g('--accent'), 4.5, '15 / 600');
   /* Le calendrier est posé sur --popover (.ds-cal), pas sur --card : cette paire-là ne
      suit pas la doctrine blanche, elle mesurait la mauvaise surface DEPUIS LE DÉBUT. En
      clair les deux valent le même blanc, mais en sombre --popover est un cran au-dessus
@@ -224,6 +224,14 @@ function pairs(theme, { ROOT, DARK }, fichier) {
   add('Non-texte', '.ds-choice coché — aplat --primary', g('--primary'), g(B), 3, 'contrôle');
   add('Non-texte', '.ds-switch actif — piste --primary', g('--primary'), g(B), 3, 'contrôle');
   add('Non-texte', '.ds-progress__bar sur son rail', g('--primary'), g('--surface-alt'), 3, 'graphique');
+  /* LE CURSEUR DE PLAGE (v0.4.0). La portion choisie porte le dégradé, mesurée sur
+     --primary comme la barre de progression. Son rail est --border en clair et
+     --surface-alt en sombre (`.dark .ds-range__rail`) : sur --border, le sombre tombait à
+     2,56 — c'est cette paire qui l'a refusé. La poignée se lit par sa bordure
+     2px --primary, posée sur la page (son remplissage --card est mesuré par la paire de la
+     bordure sélectionnée, plus bas). */
+  add('Non-texte', '.ds-range__fill sur son rail', g('--primary'), g(theme === 'light' ? '--border' : '--surface-alt'), 3, 'graphique');
+  add('Non-texte', '.ds-range__thumb — bordure --primary sur la page', g('--primary'), g(B), 3, 'contour 2px');
   /* L'état SÉLECTIONNÉ d'une option, d'une chip ou d'une carte de choix se lit sur sa
      bordure --primary, posée sur un remplissage --card : c'est la paire la plus serrée des
      deux côtés de la bordure (--card, puis la page). --brand-to y tombait à 2,52 en sombre. */

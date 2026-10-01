@@ -1,7 +1,7 @@
 # @compagnons-ia/ds
 
 **Le design system de Compagnons IA.** Deux couches qui ne se mélangent pas : un **socle**
-générique — structure, comportements, échelles, rail de contrôles, motion, 39 composants
+générique — structure, comportements, échelles, rail de contrôles, motion, 40 composants
 React + TypeScript, **zéro couleur** — et la **marque** du produit, qui porte les couleurs,
 les polices, les dégradés et la lueur.
 
@@ -61,7 +61,7 @@ marque devrait remplir reste lisible dans `src/styles/brand.template.css`.
 Pas de registry : chaque app épingle une version par un tag git.
 
 ```bash
-npm i github:Yamiro02/compagnons-ia-design-system#v0.3.1
+npm i github:Yamiro02/compagnons-ia-design-system#v0.4.0
 ```
 
 > **Une seule numérotation fait foi ici : celle de ce dépôt.** Elle est repartie de `0.1.0`
@@ -235,7 +235,7 @@ Une section ink au milieu d'une page crème adopte le scope, elle ne peint pas u
 | Rayons | `rounded-xs` `rounded-sm` `rounded-md` `rounded-lg` `rounded-xl` `rounded-2xl` `rounded-pill` — **DOCTRINE ARRONDIE de ce projet : le pill est la règle**, tout ce qui se presse ou se remplit le porte ; les exceptions sont listées dans `docs/DESIGN.md` § 5. **`rounded` nu n'est pas au barème**, voir plus bas |
 | Ombres | `shadow-sm` `shadow-md` `shadow-lg` `shadow-glow` `shadow-glow-lg` |
 | Typo | `font-display` `font-body` `font-mono` · `text-display-xl` `text-display` `text-heading-xl` `text-heading` `text-subheading` `text-heading-sm` `text-body-lg` `text-body` `text-body-sm` `text-control` `text-caption` `text-eyebrow` `text-chip` |
-| Espacement | `gap-space-1` … `gap-space-8` · `h-control-sm/md/lg` · `w-icon-control-sm/md/lg` · `p-card-pad` `p-card-pad-lg` — **rail unique** : tous les contrôles s'alignent sur `--control-md`, qui descend à 2.75rem sous 64rem |
+| Espacement | `gap-space-1` … `gap-space-8` · `h-control-sm/md/lg` · `w-icon-control-sm/md/lg` · `p-card-pad` `p-card-pad-lg` — **hauteurs en multiples de 4**, identiques sur toutes les largeurs : `--control-md` 48 (ce qui conclut un écran ou se remplit), `--control-sm` 40 (dans un composant ou une barre), `--control-lg` 52 (site vitrine uniquement) ; carrés d'icône 40 · 48 · 56 |
 | Largeurs | `max-w-shell` `max-w-wide` `max-w-read` `max-w-narrow` `max-w-page` |
 | Motion | `ease-standard` |
 
@@ -264,7 +264,7 @@ de Tailwind, sur laquelle reposent les composants shadcn de ton app.
 > lève aucune erreur : il passe silencieusement de 20 px à 4 px.
 
 > **Le paquet n'est pas scanné par Tailwind.** v4 ne lit pas `node_modules`. Sans effet
-> aujourd'hui : les 39 composants s'habillent en classes `.ds-*` et n'écrivent aucun utilitaire
+> aujourd'hui : les 40 composants s'habillent en classes `.ds-*` et n'écrivent aucun utilitaire
 > Tailwind. C'est une précaution pour l'avenir — le jour où un composant du DS écrira une classe
 > Tailwind, l'app devra pointer le paquet :
 > ```css
@@ -282,8 +282,8 @@ de Tailwind, sur laquelle reposent les composants shadcn de ton app.
 |---|---|
 | `icons` | `Icon` — 48 glyphes Lucide ; la taille vient du **créneau** (`--ds-icon-size`, repli `1.25rem`), `size` reste la surcharge au site d'appel. Échelle : `1` · `1.125` (contrôle md, TabBar) · `1.25` · `1.5` rem |
 | `actions` | `Button` · `IconButton` — 4 variantes (5 pour `IconButton`, `accent` compris), 3 tailles, pill (doctrine arrondie) |
-| `forms` | `Input` · `Textarea` · `Select` · `Checkbox` · `Radio` · `Switch` · `FormField` · `Calendar` · `DatePicker` |
-| `data-display` | `Card` (+ en-tête à slots) · `Pastille` · `Badge` (2 rembourrages) · `ChatBubble` (`them` / `me`, indicateur `typing`) · `Tooltip` · `Separator` · `Table` (+ `THead` `TBody` `Tr` `Th` `Td`) — `framed` · `columns` · `striped` · `hoverable`, composables |
+| `forms` | `Input` · `Textarea` · `Select` · `Checkbox` · `Radio` · `Switch` · `RangeSlider` (deux poignées, `[a, b]`) · `FormField` · `Calendar` · `DatePicker` |
+| `data-display` | `Card` (+ en-tête à slots) · `Pastille` · `Badge` (3 hauteurs : 28 · dense 24 · `lg` 32) · `ChatBubble` (`them` / `me`, indicateur `typing`) · `Tooltip` · `Separator` · `Table` (+ `THead` `TBody` `Tr` `Th` `Td`) — `framed` · `columns` · `striped` · `hoverable`, composables |
 | `feedback` | `Toast` · `Banner` · `EmptyState` · `Skeleton` · `SkeletonCard` · `Spinner` · `Progress` |
 | `overlays` | `Modal` (3 phases + feuille basse sous 64 rem) · `ActionSheet` · `Dropdown` |
 | `navigation` | `Navbar` · `Footer` · `Tabs` (+ `onCard` / `onPage`) · `TabBar` (coque mobile flottante, 4 onglets, `dock`) · `Pagination` · `AppShell` · `Sidebar` |
@@ -298,9 +298,9 @@ import { Button, type ButtonProps } from '@compagnons-ia/ds';
 Les règles d'usage composant par composant sont dans [`docs/PROMPTS.md`](docs/PROMPTS.md).
 
 **En classes, sans composant** (parcours cœur, Compagnons IA) : `.ds-option` (md / sm),
-`.ds-chip`, `.ds-steps`, `.ds-counter`, `.ds-badge--card`, `.ds-card.is-selected` +
+`.ds-chip`, `.ds-steps`, `.ds-counter`, `.ds-dot`, `.ds-badge--card`, `.ds-card.is-selected` +
 `.ds-card__flag`, `.ds-portrait` (la vignette d'une personne sans photo). Structure et
-usage : [`PORTAGE.md`](PORTAGE.md).
+usage : [`docs/PROMPTS.md`](docs/PROMPTS.md) § classes.
 
 > **Doctrine ⋯ .** `Dropdown` est **desktop only**. Sous 64 rem, un menu ⋯ s'ouvre **toujours** en
 > `ActionSheet`, jamais en `Dropdown` : ce ne sont pas deux composants concurrents, c'est le même

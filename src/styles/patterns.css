@@ -111,10 +111,15 @@ svg.lucide{stroke-width:1.75}
    action sheet : --radius-sm, ce sont des lignes de liste, pas des contrôles), la case à
    cocher (--choice-box-radius, le squircle de marque), le tooltip (--radius-md) et le
    squelette (--radius-sm : il mime du CONTENU, pas un contrôle). Cartes 20, panneaux 24,
-   modales et feuilles 28 : inchangés, ce sont des surfaces. */
-.ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;min-height:var(--control-md);padding:0.8125rem 1.375rem;font-family:var(--font-body);font-size:var(--text-control);font-weight:var(--weight-semibold);line-height:1;border:none;border-radius:var(--radius-pill);cursor:pointer;text-decoration:none;white-space:nowrap;box-sizing:border-box;outline:none;transition:transform var(--duration-fast) var(--ease-standard),box-shadow var(--duration-base) var(--ease-standard),background var(--duration-base) var(--ease-standard),border-color var(--duration-base) var(--ease-standard),filter var(--duration-base) var(--ease-standard)}
-.ds-btn--sm{gap:0.4375rem;min-height:var(--control-sm);padding:0.5625rem 1rem;font-size:var(--text-body-sm)}
-.ds-btn--lg{gap:0.5625rem;min-height:var(--control-lg);padding:0.9375rem 1.625rem;font-size:var(--text-body)}
+   modales et feuilles 28 : inchangés, ce sont des surfaces.
+   LES HAUTEURS SONT POSÉES, JAMAIS DÉDUITES — v0.4.0. Un contrôle tient sa hauteur par son
+   min-height (un jeton --control-*, --chip-h, --badge-h…, toujours un multiple de 4) et
+   porte padding-block:0 : le padding ne règle plus que l'air LATÉRAL. Avant, padding +
+   interligne donnaient 44,8 pour un champ, 52,5 pour un bouton lg, 46,5 pour une option sm. */
+.ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;min-height:var(--control-md);padding:0 1.375rem;font-family:var(--font-body);font-size:var(--text-control);font-weight:var(--weight-semibold);line-height:1;border:none;border-radius:var(--radius-pill);cursor:pointer;text-decoration:none;white-space:nowrap;box-sizing:border-box;outline:none;transition:transform var(--duration-fast) var(--ease-standard),box-shadow var(--duration-base) var(--ease-standard),background var(--duration-base) var(--ease-standard),border-color var(--duration-base) var(--ease-standard),filter var(--duration-base) var(--ease-standard)}
+.ds-btn--sm{gap:0.4375rem;min-height:var(--control-sm);padding:0 1rem;font-size:var(--text-body-sm)}
+/* lg — SITE VITRINE UNIQUEMENT (CTA de héros). L'app s'arrête à md : 48 conclut un écran. */
+.ds-btn--lg{gap:0.5625rem;min-height:var(--control-lg);padding:0 1.625rem;font-size:var(--text-body)}
 .ds-btn--block{width:100%}
 .ds-btn--primary{background:var(--brand-gradient);color:var(--primary-foreground);box-shadow:var(--shadow-glow)}
 .ds-btn--primary:hover:not(:disabled),.ds-btn--primary.is-hover{box-shadow:var(--shadow-glow-lg);transform:translateY(-1px)}
@@ -191,7 +196,7 @@ svg.lucide{stroke-width:1.75}
 .ds-label__required{color:var(--primary)}
 .ds-help{font-size:var(--text-caption);color:var(--text-muted)}
 .ds-error{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-caption);font-weight:var(--weight-medium);color:var(--destructive-readable)}
-.ds-input{width:100%;min-height:var(--control-md);padding:0.6875rem 1.125rem;box-sizing:border-box;font-family:var(--font-body);font-size:var(--text-control);color:var(--foreground);background:var(--card);border:1.5px solid var(--input);border-radius:var(--radius-pill);outline:none;transition:border-color var(--duration-base) var(--ease-standard),box-shadow var(--duration-base) var(--ease-standard)}
+.ds-input{width:100%;min-height:var(--control-md);padding:0 1.125rem;box-sizing:border-box;font-family:var(--font-body);font-size:var(--text-control);color:var(--foreground);background:var(--card);border:1.5px solid var(--input);border-radius:var(--radius-pill);outline:none;transition:border-color var(--duration-base) var(--ease-standard),box-shadow var(--duration-base) var(--ease-standard)}
 .ds-input--on-card{background:var(--background)}
 /* Un champ DÉDUIT sa surface porteuse au lieu de l'attendre en prop. DOCTRINE « le blanc
    est la surface portée » : posé sur la mise en page crème, le champ est BLANC (--card) ;
@@ -234,7 +239,10 @@ svg.lucide{stroke-width:1.75}
 .ds-input-icon .ds-input{padding-left:calc(var(--space-7) + var(--space-1))}
 .ds-input-icon__glyph{position:absolute;left:1.125rem;top:50%;transform:translateY(-50%);pointer-events:none;display:inline-flex;color:var(--text-muted)}
 .ds-input-icon__glyph svg{width:var(--ds-icon-size,1rem);height:var(--ds-icon-size,1rem)}
-.ds-textarea{height:auto;min-height:0;resize:vertical;line-height:var(--leading-normal);border-radius:var(--radius-lg)}
+/* Le textarea porte AUSSI .ds-input, donc son padding-block:0 : un champ multiligne n'a pas
+   de hauteur de rail, il retrouve ici son air vertical (la valeur d'avant la v0.4.0). Il ne
+   prend pas l'arrondi pill — --radius-lg, 20. */
+.ds-textarea{height:auto;min-height:0;padding-block:0.6875rem;resize:vertical;line-height:var(--leading-normal);border-radius:var(--radius-lg)}
 .ds-select{position:relative;display:block}
 .ds-select select{appearance:none;-webkit-appearance:none;padding-right:var(--space-7);cursor:pointer}
 .ds-select__chev{position:absolute;right:var(--space-4);top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-muted)}
@@ -278,6 +286,33 @@ svg.lucide{stroke-width:1.75}
 .ds-switch input:checked+.ds-switch__track .ds-switch__knob,.ds-switch.is-checked .ds-switch__knob{transform:translateX(calc(var(--switch-w) - var(--switch-knob) - var(--switch-inset) * 2))}
 .ds-switch input:focus-visible+.ds-switch__track,.ds-switch.is-focus .ds-switch__track{box-shadow:0 0 0 3px color-mix(in srgb,var(--ring) 35%,transparent)}
 .ds-switch.is-disabled{opacity:.5;cursor:not-allowed}
+/* LE CURSEUR DE PLAGE — composant RangeSlider, v0.4.0. Une ligne d'en-tête (libellé à
+   gauche, valeur en gras à droite), une piste, deux poignées, les bornes sous la piste.
+   La portion choisie porte --brand-gradient en REMPLISSAGE, sans lueur — elle rejoint la
+   liste écrite au-dessus de .ds-pastille--brand-solid. La piste réserve --space-3 de
+   chaque côté : une poignée centrée sur une extrémité ne déborde pas du composant.
+   LE RAIL EST --border EN CLAIR, --surface-alt EN SOMBRE — et c'est une mesure. En sombre,
+   la portion choisie tombait à 2,56:1 sur --border, sous le seuil 3:1 d'un graphique ; sur
+   --surface-alt elle tient (3,20). En clair, --surface-alt sur la crème ne se voit plus :
+   --border y reste, et la portion choisie y mesure 4,75.
+   CIBLE TACTILE : la poignée se voit à 24 (--space-5) et touche à 44 — ::before déborde de
+   0.625rem tout autour (24 + 10 + 10). touch-action:none sur la piste et les poignées : le
+   glisser du doigt ne doit pas faire défiler la page. */
+.ds-range{display:flex;flex-direction:column;gap:var(--space-3)}
+.ds-range__head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-2)}
+.ds-range__value{font-size:var(--text-control);font-weight:var(--weight-bold);color:var(--foreground)}
+.ds-range__track{position:relative;height:var(--space-6);margin-inline:var(--space-3);cursor:pointer;touch-action:none}
+.ds-range__rail,.ds-range__fill{position:absolute;top:50%;height:var(--space-1);transform:translateY(-50%);border-radius:var(--radius-pill)}
+.ds-range__rail{inset-inline:0;background:var(--border)}
+.dark .ds-range__rail{background:var(--surface-alt)}
+.ds-range__fill{background:var(--brand-gradient)}
+.ds-range__thumb{position:absolute;top:50%;width:var(--space-5);height:var(--space-5);box-sizing:border-box;transform:translate(-50%,-50%);border-radius:var(--radius-pill);background:var(--card);border:2px solid var(--primary);box-shadow:var(--shadow-sm);cursor:grab;outline:none;touch-action:none;transition:box-shadow var(--duration-fast) var(--ease-standard)}
+.ds-range__thumb::before{content:"";position:absolute;inset:-0.625rem}
+.ds-range__thumb:active{cursor:grabbing}
+.ds-range__thumb:focus-visible,.ds-range__thumb.is-focus{box-shadow:var(--shadow-sm),0 0 0 3px color-mix(in srgb,var(--ring) 35%,transparent)}
+.ds-range__bounds{display:flex;justify-content:space-between;margin-inline:var(--space-1)}
+.ds-range.is-disabled{opacity:.5}
+.ds-range.is-disabled .ds-range__track,.ds-range.is-disabled .ds-range__thumb{cursor:not-allowed}
 /* COMPAGNONS IA — PARCOURS CŒUR. L'OPTION : une réponse d'onboarding, pill, qui enveloppe
    un .ds-choice (radio ou case). Structure :
      <label class="ds-option"><span class="ds-choice"><input type="radio|checkbox">…case
@@ -285,13 +320,17 @@ svg.lucide{stroke-width:1.75}
    md (défaut) = écran à une question ; sm = écran à plusieurs groupes. L'état sélectionné
    se lit sur la bordure --primary (liste fermée de l'accent, docs/DESIGN.md § 3), la
    graisse du libellé ET la case cochée — jamais sur la bordure seule. Le focus passe de la
-   case à l'option entière. */
-.ds-option{display:flex;align-items:center;gap:var(--space-4);padding:var(--space-5);box-sizing:border-box;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-pill);font-family:var(--font-body);font-size:var(--text-body-lg);font-weight:var(--weight-semibold);line-height:var(--leading-snug);color:var(--text-secondary);cursor:pointer;transition:border-color var(--duration-fast) var(--ease-standard),color var(--duration-fast) var(--ease-standard),box-shadow var(--duration-fast) var(--ease-standard)}
+   case à l'option entière.
+   HAUTEUR — v0.4.0 : 48 (--control-md) dans les DEUX tailles, texte --text-control (15) dans
+   les deux ; md et sm ne diffèrent plus que par l'écart case-libellé et la graisse. Le
+   padding-block --space-2 ne fixe PAS la hauteur (une ligne mesure moins de 48 avec lui) :
+   il garde de l'air à un libellé qui passe à la ligne, qui toucherait sinon le contour. */
+.ds-option{display:flex;align-items:center;gap:var(--space-4);min-height:var(--control-md);padding:var(--space-2) var(--space-5);box-sizing:border-box;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-pill);font-family:var(--font-body);font-size:var(--text-control);font-weight:var(--weight-semibold);line-height:var(--leading-snug);color:var(--text-secondary);cursor:pointer;transition:border-color var(--duration-fast) var(--ease-standard),color var(--duration-fast) var(--ease-standard),box-shadow var(--duration-fast) var(--ease-standard)}
 .ds-option:hover,.ds-option.is-hover{border-color:var(--input)}
 .ds-option.is-selected,.ds-option:has(input:checked){border-color:var(--primary);font-weight:var(--weight-bold);color:var(--foreground)}
 .ds-option:has(input:focus-visible),.ds-option.is-focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--ring) 35%,transparent)}
 .ds-option:has(input:focus-visible) .ds-choice__box{box-shadow:none}
-.ds-option--sm{gap:var(--space-3);padding:var(--space-4) var(--space-5);font-size:var(--text-control);font-weight:var(--weight-medium)}
+.ds-option--sm{gap:var(--space-3);font-weight:var(--weight-medium)}
 .ds-option--sm.is-selected,.ds-option--sm:has(input:checked){font-weight:var(--weight-bold)}
 .ds-option.is-disabled,.ds-option:has(input:disabled){opacity:.5;cursor:not-allowed}
 /* La CHIP : un bouton à bascule (aria-pressed) — centres d'intérêt, filtres. Sélectionnée,
@@ -301,12 +340,13 @@ svg.lucide{stroke-width:1.75}
    aria-pressed. En RADIO (choix unique : role="radiogroup" sur le groupe, role="radio" sur
    chaque chip), aria-pressed n'est pas un attribut valide du rôle radio — l'état vit dans
    aria-checked. Les deux attributs dessinent la même sélection.
+   HAUTEUR — v0.4.0 : --chip-h vaut 40, la taille --control-sm, texte --text-control (15).
    CIBLE TACTILE — la règle du système est « 44 px AU DOIGT », pas à l'œil : la chip se voit à
-   --chip-h (36) et sa zone de toucher déborde de --space-1 en haut et en bas (::before
-   invisible) → 36 + 4 + 4 = 44. Même principe que .ds-tabbar__item. Condition : l'écart
+   --chip-h (40) et sa zone de toucher déborde de --space-1 en haut et en bas (::before
+   invisible) → 40 + 4 + 4 = 48. Même principe que .ds-tabbar__item. Condition : l'écart
    VERTICAL entre deux rangées de chips ne descend JAMAIS sous --space-2 (8) — les zones de
    deux rangées se touchent alors pile, sans se chevaucher. */
-.ds-chip{position:relative;display:inline-flex;align-items:center;min-height:var(--chip-h);padding:0 var(--space-4);box-sizing:border-box;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-pill);font-family:var(--font-body);font-size:var(--text-body-sm);font-weight:var(--weight-medium);line-height:1;color:var(--foreground);cursor:pointer;outline:none;transition:border-color var(--duration-fast) var(--ease-standard),background-color var(--duration-fast) var(--ease-standard),box-shadow var(--duration-fast) var(--ease-standard)}
+.ds-chip{position:relative;display:inline-flex;align-items:center;min-height:var(--chip-h);padding:0 var(--space-4);box-sizing:border-box;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-pill);font-family:var(--font-body);font-size:var(--text-control);font-weight:var(--weight-medium);line-height:1;color:var(--foreground);cursor:pointer;outline:none;transition:border-color var(--duration-fast) var(--ease-standard),background-color var(--duration-fast) var(--ease-standard),box-shadow var(--duration-fast) var(--ease-standard)}
 .ds-chip::before{content:"";position:absolute;inset-inline:0;inset-block:calc(var(--space-1) * -1)}
 .ds-chip:hover:not(:disabled),.ds-chip.is-hover{border-color:var(--input)}
 .ds-chip.is-selected,.ds-chip[aria-pressed="true"],.ds-chip[aria-checked="true"]{border-color:var(--primary);background:var(--accent);color:var(--primary-readable);font-weight:var(--weight-semibold)}
@@ -352,8 +392,14 @@ svg.lucide{stroke-width:1.75}
 .ds-card--interactive:active,.ds-card--interactive.is-active{transform:translateY(0);box-shadow:var(--shadow-sm)}
 .ds-card--interactive:focus-visible,.ds-card--interactive.is-focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--ring) 35%,transparent)}
 .ds-card--feature{background:var(--grad-soft);border-color:color-mix(in srgb,var(--brand-from) 28%,transparent)}
-.ds-badge{display:inline-flex;align-items:center;gap:0.375rem;min-height:var(--badge-h);padding:0.25rem 0.6875rem;box-sizing:border-box;border-radius:var(--radius-pill);font-family:var(--font-body);font-size:var(--text-caption);font-weight:var(--weight-semibold);line-height:1.3;white-space:nowrap}
-.ds-badge--dense{min-height:var(--badge-h-dense);padding-block:0.0625rem}
+.ds-badge{display:inline-flex;align-items:center;gap:0.375rem;min-height:var(--badge-h);padding:0 0.6875rem;box-sizing:border-box;border-radius:var(--radius-pill);font-family:var(--font-body);font-size:var(--text-caption);font-weight:var(--weight-semibold);line-height:1.3;white-space:nowrap}
+.ds-badge--dense{min-height:var(--badge-h-dense)}
+/* L'ÉTIQUETTE D'INTÉRÊT, TAILLE FICHE PERSONA — v0.4.0. 32 de haut, texte 14 : plus discrète
+   que la chip (40, un contrôle), plus lisible que le badge de statut (28). Se combine avec
+   --card pour l'étiquette blanche posée sur la crème. Contenu de persona : emoji permis.
+   Nommée --lg et pas --md : `pad="md"` de Badge EST déjà le défaut à 28 — une classe --md à
+   32 aurait fait mentir le nom. */
+.ds-badge--lg{min-height:2rem;padding:0 var(--space-3);font-size:var(--text-body-sm)}
 .ds-badge--coral{background:var(--pill-coral-bg);color:var(--pill-coral-fg)}
 .ds-badge--amber{background:var(--pill-amber-bg);color:var(--pill-amber-fg)}
 .ds-badge--danger{background:var(--pill-danger-bg);color:var(--pill-danger-fg)}
@@ -368,7 +414,7 @@ svg.lucide{stroke-width:1.75}
 .ds-badge--card{background:var(--card);color:var(--foreground);box-shadow:inset 0 0 0 1px var(--border);font-weight:var(--weight-medium)}
 /* Le COMPTEUR de non-lus — pastille pleine en dégradé, l'un des trois ajouts de la liste
    fermée de l'accent (docs/DESIGN.md § 3). --text-micro : hors lecture, un chiffre. */
-.ds-counter{flex:none;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:1.125rem;height:1.125rem;padding:0 var(--space-1);border-radius:var(--radius-pill);background:var(--brand-gradient);color:var(--primary-foreground);font-family:var(--font-body);font-size:var(--text-micro);font-weight:var(--weight-bold);line-height:1}
+.ds-counter{flex:none;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:1.25rem;height:1.25rem;padding:0 var(--space-1);border-radius:var(--radius-pill);background:var(--brand-gradient);color:var(--primary-foreground);font-family:var(--font-body);font-size:var(--text-micro);font-weight:var(--weight-bold);line-height:1}
 /* LE POINT DE NON-LU — le compteur sans le compte. Là où `.ds-counter` dit COMBIEN, celui-ci
    dit SEULEMENT qu'il y a du nouveau : une entrée de liste, un onglet, une cloche. Il porte
    le dégradé de marque comme son jumeau chiffré — un seul rouge pour « il se passe quelque
@@ -431,8 +477,8 @@ svg.lucide{stroke-width:1.75}
    ⚠ AUCUNE LUEUR ICI, et ce n'est pas un oubli. Dans ce système la lueur marque ce qui se
    PRESSE : seuls les deux boutons primaires la portent. Les autres endroits où le
    dégradé remplit quelque chose — barre de progression, progression par étapes, case à
-   cocher, pastille du radio, piste de l'interrupteur, jour sélectionné du calendrier, bulle
-   de l'utilisateur, compteur de non-lus — n'en ont pas, et une Pastille ne se clique
+   cocher, pastille du radio, piste de l'interrupteur, portion choisie du curseur de plage,
+   jour sélectionné du calendrier, bulle de l'utilisateur, compteur de non-lus — n'en ont pas, et une Pastille ne se clique
    jamais. Un appelant qui veut le halo l'ajoute chez lui, en le sachant. */
 .ds-pastille--brand-solid{background:var(--brand-gradient);color:var(--primary-foreground)}
 .ds-pastille--coral{background:var(--pill-coral-bg);color:var(--pill-coral-fg)}

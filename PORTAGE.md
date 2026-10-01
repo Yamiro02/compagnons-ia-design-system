@@ -11,7 +11,7 @@
 Ce dépôt est un **squelette de design system React**. Il apporte trois choses, et
 seulement trois :
 
-1. **L'inventaire** — 39 composants d'interface, leur nom, leur emplacement, leur API.
+1. **L'inventaire** — 40 composants d'interface, leur nom, leur emplacement, leur API.
 2. **La vitrine** — 9 pages qui les montrent tous, prête à ouvrir.
 3. **Le comportement** — focus, clavier, ARIA, cibles tactiles. La partie qu'on ne voit
    pas sur une maquette et qu'on re-casse à chaque régénération.
@@ -25,7 +25,7 @@ Tout le reste — couleurs, typographie, formes, ombres, traitements — **est �
 | | Pourquoi |
 |---|---|
 | La **structure des fichiers** | `src/components/<famille>/<Nom>.tsx`. Le point d'entrée et la vitrine importent par ces chemins. |
-| La **liste des 39 composants** | C'est l'inventaire. On n'en retire pas, on n'en ajoute pas au portage. *(Deux exceptions ASSUMÉES sur ce projet, ajoutées aux 37 d'origine : `TabBar`, la coque d'une PWA mobile, et `ChatBubble`, la bulle de conversation — voir le journal de `docs/DESIGN.md` § 10 et « Les ajouts du projet » plus bas.)* |
+| La **liste des 40 composants** | C'est l'inventaire. On n'en retire pas, on n'en ajoute pas au portage. *(Trois exceptions ASSUMÉES sur ce projet, ajoutées aux 37 d'origine : `TabBar`, la coque d'une PWA mobile, `ChatBubble`, la bulle de conversation, et `RangeSlider`, le curseur de plage — voir le journal de `docs/DESIGN.md` § 10 et « Les ajouts du projet » plus bas.)* |
 | La **structure de la vitrine** | 9 pages — une par famille, plus Fondations. On remplace ce qu'elles montrent, pas leur découpage. |
 | Le **comportement et l'accessibilité** | Piège de focus, touche Échap, verrou de défilement, restitution du focus, `focus-visible`, rôles ARIA, cibles tactiles 44 px. Invisible sur une maquette, indispensable dans une app. |
 
@@ -53,7 +53,7 @@ Deux endroits :
 
 ---
 
-## L'inventaire — 39 composants
+## L'inventaire — 40 composants
 
 Chemin : `src/components/<famille>/<Nom>.tsx` · classes CSS : `src/styles/patterns.css`
 
@@ -63,7 +63,7 @@ Chemin : `src/components/<famille>/<Nom>.tsx` · classes CSS : `src/styles/patte
 | `brand` | Avatar · Halo · Logo |
 | `data-display` | Badge · Card · ChatBubble · Pastille · Separator · Table · Tooltip |
 | `feedback` | Banner · EmptyState · Progress · Skeleton · SkeletonCard · Spinner · Toast |
-| `forms` | Calendar · Checkbox · DatePicker · FormField · Input · Radio · Select · Switch · Textarea |
+| `forms` | Calendar · Checkbox · DatePicker · FormField · Input · Radio · RangeSlider · Select · Switch · Textarea |
 | `icons` | Icon |
 | `navigation` | AppShell · Footer · Navbar · Pagination · Sidebar · TabBar · Tabs |
 | `overlays` | ActionSheet · Dropdown · Modal *(+ `useModalSurface`, le hook partagé)* |
@@ -179,9 +179,9 @@ C'est volontaire : une régression casse visiblement au lieu de dériver en sile
 Ce qui s'est ajouté à l'inventaire d'origine du gabarit, et pourquoi, est daté dans le journal de
 `docs/DESIGN.md` § 10. Deux régimes :
 
-**Deux composants.** `TabBar` (la coque mobile) et `ChatBubble` (la bulle de conversation :
-`from="them"|"me"`, `typing` pour l'indicateur de saisie). Page de vitrine : Navigation pour
-l'un, Data display pour l'autre.
+**Trois composants.** `TabBar` (la coque mobile), `ChatBubble` (la bulle de conversation :
+`from="them"|"me"`, `typing` pour l'indicateur de saisie) et `RangeSlider` (le curseur de
+plage à deux poignées, v0.4.0). Pages de vitrine : Navigation, Data display, Forms.
 
 **Des classes, sans composant** — issues de l'audit des maquettes « Parcours cœur ». Toutes
 dans `src/styles/patterns.css`, toutes montrées dans la vitrine (Forms, Data display) :
@@ -189,7 +189,7 @@ dans `src/styles/patterns.css`, toutes montrées dans la vitrine (Forms, Data di
 | Classe | Structure | Vitrine |
 |---|---|---|
 | `.ds-option` · `--sm` | `<label class="ds-option"><span class="ds-choice"><input type="radio\|checkbox">` + la case `.ds-choice__box` `</span>Libellé</label>` — md = écran à une question, sm = écran à plusieurs groupes. Sélection : `:has(input:checked)` ou `.is-selected` | Forms |
-| `.ds-chip` | `<button type="button" class="ds-chip" aria-pressed>` — libellé d'interface, jamais d'emoji. Sélection : `aria-pressed="true"` ou `.is-selected` | Forms |
+| `.ds-chip` | `<button type="button" class="ds-chip" aria-pressed>` (bascule) ou `role="radio"` + `aria-checked` dans un `role="radiogroup"` (choix unique, v0.3.1) — libellé d'interface, jamais d'emoji. Sélection : `aria-pressed="true"`, `aria-checked="true"` ou `.is-selected` | Forms |
 | `.ds-steps` | `.ds-steps` > `.ds-steps__label` (« Étape 2 sur 5 », porte l'information) + `.ds-steps__dots` > `.ds-steps__dot` (`.is-done` · `.is-current`), les points en `aria-hidden` | Forms |
 | `.ds-counter` | `<span class="ds-counter">3</span>` — le compteur de non-lus, pastille pleine en dégradé | Data display |
 | `.ds-badge--card` | `.ds-badge.ds-badge--card` — l'étiquette de centre d'intérêt, blanche, faite pour la crème ; contenu de persona, emoji permis | Data display |
@@ -205,4 +205,4 @@ Leur promotion en composants React est une décision à part — proposée, pas 
 `GETTING-STARTED.md` — la même chose en checklist minutée, pour un humain.
 `docs/DESIGN.md` — la charte à remplir avant de toucher au CSS.
 `docs/accessibilite.md` — ce qui est garanti, et ce qui ne l'est pas.
-`README.md` — l'API des 39 composants.
+`README.md` — l'API des 40 composants.

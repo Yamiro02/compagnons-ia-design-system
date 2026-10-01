@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import type { InputHTMLAttributes, JSX, ReactNode } from 'react';
 import { cn } from '../../lib/cn';
 
-/** Binary toggle. Track 2.75rem x 1.625rem, pill radius, knob 1.25rem.
+/** Binary toggle. Track 2.75rem x 1.75rem (44 × 28), pill radius, knob 1.25rem, inset 0.25rem.
  *  `forwardRef` : la ref atteint l'<input> natif du switch (react-hook-form). */
 export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> {
   label?: ReactNode;

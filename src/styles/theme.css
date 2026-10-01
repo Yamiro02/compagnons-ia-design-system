@@ -284,13 +284,13 @@
   --spacing-space-6: var(--space-6);
   --spacing-space-7: var(--space-7);
   --spacing-space-8: var(--space-8);
-  /* Rail de hauteur des contrôles — rail UNIQUE : Button, Input, Select et la barre
-     d’onglets s’alignent tous sur --control-md, qui descend à 2.75rem sous 64rem
-     (cible tactile). Les alias sm/lg existent pour la compat d’API. */
+  /* Rail de hauteur des contrôles — deux tailles réelles, multiples de 4 (v0.4.0) :
+     --control-md 48 (Button, Input, Select, barre d’onglets) et --control-sm 40 (le
+     compact). lg, 52, est réservé au site vitrine. */
   --spacing-control-sm: var(--control-sm);
   --spacing-control-md: var(--control-md);
   --spacing-control-lg: var(--control-lg);
-  /* IconButton — même rail : les trois tailles rendent le même carré. */
+  /* IconButton — son propre rail, trois carrés réels : 40 · 48 · 56. */
   --spacing-icon-control-sm: var(--icon-control-sm);
   --spacing-icon-control-md: var(--icon-control-md);
   --spacing-icon-control-lg: var(--icon-control-lg);

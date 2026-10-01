@@ -44,6 +44,8 @@ export { Radio } from './components/forms/Radio';
 export type { RadioProps } from './components/forms/Radio';
 export { Switch } from './components/forms/Switch';
 export type { SwitchProps } from './components/forms/Switch';
+export { RangeSlider } from './components/forms/RangeSlider';
+export type { RangeSliderProps } from './components/forms/RangeSlider';
 export { FormField } from './components/forms/FormField';
 export type { FormFieldProps } from './components/forms/FormField';
 

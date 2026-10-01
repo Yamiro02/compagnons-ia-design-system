@@ -1,4 +1,4 @@
-import { Button, Icon, IconButton } from '@compagnons-ia/ds';
+import { Button, Icon, IconButton, Input } from '@compagnons-ia/ds';
 import { ContentIcon } from '@compagnons-ia/ds/brand-content';
 import { Block, Row, Section } from '../ui';
 
@@ -19,7 +19,7 @@ export function ActionsPage() {
           </Row>
         </Block>
 
-        <Block label="Tailles" hint="sm 2.375rem · md 3rem (aligné sur Input et Select) · lg 3.25rem.">
+        <Block label="Tailles" hint="Hauteurs posées, multiples de 4, identiques sur toutes les largeurs : sm 40 · md 48 (aligné sur Input et Select) · lg 52 — site vitrine uniquement, plus employé dans l'app.">
           {VARIANTS.map(v => (
             <Row key={v} label={v}>
               <Button variant={v} size="sm">Petite</Button>
@@ -27,6 +27,20 @@ export function ActionsPage() {
               <Button variant={v} size="lg">Grande</Button>
             </Row>
           ))}
+        </Block>
+
+        <Block label="La règle 48 / 40" hint="48 (--control-md) : ce qui CONCLUT un écran ou se REMPLIT — CTA de bas d'écran, Payer, Envoyer, champs. 40 (--control-sm) : ce qui vit DANS un composant ou une barre — bouton de bannière ou de carte, barre de recherche, barre de saisie du chat. Les deux rangées s'alignent au pixel.">
+          <Row label="48 — conclut un écran">
+            <Input placeholder="ton@email.com" style={{ width: '14rem' }} />
+            <Button variant="primary">Envoyer</Button>
+            <IconButton label="Envoyer" variant="primary"><Icon name="arrow-right" /></IconButton>
+          </Row>
+          <Row label="40 — dans un composant ou une barre">
+            <div style={{ width: '14rem' }}><Input size="sm" icon={<Icon name="search" />} placeholder="Rechercher" /></div>
+            <Button variant="secondary" size="sm">Voir l'abonnement</Button>
+            <IconButton label="Envoyer" variant="primary" size="sm"><Icon name="arrow-right" /></IconButton>
+            <button type="button" className="ds-chip" aria-pressed="true">Jazz</button>
+          </Row>
         </Block>
 
         <Block label="États" hint="Les états forcés utilisent les classes de démonstration is-hover / is-active / is-focus de patterns.css.">
@@ -66,7 +80,7 @@ export function ActionsPage() {
         </Block>
       </Section>
 
-      <Section title="IconButton" note="Carré, rayon --radius-pill (doctrine arrondie). md fait 2.625rem — la cible de touche minimale.">
+      <Section title="IconButton" note="Carré, rayon --radius-pill (doctrine arrondie). Trois carrés réels : sm 40 · md 48 · lg 56 — sm et md alignés sur le bouton de même taille.">
         <Block label="Variantes et tailles" hint="Les icônes ne portent aucun size : le créneau les dimensionne (sm 1rem · md 1.125rem). accent = fond --accent, sans bordure, icône --primary — l'état « sélectionné doux » d'un lien-icône.">
           {ICON_VARIANTS.map(v => (
             <Row key={v} label={v}>

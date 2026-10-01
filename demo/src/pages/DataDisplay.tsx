@@ -144,7 +144,7 @@ export function DataDisplayPage() {
           </Row>
         </Block>
 
-        <Block label="Rembourrages" hint="md = --badge-h (29 px), la hauteur historique, figée pour non-régression · dense = --badge-h-dense (24 px), celle qui s'aligne sur une pilule d'état de la même rangée. Icône au créneau : 0.8125rem en md, 0.75rem en dense — aucune taille n'est écrite au site d'appel.">
+        <Block label="Hauteurs" hint="Multiples de 4, posées (min-height + padding-block:0). md = --badge-h (28), le badge de statut · dense = --badge-h-dense (24), celle qui s'aligne sur une pilule d'état de la même rangée · lg = 32, texte 14, l'étiquette d'intérêt d'une fiche persona. Icône au créneau : 0.8125rem en md et lg, 0.75rem en dense — aucune taille n'est écrite au site d'appel.">
           <Row label="md — posé à côté d'un Button sm et d'un Input sm">
             <Badge tone="success" icon={<Icon name="circle-check" strokeWidth={2.5} />}>En ligne</Badge>
             <Button size="sm" variant="secondary">Action</Button>
@@ -154,6 +154,10 @@ export function DataDisplayPage() {
             <Badge pad="dense" tone="success" icon={<Icon name="circle-check" strokeWidth={2.5} />}>En ligne</Badge>
             <Badge pad="dense" tone="coral" icon={<Icon name="zap" strokeWidth={2.5} />}>Nouveau</Badge>
             <Badge pad="dense" tone="neutral">Brouillon</Badge>
+          </Row>
+          <Row label="lg — 32, texte 14">
+            <Badge pad="lg" tone="accent">Mis en avant</Badge>
+            <Badge pad="lg" tone="neutral">Brouillon</Badge>
           </Row>
         </Block>
 
@@ -167,7 +171,28 @@ export function DataDisplayPage() {
           </div>
         </Block>
 
-        <Block label="Compteur de non-lus" hint="Parcours cœur. .ds-counter — pastille pleine en dégradé (liste fermée de l'accent), chiffre en --text-micro. Seul, puis dans une ligne de conversation ; le chiffre se double d'un libellé pour les lecteurs d'écran. Classe seule.">
+        <Block label="Badge carte, taille fiche persona" hint=".ds-badge--card + .ds-badge--lg (ou Badge pad=lg) — 32 de haut, texte 14 : plus discrète que la chip (40), plus lisible que le badge de statut (28). Le premier îlot suit la vitrine, le second force le sombre.">
+          <Grid cols={2}>
+            <div className="flex flex-col gap-space-2 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">thème courant</span>
+              <div className="flex flex-wrap items-center gap-space-2">
+                <span className="ds-badge ds-badge--card ds-badge--lg">🍳 Cuisine</span>
+                <span className="ds-badge ds-badge--card ds-badge--lg">🎷 Jazz</span>
+                <span className="ds-badge ds-badge--card ds-badge--lg">✈️ Voyages</span>
+              </div>
+            </div>
+            <div className="dark flex flex-col gap-space-2 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">sombre, forcé</span>
+              <div className="flex flex-wrap items-center gap-space-2">
+                <span className="ds-badge ds-badge--card ds-badge--lg">🍳 Cuisine</span>
+                <span className="ds-badge ds-badge--card ds-badge--lg">🎷 Jazz</span>
+                <span className="ds-badge ds-badge--card ds-badge--lg">✈️ Voyages</span>
+              </div>
+            </div>
+          </Grid>
+        </Block>
+
+        <Block label="Compteur de non-lus" hint="Parcours cœur. .ds-counter — pastille pleine en dégradé (liste fermée de l'accent), 20 de haut, chiffre en --text-micro. Seul, puis dans une ligne de conversation ; le chiffre se double d'un libellé pour les lecteurs d'écran. Classe seule.">
           <Row label="seul">
             <span className="ds-counter">1</span>
             <span className="ds-counter">3</span>

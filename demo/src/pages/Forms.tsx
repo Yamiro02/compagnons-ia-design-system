@@ -1,6 +1,6 @@
 import { useRef, useState, type KeyboardEvent } from 'react';
 import { IDENTITY } from '../identity';
-import { Calendar, Checkbox, DatePicker, FormField, Icon, Input, Radio, Select, Switch, Textarea } from '@compagnons-ia/ds';
+import { Calendar, Checkbox, DatePicker, FormField, Icon, Input, Radio, RangeSlider, Select, Switch, Textarea } from '@compagnons-ia/ds';
 import { Block, Grid, Row, Section, Stack } from '../ui';
 
 const SERIES = [
@@ -79,6 +79,8 @@ export function FormsPage() {
   const [sombre, setSombre] = useState(true);
   const [date, setDate] = useState<Date | undefined>(new Date(2026, 8, 24));
   const [intention, setIntention] = useState('serieux');
+  const [age, setAge] = useState<[number, number]>([35, 50]);
+  const [ageSombre, setAgeSombre] = useState<[number, number]>([35, 50]);
   const [moments, setMoments] = useState<string[]>(['En soirée']);
   const [interets, setInterets] = useState<string[]>(['Jazz', 'Voyages']);
   const basculer = (liste: string[], valeur: string) =>
@@ -86,12 +88,12 @@ export function FormsPage() {
 
   return (
     <div className="flex flex-col gap-space-7">
-      <Section title="Input" note="Rail de contrôle partagé, bordure 1.5px. Le focus se lit sur la bordure seule, qui passe en --ring — jamais d'anneau en plus. PILL et BLANC : doctrine arrondie + « le blanc est la surface portée ».">
+      <Section title="Input" note="Hauteur posée (min-height + padding-block:0) : md 48 pour un champ de formulaire, sm 40 pour une barre de recherche ou de saisie. Bordure 1.5px. Le focus se lit sur la bordure seule, qui passe en --ring — jamais d'anneau en plus. PILL et BLANC : doctrine arrondie + « le blanc est la surface portée ».">
         <Block label="Tailles">
           <Stack>
-            <Input size="sm" placeholder="Petite — 2.375rem" />
+            <Input size="sm" placeholder="Petite — 40, barre de recherche" />
             <Input size="md" placeholder="ton@email.com" />
-            <Input size="lg" placeholder="Grande — 3.25rem" />
+            <Input size="lg" placeholder="Grande — 52, site vitrine uniquement" />
           </Stack>
         </Block>
         <Block label="États">
@@ -155,7 +157,7 @@ export function FormsPage() {
         </Block>
       </Section>
 
-      <Section title="Checkbox, Radio, Switch" note="Case 1.25rem, radio 1.25rem à point 0.625rem, switch 2.75 × 1.625rem à knob 1.25rem.">
+      <Section title="Checkbox, Radio, Switch" note="Case 1.25rem, radio 1.25rem à point 0.625rem, switch 2.75 × 1.75rem (44 × 28) à knob 1.25rem, inset 0.25rem.">
         <Grid cols={3}>
           <Block label="Checkbox">
             <Stack>
@@ -190,7 +192,7 @@ export function FormsPage() {
         </Grid>
       </Section>
 
-      <Section title="Option" note="Parcours cœur. Une réponse d'onboarding, pill, qui enveloppe un .ds-choice — toute l'option est cliquable. md = écran à une question, sm = écran à plusieurs groupes. Sélectionnée : bordure --primary, libellé en gras --foreground, case cochée — jamais la bordure seule. Classes seules, pas de composant.">
+      <Section title="Option" note="Parcours cœur. Une réponse d'onboarding, pill, qui enveloppe un .ds-choice — toute l'option est cliquable. Hauteur 48 et texte 15 dans les deux tailles ; md = écran à une question, sm = écran à plusieurs groupes (écart case-libellé et graisse plus serrés). Sélectionnée : bordure --primary, libellé en gras --foreground, case cochée — jamais la bordure seule. Classes seules, pas de composant.">
         <Grid cols={2}>
           <Block label="md — radio, une question" hint="Tu cherches plutôt… — posée sur la crème, comme dans l'onboarding.">
             <div className="flex flex-col gap-space-3 rounded-xl bg-background p-space-4">
@@ -241,7 +243,7 @@ export function FormsPage() {
         </Block>
       </Section>
 
-      <Section title="Chip" note="Parcours cœur. Deux modes, un seul rendu : BASCULE (aria-pressed, choix multiples) ou RADIO (role=radio + aria-checked dans un role=radiogroup, choix unique). Hauteur --chip-h : 36 à l'œil, 44 au doigt (zone de toucher ::before de --space-1 en haut et en bas ; au moins --space-2 entre deux rangées). Sélectionnée : plaque --accent, bordure --primary, libellé --primary-readable semibold. Libellé d'INTERFACE : jamais d'emoji — c'est le badge carte (Data display) qui en porte. Classe seule, pas de composant.">
+      <Section title="Chip" note="Parcours cœur. Deux modes, un seul rendu : BASCULE (aria-pressed, choix multiples) ou RADIO (role=radio + aria-checked dans un role=radiogroup, choix unique). Hauteur --chip-h : 40 à l'œil (la taille --control-sm), texte 15, 48 au doigt (zone de toucher ::before de --space-1 en haut et en bas ; au moins --space-2 entre deux rangées). Sélectionnée : plaque --accent, bordure --primary, libellé --primary-readable semibold. Libellé d'INTERFACE : jamais d'emoji — c'est le badge carte (Data display) qui en porte. Classe seule, pas de composant.">
         <Block label="Bascule — choix multiples" hint="Tes centres d'intérêt — clique pour basculer. aria-pressed, une tabulation par chip, Espace ou Entrée bascule.">
           <div className="flex flex-wrap items-center gap-space-2 rounded-xl bg-background p-space-4">
             {INTERETS.map(i => (
@@ -277,6 +279,29 @@ export function FormsPage() {
           <Stack>
             <Etapes courante={2} total={5} />
             <Etapes courante={5} total={5} />
+          </Stack>
+        </Block>
+      </Section>
+
+      <Section title="RangeSlider" note="Le curseur de PLAGE — la tranche d'âge de l'onboarding. Deux poignées role=slider dans un groupe nommé par le libellé ; la portion choisie porte --brand-gradient en remplissage, sans lueur, sur un rail --border (--surface-alt en sombre). Poignée 24 à l'œil, 44 au doigt. Clavier : flèches, Page↑/↓, Début/Fin ; pointeur : glisser, ou cliquer la piste.">
+        <Block label="Tranche d'âge" hint="Le premier spécimen suit la vitrine, le second force le sombre.">
+          <Grid cols={2}>
+            <div className="flex flex-col gap-space-3 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">thème courant</span>
+              <RangeSlider label="Tranche d'âge" min={25} max={65} value={age} onChange={setAge}
+                formatValue={v => `${v} ans`} display={`${age[0]} – ${age[1]} ans`} bounds={['25 ans', '65 ans et +']} />
+            </div>
+            <div className="dark flex flex-col gap-space-3 rounded-xl bg-background p-space-4">
+              <span className="chip text-text-muted">sombre, forcé</span>
+              <RangeSlider label="Tranche d'âge" min={25} max={65} value={ageSombre} onChange={setAgeSombre}
+                formatValue={v => `${v} ans`} display={`${ageSombre[0]} – ${ageSombre[1]} ans`} bounds={['25 ans', '65 ans et +']} />
+            </div>
+          </Grid>
+        </Block>
+        <Block label="Désactivé, sans bornes" hint="disabled : opacité .5, poignées hors tabulation. bounds={false} retire la ligne des bornes.">
+          <Stack>
+            <RangeSlider label="Tranche d'âge" min={25} max={65} value={[40, 55]} formatValue={v => `${v} ans`} disabled />
+            <RangeSlider label="Budget" min={0} max={200} step={10} value={[40, 120]} formatValue={v => `${v} €`} bounds={false} />
           </Stack>
         </Block>
       </Section>

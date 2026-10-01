@@ -105,7 +105,12 @@ navigation dans du texte (un `<a>` suffit).
 - Rayon `--radius-pill` — DOCTRINE ARRONDIE du projet : tout ce qui se presse ou se
   remplit est pill (voir l'en-tête de la section actions dans `patterns.css`). Les
   exceptions sont écrites : textarea, items de menu, case à cocher, tooltip, squelette.
-- Rail partagé : min-height 3rem (2.75rem sous 64rem). `lg` (3.25rem) = CTA de héros.
+- **Hauteurs posées, multiples de 4** (v0.4.0), identiques sur toutes les largeurs d'écran :
+  `md` **48** — ce qui CONCLUT un écran (CTA de bas d'écran, « Payer », « Envoyer »,
+  « Supprimer mon compte ») ; `sm` **40** — ce qui vit DANS un composant ou une barre
+  (bouton d'une bannière ou d'une carte : « Voir l'abonnement », « Faire connaissance »,
+  « Ajouter une photo ») ; `lg` **52** — CTA de héros du **site vitrine uniquement**, plus
+  employé dans l'app. Le padding ne règle que l'air latéral (`padding-block:0`).
 - **Les icônes ne se dimensionnent pas au site d'appel** : le créneau du bouton s'en
   charge (sm 1rem · md 1.125rem, via `--ds-icon-size` — voir la section Icon). Le spinner
   de `loading` prend la même taille que l'icône qu'il remplace.
@@ -137,7 +142,8 @@ qu'il fait le dit.
   dans un onglet », annonce correcte au lecteur d'écran. Jumeau du `as` de `Button`.
 - L'icône ne se dimensionne pas au site d'appel : le créneau s'en charge (sm 1rem ·
   md 1.125rem) — voir la section Icon.
-- Carré sur son propre rail (`--icon-control-*`), rayon `--radius-pill` — c'est un
+- Carré sur son propre rail (`--icon-control-*`) : `sm` **40** · `md` **48** · `lg` **56**
+  (v0.4.0 — `sm` et `md` s'alignent sur le bouton de même taille). Rayon `--radius-pill` — c'est un
   contrôle qui se presse (doctrine arrondie).
 - États rendus : repos, hover, pressé (`aria-pressed` = actif), focus-visible, désactivé.
 
@@ -224,7 +230,11 @@ texte**, jamais la couleur seule.
 ```
 
 - Props : `tone` (`coral·amber·danger·warning·success·neutral·accent·outline`, défaut
-  `neutral`) · `pad` (`md·dense`) · `icon`.
+  `neutral`) · `pad` (`md·dense·lg`) · `icon`.
+- **Hauteurs** (v0.4.0, multiples de 4) : `md` **28** (`--badge-h`, le badge de statut) ·
+  `dense` **24** (`--badge-h-dense`, aligné sur une pill de statut) · `lg` **32**, texte 14
+  (`.ds-badge--lg`) — l'étiquette d'intérêt d'une fiche persona, combinée avec
+  `.ds-badge--card` : voir § classes.
 - Le rayon pill est celui de tout le système depuis la doctrine arrondie : le badge n'est
   plus une exception, c'est la règle.
 
@@ -318,8 +328,9 @@ en div : c'est exactement ce que ce composant remplace.
   encore une taille explicite.
 - **`tone="brand-solid"` porte le dégradé PLEIN**, avec son glyphe en
   `--primary-foreground` : la tuile de marque affirmée, là où `brand` est la tuile douce.
-  `size="dialogue"` en fait le jumeau exact d'un `IconButton` `md` — même 2,625 rem, même
-  `--radius-pill` — mais en `<span>`, donc **posable dans un `<label>` ou une zone cliquable,
+  `size="dialogue"` (2,625 rem) en fait une tuile de la taille d'un bouton-icône — même
+  `--radius-pill` ; depuis la v0.4.0 l'`IconButton` `md` mesure 3 rem, la jumelle n'est plus
+  au pixel — mais en `<span>`, donc **posable dans un `<label>` ou une zone cliquable,
   là où un vrai `<button>` imbriqué est du contenu interactif invalide dont le navigateur
   ne transmet pas l'activation.**
 - ⚠️ `brand-solid` ne porte **aucune lueur**, et c'est délibéré : dans ce système la lueur
@@ -655,6 +666,8 @@ mise en page, le champ est `--card` ; dans une porteuse blanche, il repasse en
 - **`icon`** pose un glyphe DANS le champ, à gauche — la loupe d'une recherche,
   l'enveloppe d'un e-mail. C'est un REPÈRE : `aria-hidden`, non cliquable. Une ACTION dans
   un champ est un `IconButton` posé à côté, jamais ce slot. Combinable avec `unit`.
+- **Hauteurs** (v0.4.0) : `md` **48** — le champ d'un formulaire ; `sm` **40** — la barre de
+  recherche, la barre de saisie du chat ; `lg` **52**, site vitrine uniquement.
 - Props : `size` (`sm·md·lg`) · `invalid` · `icon` · `surface` (`auto` défaut = la déduction de
   `patterns.css` décide · `card` force le crème `--background` hors d'une vraie Card ·
   `page` force le blanc `--card` là où la déduction aurait mis du crème — un îlot crème
@@ -681,6 +694,46 @@ Bouton radio — le seul contrôle circulaire du système. Toujours dans un grou
 - Props : `label` + attributs natifs (`name`, `value`, `checked`, `onChange`,
   `disabled`…).
 - États rendus : au repos, sélectionné, hover, focus-visible, désactivé.
+
+## RangeSlider
+
+Le curseur de PLAGE : deux poignées sur une piste, une valeur `[a, b]` — la tranche d'âge
+de l'onboarding. En-tête : le libellé à gauche, la valeur en gras à droite ; les bornes en
+`.caption` sous la piste. La portion choisie porte `--brand-gradient` en remplissage, sans
+lueur. Contrôlé : `value` + `onChange`.
+
+**Ne pas l'utiliser** pour une seule valeur (un seul nombre se saisit dans un `Input` à
+`unit`, ou se choisit dans un `Select`), ni pour une plage de DATES (le système n'en a pas).
+
+```tsx
+<RangeSlider
+  label="Tranche d'âge"
+  min={25}
+  max={65}
+  value={age}
+  onChange={setAge}
+  formatValue={v => `${v} ans`}
+  display={`${age[0]} – ${age[1]} ans`}
+  bounds={['25 ans', '65 ans et +']}
+/>
+```
+
+- Props : `label` (requis, nomme le groupe) · `min` · `max` · `step` (défaut 1) · `value`
+  (`[number, number]`) · `onChange` · `formatValue` (une valeur → texte : `aria-valuetext`
+  et bornes par défaut) · `display` (la valeur de l'en-tête, défaut « a – b ») · `bounds`
+  (`[gauche, droite]`, `false` les retire) · `thumbLabels` (défaut `['Minimum',
+  'Maximum']`) · `disabled` + attributs d'un `<div>`.
+- ARIA : le groupe est nommé par le libellé (`role="group"` + `aria-labelledby`) ; chaque
+  poignée est un `role="slider"` focusable, avec `aria-valuemin` / `max` / `now` /
+  `valuetext`. Les bornes d'une poignée sont l'autre poignée : elles ne se croisent jamais.
+- Clavier : flèches (± `step`), Page↑ / Page↓ (± un dixième de la plage), Début / Fin.
+  Pointeur : glisser une poignée, ou cliquer la piste — la poignée la plus proche y va.
+  Deux poignées confondues : c'est la direction du premier mouvement qui choisit.
+- Mesures : poignée 24 (`--space-5`) à l'œil, **44 au doigt** (`::before`) ; piste 4
+  (`--space-1`). Rail `--border` en clair, `--surface-alt` en sombre : sur `--border`, la
+  portion choisie tombait à 2,56:1 en sombre ; sur `--surface-alt`, en clair, le rail
+  disparaissait dans la crème.
+- États rendus : repos, glisser, focus-visible (anneau `--ring`), désactivé.
 
 ## Select
 
@@ -918,7 +971,7 @@ n'appartient pas à la coque : ça vit derrière l'une d'elles. Un cinquième it
 quand même — couper une navigation en silence serait pire — mais le composant le signale
 en console en développement.
 
-⚠️ **Cible tactile : 2.25rem (36 px), sous le rail 44 px du reste du système.** Écart
+⚠️ **Cible tactile : 2.25rem (36 px) à l'œil, sous les 44 px de la règle.** Écart
 ASSUMÉ — une capsule flottante à 44 px mange le contenu qu'elle survole. La cible réelle
 au doigt vaut 44 px marges comprises (36 + 4 + 4) et rien d'autre n'est cliquable entre
 deux items. Voir `docs/accessibilite.md`.
@@ -1076,6 +1129,9 @@ largeur. `--sm` pour un écran qui pose plusieurs groupes.
 </label>
 ```
 
+- **Hauteur 48** (`--control-md`) dans les deux tailles, texte `--text-control` (15) dans les
+  deux (v0.4.0) ; md et sm ne diffèrent plus que par l'écart case-libellé et la graisse. Un
+  libellé qui passe à la ligne garde `--space-2` d'air en haut et en bas.
 - Sélection : `:has(input:checked)` la détecte seule — `.is-selected` n'est qu'une aide de
   spécimen. Bordure `--primary`, libellé en graisse pleine.
 - L'anneau de focus est sur l'OPTION, pas sur la case : `.ds-option:has(input:focus-visible)`
@@ -1133,7 +1189,8 @@ simuler un choix unique avec des `aria-pressed` qui s'éteignent entre eux : le 
 d'écran annonce des bascules indépendantes, et l'exclusivité n'est dite nulle part.
 - **Libellé d'INTERFACE : jamais d'emoji.** Celui qui en porte est `.ds-badge--card`, qui
   est du contenu.
-- **Cible tactile** : 36 px à l'œil, 44 au doigt par une couche `::before` invisible.
+- **Hauteur et cible tactile** : 40 à l'œil (`--chip-h`, la taille `--control-sm`, v0.4.0),
+  texte `--text-control` (15) ; 48 au doigt par une couche `::before` invisible.
   Condition : au moins `--space-2` entre deux rangées. Voir `docs/accessibilite.md` § 4.
 - Vitrine : Formulaires § Chip — bascule, radio (clair + sombre), états.
 
@@ -1196,7 +1253,12 @@ crème.
 
 ```tsx
 <span className="ds-badge ds-badge--card">🌿 Jardinage</span>
+<span className="ds-badge ds-badge--card ds-badge--lg">🌿 Jardinage</span>
 ```
+
+- **Deux tailles** : la taille du badge de statut (28) sur une carte de liste ; `--lg` (32,
+  texte 14, v0.4.0) sur la **fiche persona** — plus discrète que la chip (40, un contrôle),
+  plus lisible que le statut. Avec le composant : `<Badge pad="lg" className="ds-badge--card">`.
 
 - **Seul endroit du système où un emoji est permis** : c'est du CONTENU fourni par la base,
   pas un libellé d'interface. La chip, elle, n'en porte jamais.

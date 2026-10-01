@@ -8,10 +8,12 @@ import { cva } from 'class-variance-authority';
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   tone?: 'coral' | 'amber' | 'danger' | 'warning' | 'success' | 'neutral' | 'accent' | 'outline';
   /**
-   * Height rail. md = --badge-h (1.8125rem) · dense = --badge-h-dense (1.5rem), the height
-   * that lines up with a status pill on the same row. Icons: 0.875rem in md, 0.75rem in dense.
+   * Height rail, multiples de 4. md = --badge-h (1.75rem, 28) · dense = --badge-h-dense
+   * (1.5rem, 24), the height that lines up with a status pill on the same row · lg = 2rem
+   * (32), texte 14 — l'étiquette d'intérêt d'une fiche persona (v0.4.0). Icons: 0.8125rem
+   * in md and lg, 0.75rem in dense.
    */
-  pad?: 'md' | 'dense';
+  pad?: 'md' | 'dense' | 'lg';
   icon?: ReactNode;
   children?: ReactNode;
 }
@@ -28,7 +30,7 @@ const badge = cva('ds-badge', {
       accent: 'ds-badge--accent',
       outline: 'ds-badge--outline',
     },
-    pad: { md: '', dense: 'ds-badge--dense' },
+    pad: { md: '', dense: 'ds-badge--dense', lg: 'ds-badge--lg' },
   },
   defaultVariants: { tone: 'neutral', pad: 'md' },
 });
