@@ -248,6 +248,13 @@ de la mesure faite ici :
 - **1.4.1 Utilisation de la couleur.** `a{}` ne pose **pas** de soulignement : dans un
   paragraphe, un lien ne se distingue que par sa couleur. Le corriger change le rendu de
   toute prose du système — décision de conception, à trancher à part.
+  **Tranché pour les messages de champ** (v0.6.0) : dans `.ds-error` et `.ds-help`, le lien
+  est SOULIGNÉ, en semi-gras, à la couleur du message. Mesuré avec la formule de ce garde,
+  le lien (`--primary-readable`) et le texte d'erreur (`--destructive-readable`) valent
+  **1,01:1 en sombre, 1,03:1 en clair** — une nuance de teinte seule (ΔE OKLab 4,1 / 4,8).
+  Deux couleurs qui tiennent chacune 4,5:1 sur la même surface ne peuvent pas s'écarter de
+  3:1 : l'indice non coloré était la seule issue. Aucune paire ne bouge — le lien a le
+  contraste de son message, déjà mesuré (`.ds-error`, `.caption`).
 - **1.4.11 sur les états.** Les états `:hover` reposent sur un écart de surface de ~1,08,
   très en dessous de 3:1. C'est un usage courant et non couvert stricto sensu par 1.4.11
   (l'état reste identifiable par le curseur et le focus), mais il mérite d'être connu.

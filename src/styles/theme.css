@@ -180,6 +180,11 @@
   --text-eyebrow--letter-spacing: var(--tracking-eyebrow);
   --text-chip: var(--text-chip);
   --text-chip--letter-spacing: var(--tracking-chip);
+  /* La méta de liste (v0.6.0) — 12 px SANS interlettrage, contrairement à text-eyebrow : un
+     horodatage ne s'écrit pas « 2 1 : 4 2 ». Pas de --letter-spacing : l'interlettrage de
+     la police s'applique. */
+  --text-meta: var(--text-meta);
+  --text-meta--line-height: var(--leading-snug);
 
   /* ---------- Familles ---------- */
   /* Titres uniquement, jamais sous 1.125rem. La CASSE et la GRAISSE du titrage ne sont pas

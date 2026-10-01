@@ -62,7 +62,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
   return (
     <span className="ds-choice-field">
       {choix}
-      <span id={errorId} className="ds-error ds-choice__error"><Icon name="circle-alert" strokeWidth={2.5} />{error}</span>
+      <span id={errorId} className="ds-error ds-choice__error"><Icon name="circle-alert" strokeWidth={2.5} /><span>{error}</span></span>
     </span>
   );
 });

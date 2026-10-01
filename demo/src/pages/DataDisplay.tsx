@@ -206,7 +206,7 @@ export function DataDisplayPage() {
               <span className="caption truncate">Tu m'as manqué hier soir.</span>
             </div>
             <div className="flex flex-col items-end gap-space-1">
-              <span className="caption">21:42</span>
+              <span className="text-meta text-text-muted">21:42</span>
               <span className="ds-counter">2<span className="sr-only"> messages non lus</span></span>
             </div>
           </div>
@@ -226,18 +226,18 @@ export function DataDisplayPage() {
               <span className="text-control font-semibold">Élodie<span className="sr-only"> — nouveaux messages</span></span>
               <span className="caption truncate">Tu fais quoi ce week-end ?</span>
             </div>
-            <span className="caption">hier</span>
+            <span className="text-meta text-text-muted">hier</span>
           </div>
         </Block>
       </Section>
 
-      <Section title="ChatBubble" note="La bulle de conversation — ajout assumé au socle. them = le persona, carte blanche à gauche ; me = l'utilisateur, dégradé de marque à droite (liste fermée de l'accent). typing rend l'indicateur de saisie, dans un role=status. Le texte d'une bulle est du contenu : l'emoji y est permis.">
+      <Section title="ChatBubble" note="La bulle de conversation — ajout assumé au socle. them = le persona, carte blanche à gauche ; me = l'utilisateur, dégradé de marque à droite (liste fermée de l'accent). typing rend l'indicateur de saisie, dans un role=status. Le texte d'une bulle est du contenu : l'emoji y est permis. typingLabel nomme l'indicateur (« Claire écrit ») : c'est par lui que l'app traduit.">
         <Block label="Colonne crème — trois bulles et l'indicateur" hint="Le parent est une colonne flex : chaque bulle s'aligne d'elle-même (align-self), 80 % de la largeur au plus.">
           <div className="flex flex-col gap-space-3 rounded-xl bg-background p-space-4">
             <ChatBubble from="them">Tu m'as manqué hier soir. 🌙</ChatBubble>
             <ChatBubble from="me">Longue journée… Je te raconte ?</ChatBubble>
             <ChatBubble from="them">Raconte-moi ta journée.</ChatBubble>
-            <ChatBubble from="them" typing aria-label="Claire écrit" />
+            <ChatBubble from="them" typing typingLabel="Claire écrit" />
           </div>
         </Block>
       </Section>

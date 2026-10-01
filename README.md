@@ -61,7 +61,7 @@ marque devrait remplir reste lisible dans `src/styles/brand.template.css`.
 Pas de registry : chaque app épingle une version par un tag git.
 
 ```bash
-npm i github:Yamiro02/compagnons-ia-design-system#v0.5.0
+npm i github:Yamiro02/compagnons-ia-design-system#v0.6.0
 ```
 
 > **Une seule numérotation fait foi ici : celle de ce dépôt.** Elle est repartie de `0.1.0`
@@ -234,7 +234,7 @@ Une section ink au milieu d'une page crème adopte le scope, elle ne peint pas u
 | Dégradés | `bg-brand-gradient` `bg-brand-gradient-diagonal` `bg-grad-soft` `bg-halo` — pas de namespace v4 pour `background-image` : ce sont des `@utility`, donc variantables (`hover:`, `dark:`) |
 | Rayons | `rounded-xs` `rounded-sm` `rounded-md` `rounded-lg` `rounded-xl` `rounded-2xl` `rounded-pill` — **DOCTRINE ARRONDIE de ce projet : le pill est la règle**, tout ce qui se presse ou se remplit le porte ; les exceptions sont listées dans `docs/DESIGN.md` § 5. **`rounded` nu n'est pas au barème**, voir plus bas |
 | Ombres | `shadow-sm` `shadow-md` `shadow-lg` `shadow-glow` `shadow-glow-lg` |
-| Typo | `font-display` `font-body` `font-mono` · `text-display-xl` `text-display` `text-heading-xl` `text-heading` `text-subheading` `text-heading-sm` `text-body-lg` `text-body` `text-body-sm` `text-control` `text-caption` `text-eyebrow` `text-chip` |
+| Typo | `font-display` `font-body` `font-mono` · `text-display-xl` `text-display` `text-heading-xl` `text-heading` `text-subheading` `text-heading-sm` `text-body-lg` `text-body` `text-body-sm` `text-control` `text-caption` `text-meta` `text-eyebrow` `text-chip` — `text-meta` : 12 px SANS interlettrage (horodatage), `text-eyebrow` : 12 px en capitales espacées (sur-titre) |
 | Espacement | `gap-space-1` … `gap-space-8` · `h-control-sm/md/lg` · `w-icon-control-sm/md/lg` · `p-card-pad` `p-card-pad-lg` — **hauteurs en multiples de 4**, identiques sur toutes les largeurs : `--control-md` 48 (ce qui conclut un écran ou se remplit), `--control-sm` 40 (dans un composant ou une barre), `--control-lg` 52 (site vitrine uniquement) ; carrés d'icône 40 · 48 · 56 |
 | Largeurs | `max-w-shell` `max-w-wide` `max-w-read` `max-w-narrow` `max-w-page` |
 | Motion | `ease-standard` |
@@ -280,7 +280,7 @@ de Tailwind, sur laquelle reposent les composants shadcn de ton app.
 
 | Famille | Composants |
 |---|---|
-| `icons` | `Icon` — 49 glyphes Lucide ; la taille vient du **créneau** (`--ds-icon-size`, repli `1.25rem`), `size` reste la surcharge au site d'appel. Échelle : `1` · `1.125` (contrôle md, TabBar) · `1.25` · `1.5` rem |
+| `icons` | `Icon` — 50 glyphes Lucide ; la taille vient du **créneau** (`--ds-icon-size`, repli `1.25rem`), `size` reste la surcharge au site d'appel. Échelle : `1` · `1.125` (contrôle md, TabBar) · `1.25` · `1.5` rem |
 | `actions` | `Button` · `IconButton` — 4 variantes (5 pour `IconButton`, `accent` compris), 3 tailles, pill (doctrine arrondie) |
 | `forms` | `Input` · `Textarea` · `Select` · `Checkbox` · `Radio` · `Switch` · `RangeSlider` (deux poignées, `[a, b]`) · `FormField` · `Calendar` · `DatePicker` |
 | `data-display` | `Card` (+ en-tête à slots) · `Pastille` · `Badge` (3 hauteurs : 28 · dense 24 · `lg` 32) · `ChatBubble` (`them` / `me`, indicateur `typing`) · `Tooltip` · `Separator` · `Table` (+ `THead` `TBody` `Tr` `Th` `Td`) — `framed` · `columns` · `striped` · `hoverable`, composables |

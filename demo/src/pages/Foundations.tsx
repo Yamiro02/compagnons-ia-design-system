@@ -70,7 +70,8 @@ export function Foundations() {
           <Spec token="--text-body"><p>Zéro ligne de code écrite à la main — juste la bonne méthode.</p></Spec>
           <Spec token="--text-control · boutons, champs, chips, onglets"><span className="text-control font-semibold">Voir la chaîne</span></Spec>
           <Spec token="--text-caption"><span className="caption">il y a 3 j · 18,2 k vues</span></Spec>
-          <Spec token="--text-eyebrow"><span className="eyebrow">Méthode · 03</span></Spec>
+          <Spec token="--text-meta · text-meta — 12 px SANS interlettrage : horodatage, méta de liste"><span className="text-meta text-text-muted">21:42 · lundi · il y a 2 min</span></Spec>
+          <Spec token="--text-eyebrow — 12 px aussi, mais capitales espacées : un sur-titre, jamais une heure"><span className="eyebrow">Méthode · 03</span></Spec>
           <Spec token="--text-chip"><span className="chip text-text-muted">Build</span></Spec>
           <Spec token="--font-mono"><span className="mono text-caption">npm create vite@latest app</span></Spec>
         </Block>

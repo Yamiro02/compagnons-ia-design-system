@@ -57,9 +57,11 @@ export function FormField({
         : <label className="ds-label" htmlFor={htmlFor}>{texte}</label>
       ) : null}
       <FieldContext.Provider value={{ describedBy }}>{children}</FieldContext.Provider>
-      {/* L'icône d'erreur est SANS taille : le créneau .ds-error svg rend 0.875rem. */}
+      {/* L'icône d'erreur est SANS taille : le créneau .ds-error svg rend 0.875rem. Le
+          message est enveloppé (v0.6.0) : .ds-error est un flex, et un message composé — du
+          texte et un lien — y devenait deux colonnes côte à côte. */}
       {error ? (
-        <span id={errorId} className="ds-error"><Icon name="circle-alert" strokeWidth={2.5} />{error}</span>
+        <span id={errorId} className="ds-error"><Icon name="circle-alert" strokeWidth={2.5} /><span>{error}</span></span>
       ) : null}
       {help ? <span id={helpId} className="ds-help">{help}</span> : null}
     </div>

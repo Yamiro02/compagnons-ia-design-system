@@ -11,6 +11,53 @@ concordent. Le tag n'est pas le but : c'est le péage.
 
 ---
 
+## 0.6.0 — les petits manques du web
+
+Remontés par l'app pendant la construction de ses composants. Tout ajout est optionnel :
+le rendu par défaut ne bouge pas, sauf deux points signalés ⚠.
+
+### Ajouté
+
+- **`Textarea` — `size?: 'sm' | 'md'`** (défaut `md`, rendu inchangé). `sm` = la barre de
+  saisie du chat, **40 sur une ligne** (`--control-sm`), hauteur posée comme `Input sm`
+  (`min-height` + padding calculé depuis le rail, la taille et l'interligne) ; `rows`
+  vaut alors 1 par défaut. Classe `.ds-textarea--sm`.
+- **`Textarea` — `autoResize?: boolean` et `maxRows?: number`** : le champ suit son
+  contenu de `rows` à `maxRows` lignes, puis défile. En JavaScript — pas
+  `field-sizing: content`, absent de Safari iOS. Recalculé à la frappe, au changement
+  d'une valeur contrôlée (champ vidé après envoi → une ligne) et au changement de largeur.
+  Poignée retirée (`.ds-textarea--auto`). La ref de l'appelant reste branchée.
+- **Palier `--text-meta`** (12 px, interligne `--leading-snug`, **sans interlettrage**) et
+  utilitaire **`text-meta`** — l'horodatage, la méta de liste. Ajouté à `PALIERS_TYPO` :
+  `cn()` le garde à côté d'une couleur `text-*`.
+- **`ChatBubble` — `typingLabel?: string`** : le nom accessible de l'indicateur `typing`
+  (défaut « En train d'écrire ») — l'app le traduit et y met le prénom. Un `aria-label`
+  passé directement reste prioritaire.
+- **`Icon` — `log-out`** (50 glyphes) : « Se déconnecter ».
+- Vitrine : barre de saisie du chat (Textarea sm qui grandit + IconButton sm), lien dans un
+  message d'erreur et d'aide, `text-meta` face à `eyebrow` (Fondations), horodatages de la
+  liste de conversations en `text-meta`, `typingLabel` — clair et sombre forcé.
+
+### ⚠ Changé
+
+- **Un lien dans `.ds-error` ou `.ds-help`** prend la couleur du message, **souligné** et en
+  semi-gras. Mesuré : le lien (`--primary-readable`) et le texte d'erreur
+  (`--destructive-readable`) valaient **1,01:1 en sombre, 1,03:1 en clair** — une nuance de
+  teinte seule (ΔE OKLab 4,1 / 4,8), sous WCAG 1.4.1. Aucune paire de contraste ne bouge,
+  palette intacte. Un décalage du rouge sombre vers l'orangé (`#f2a088`) a été mesuré et
+  écarté : ΔE 6,2, mais contraste inchangé (1,03:1).
+- **`FormField` et `Checkbox` enveloppent le message d'erreur dans un `<span>`.** `.ds-error`
+  est un flex : un message composé (texte + lien) s'y affichait en deux colonnes. Rendu
+  identique pour un message de texte seul.
+
+### Docs
+
+- `docs/DESIGN.md` § 5 — « Envoyer » tranché : le bouton suit sa BARRE, pas son libellé. Au
+  pied d'un formulaire → 48 ; dans la barre de saisie du chat → `IconButton sm` (40), aligné
+  en bas sur le `Textarea sm`.
+
+---
+
 ## 0.5.0 — les écrans d'auth
 
 Origine : maquettes « Parcours cœur », écrans AUTH 1 à 5b. Tout ajout est optionnel ; deux

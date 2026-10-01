@@ -38,6 +38,11 @@
   --text-caption:0.8125rem;   /* 13 — --font-body 500 */
   --text-eyebrow:0.75rem;     /* 12 — --font-body 600 CAPS, tracking .18em */
   --text-chip:0.75rem;        /* 12 — --font-body 700 CAPS, tracking .14em, leading 1 */
+  /* 12 — LA MÉTA SANS CAPITALES (v0.6.0) : l'horodatage d'une ligne de conversation, « il y a
+     2 min », un compteur de caractères. Même taille que --text-eyebrow, mais AUCUN
+     interlettrage ni capitales : le sur-titre espace ses lettres (« l u n d i »), une heure
+     ne doit pas. Sous --text-caption (13) : une méta de liste, pas une légende. */
+  --text-meta:0.75rem;        /* 12 — --font-body 400/500, interligne snug, sans tracking */
   --text-micro:0.625rem;      /* 10 — HORS LECTURE : compteur de non-lus et libellé de TabBar uniquement */
 
   /* Tracking — en em, il suit la taille. Valeurs CALIBRÉES SUR UNE DISPLAY CONDENSÉE

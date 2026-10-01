@@ -13,7 +13,7 @@ import { extendTailwindMerge } from 'tailwind-merge';
  */
 export const PALIERS_TYPO = [
   'display-xl', 'display', 'heading-xl', 'heading', 'subheading',
-  'heading-sm', 'body-lg', 'body', 'body-sm', 'control', 'caption', 'eyebrow', 'chip',
+  'heading-sm', 'body-lg', 'body', 'body-sm', 'control', 'caption', 'eyebrow', 'chip', 'meta',
 ] as const;
 
 const twMerge = extendTailwindMerge({

@@ -1,6 +1,6 @@
 import { useRef, useState, type KeyboardEvent } from 'react';
 import { IDENTITY } from '../identity';
-import { Calendar, Checkbox, DatePicker, FormField, Icon, Input, Radio, RangeSlider, Select, Switch, Textarea } from '@compagnons-ia/ds';
+import { Calendar, Checkbox, DatePicker, FormField, Icon, IconButton, Input, Radio, RangeSlider, Select, Switch, Textarea } from '@compagnons-ia/ds';
 import { Block, Grid, Row, Section, Stack } from '../ui';
 
 const SERIES = [
@@ -118,6 +118,22 @@ function DateNaissance({ id, error }: { id: string; error?: string }) {
   );
 }
 
+/* La barre de saisie du chat — Textarea sm (40 sur une ligne) qui grandit jusqu'à 5 lignes,
+   et le bouton d'envoi qui SUIT la barre : IconButton sm, 40, calé en BAS (items-end) pour
+   rester au niveau de la dernière ligne quand le champ grandit. */
+function BarreDeSaisie() {
+  const [texte, setTexte] = useState('');
+  return (
+    <div className="flex items-end gap-space-2">
+      <Textarea size="sm" autoResize maxRows={5} surface="page" className="flex-1" aria-label="Ton message"
+        placeholder="Écris à Claire…" value={texte} onChange={e => setTexte(e.target.value)} />
+      <IconButton label="Envoyer" variant="primary" size="sm" disabled={!texte.trim()} onClick={() => setTexte('')}>
+        <Icon name="arrow-right" />
+      </IconButton>
+    </div>
+  );
+}
+
 /* Les consentements de l'inscription — l'erreur sous chaque case, alignée sur son texte. */
 function Consentements() {
   const [majeur, setMajeur] = useState(false);
@@ -209,7 +225,7 @@ export function FormsPage() {
         </Block>
       </Section>
 
-      <Section title="Textarea" note="Hauteur automatique — jamais de min-height. Redimensionnement vertical uniquement. Même règle de surface que l'Input.">
+      <Section title="Textarea" note="Hauteur portée par rows — jamais de min-height. Redimensionnement vertical uniquement, sauf avec autoResize. Même règle de surface que l'Input. md par défaut ; sm = 40 sur une ligne.">
         <Block label="Repos, focus, erreur, désactivé">
           <Stack>
             <Textarea rows={3} placeholder="Décris ton idée d'app en deux phrases." />
@@ -218,6 +234,17 @@ export function FormsPage() {
             <Textarea rows={2} disabled defaultValue="Indisponible" />
             <Textarea rows={2} surface="card" defaultValue="surface=card" />
           </Stack>
+        </Block>
+        <Block label="sm et agrandissement automatique" hint="size=sm : 40 sur une ligne — la barre de saisie du chat (règle 48 / 40). autoResize : le champ suit son contenu, de rows à maxRows lignes, puis défile ; en JavaScript, donc aussi sur Safari iOS. Le bouton d'envoi suit la barre : IconButton sm (40), aligné en bas. Écris plusieurs lignes, puis envoie : le champ revient à 40. Le premier îlot suit la vitrine, le second force le sombre.">
+          <Grid cols={2}>
+            {[false, true].map(dark => (
+              <div key={String(dark)} className={`${dark ? 'dark ' : ''}flex flex-col gap-space-4 rounded-xl bg-background p-space-4`}>
+                <span className="chip text-text-muted">{dark ? 'sombre, forcé' : 'thème courant'}</span>
+                <BarreDeSaisie />
+                <Textarea size="sm" surface="page" aria-label="Note courte" placeholder="sm sans autoResize — une ligne, 40" />
+              </div>
+            ))}
+          </Grid>
         </Block>
       </Section>
 
@@ -491,6 +518,20 @@ export function FormsPage() {
                 error="Mot de passe trop faible : ajoute une majuscule et un chiffre."
                 help="8 caractères minimum, avec une majuscule, une minuscule et un chiffre." />
             </div>
+          </Grid>
+        </Block>
+        <Block label="Un lien dans un message" hint="Le lien du système (--primary-readable) et le texte d'erreur mesurent 1,01:1 en sombre, 1,03:1 en clair : seule une nuance de teinte les sépare. Dans .ds-error et .ds-help, le lien prend la couleur du message et se reconnaît à son SOULIGNEMENT et sa graisse (WCAG 1.4.1). Le premier îlot suit la vitrine, le second force le sombre.">
+          <Grid cols={2}>
+            {[false, true].map(dark => (
+              <div key={String(dark)} className={`${dark ? 'dark ' : ''}flex flex-col gap-space-4 rounded-xl bg-background p-space-4`}>
+                <span className="chip text-text-muted">{dark ? 'sombre, forcé' : 'thème courant'}</span>
+                <FormField label="E-mail" htmlFor={dark ? 'mail-lien-sombre' : 'mail-lien-clair'}
+                  error={<>Cet e-mail a déjà un compte. <a href="#forms">Me connecter</a></>}
+                  help={<>Tu pourras le changer dans <a href="#forms">tes réglages</a>.</>}>
+                  <Input id={dark ? 'mail-lien-sombre' : 'mail-lien-clair'} surface="page" invalid defaultValue="marc.durand@gmail.com" />
+                </FormField>
+              </div>
+            ))}
           </Grid>
         </Block>
         <Row label="rail partagé — bouton md, input et select s'alignent à 48">

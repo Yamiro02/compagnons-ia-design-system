@@ -195,6 +195,15 @@ svg.lucide{stroke-width:1.75}
    socle qu'aucun sélecteur ne pouvait viser (v0.3.0, la doctrine du créneau). */
 .ds-label__required{color:var(--primary)}
 .ds-help{font-size:var(--text-caption);color:var(--text-muted)}
+/* UN LIEN DANS UN MESSAGE DE CHAMP — v0.6.0. Le lien du système (--primary-readable) et le
+   texte d'erreur (--destructive-readable) mesurent 1,01:1 en sombre, 1,03:1 en clair : ils
+   ne diffèrent que par une nuance de teinte (ΔE OKLab 4,1 / 4,8), et WCAG 1.4.1 demande 3:1
+   avec le texte autour OU un indice qui n'est pas une couleur. Deux couleurs qui tiennent
+   chacune 4,5 sur la même surface ne peuvent pas s'écarter de 3:1 : l'indice est donc le
+   SOULIGNEMENT, plus la graisse. Le lien prend la couleur de son message (erreur ou aide) —
+   son contraste est celui du message, déjà mesuré — et ne rivalise plus avec lui. */
+.ds-error a,.ds-help a{color:inherit;text-decoration:underline;text-underline-offset:2px;font-weight:var(--weight-semibold)}
+.ds-error a:hover,.ds-help a:hover{color:inherit;text-decoration-thickness:2px}
 .ds-error{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-caption);font-weight:var(--weight-medium);color:var(--destructive-readable)}
 .ds-input{width:100%;min-height:var(--control-md);padding:0 1.125rem;box-sizing:border-box;font-family:var(--font-body);font-size:var(--text-control);color:var(--foreground);background:var(--card);border:1.5px solid var(--input);border-radius:var(--radius-pill);outline:none;transition:border-color var(--duration-base) var(--ease-standard),box-shadow var(--duration-base) var(--ease-standard)}
 .ds-input--on-card{background:var(--background)}
@@ -260,6 +269,19 @@ svg.lucide{stroke-width:1.75}
    de hauteur de rail, il retrouve ici son air vertical (la valeur d'avant la v0.4.0). Il ne
    prend pas l'arrondi pill — --radius-lg, 20. */
 .ds-textarea{height:auto;min-height:0;padding-block:0.6875rem;resize:vertical;line-height:var(--leading-normal);border-radius:var(--radius-lg)}
+/* LE TEXTAREA sm — v0.6.0 : la barre de saisie du chat, 40 SUR UNE LIGNE (--control-sm, la
+   règle 48 / 40), alignée sur un IconButton sm. La hauteur reste celle de `rows` (1 par
+   défaut en sm) : c'est le padding qui la cale, calculé depuis le rail, la taille et
+   l'interligne — (40 − 15 × 1.5) / 2 − la bordure 1.5px = 7.25px. Pas d'unité `lh` : la
+   formule tient aussi sur les Safari qui ne la connaissent pas. Le min-height POSE le 40 :
+   Chrome arrondit la hauteur qu'il tire de `rows`, et une ligne rendait 39 — l'exception
+   « jamais de min-height » du textarea ne vaut que pour md. Rayon --radius-lg (20) =
+   la moitié de 40 : une pilule sur une ligne, un bloc arrondi quand le champ grandit. */
+.ds-textarea--sm{min-height:var(--control-sm);padding-block:calc((var(--control-sm) - var(--text-control) * var(--leading-normal)) / 2 - 1.5px)}
+/* AGRANDISSEMENT AUTOMATIQUE — v0.6.0. La hauteur est écrite par Textarea.tsx (une mesure
+   du contenu) ; le CSS retire la poignée et cache la barre tant que le plafond n'est pas
+   atteint — le composant la rétablit au-delà. */
+.ds-textarea--auto{resize:none;overflow-y:hidden}
 .ds-select{position:relative;display:block}
 /* LE PADDING DROIT SUIT LE CHEVRON — v0.5.0 : son retrait (--space-4) + le glyphe (1rem) +
    un air de --space-2 = 40. Il valait --space-7 (48) : 8 px de trop, et c'est ce qui coupait

@@ -3,7 +3,7 @@ import {
   ArrowDown, ArrowRight, ArrowUpRight, BookOpen, Calendar, Check, ChevronDown,
   ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, CircleAlert, CircleCheck,
   CircleX, Clock, Code, Copy, Dumbbell, Ellipsis, ExternalLink, Eye, EyeOff, FileText, Folder,
-  Info, LayoutDashboard, LoaderCircle, Mail, Menu, MessageSquare, Minus,
+  Info, LayoutDashboard, LoaderCircle, LogOut, Mail, Menu, MessageSquare, Minus,
   PanelLeft, Play, Plus, Quote, Rocket, Search, Settings, SlidersHorizontal,
   Terminal, Trash2, TrendingUp, TriangleAlert, User, Video, X, Zap,
   type LucideIcon,
@@ -35,7 +35,8 @@ export type IconName =
   | 'github' | 'folder' | 'trending-up' | 'user' | 'book-open'
   | 'message-square' | 'quote' | 'rocket' | 'file-text'
   | 'chevrons-left' | 'chevrons-right' | 'ellipsis' | 'panel-left'
-  | 'sliders-horizontal' | 'layout-dashboard' | 'house' | 'video' | 'dumbbell' | 'settings';
+  | 'sliders-horizontal' | 'layout-dashboard' | 'house' | 'video' | 'dumbbell' | 'settings'
+  | 'log-out';
 
 /** Ce que tout rendu d'icône partage, quelle que soit la provenance du tracé. */
 export interface IconBaseProps {
@@ -144,6 +145,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   'video': Video,
   'dumbbell': Dumbbell,
   'settings': Settings,
+  'log-out': LogOut,
 };
 
 export function Icon({

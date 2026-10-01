@@ -67,6 +67,12 @@ casser à l'écran. **Dangereux** : couleur, fond, `background-clip`, dimension 
 couleur, `bg-*`, `w-*`…) — le dégradé meurt en silence. **Sans risque** : la typographie
 (`font-*`, paliers `text-heading`…, `leading-*`). La mise en page va sur un span externe.
 
+**Les paliers typo de 12 px — deux, et ils ne s'échangent pas** (v0.6.0) : `text-meta`
+(`--text-meta`, 12 px, interligne serré, **sans interlettrage**) pour une méta de liste —
+l'horodatage d'une conversation, « il y a 2 min » ; `eyebrow` / `text-eyebrow` pour un
+sur-titre, en capitales espacées. Un horodatage en `text-eyebrow` s'écrit « 2 1 : 4 2 ».
+`text-meta` est dans `PALIERS_TYPO` : `cn()` le garde à côté d'une couleur `text-*`.
+
 ---
 
 # actions
@@ -106,10 +112,11 @@ navigation dans du texte (un `<a>` suffit).
   remplit est pill (voir l'en-tête de la section actions dans `patterns.css`). Les
   exceptions sont écrites : textarea, items de menu, case à cocher, tooltip, squelette.
 - **Hauteurs posées, multiples de 4** (v0.4.0), identiques sur toutes les largeurs d'écran :
-  `md` **48** — ce qui CONCLUT un écran (CTA de bas d'écran, « Payer », « Envoyer »,
-  « Supprimer mon compte ») ; `sm` **40** — ce qui vit DANS un composant ou une barre
-  (bouton d'une bannière ou d'une carte : « Voir l'abonnement », « Faire connaissance »,
-  « Ajouter une photo ») ; `lg` **52** — CTA de héros du **site vitrine uniquement**, plus
+  `md` **48** — ce qui CONCLUT un écran (CTA de bas d'écran, « Payer », « Envoyer » au pied
+  d'un formulaire, « Supprimer mon compte ») ; `sm` **40** — ce qui vit DANS un composant ou
+  une barre (bouton d'une bannière ou d'une carte : « Voir l'abonnement », « Faire
+  connaissance », « Ajouter une photo » ; le bouton d'envoi de la barre de chat, en
+  `IconButton size="sm"`) ; `lg` **52** — CTA de héros du **site vitrine uniquement**, plus
   employé dans l'app. Le padding ne règle que l'air latéral (`padding-block:0`).
 - **Les icônes ne se dimensionnent pas au site d'appel** : le créneau du bouton s'en
   charge (sm 1rem · md 1.125rem, via `--ds-icon-size` — voir la section Icon). Le spinner
@@ -291,11 +298,15 @@ interdit dans l'interface autour.
   <ChatBubble from="them">Tu m'as manqué hier soir.</ChatBubble>
   <ChatBubble from="me">Longue journée. Je te raconte ?</ChatBubble>
   <ChatBubble from="them">Raconte-moi ta journée.</ChatBubble>
-  <ChatBubble from="them" typing aria-label="Claire écrit" />
+  <ChatBubble from="them" typing typingLabel="Claire écrit" />
 </div>
 ```
 
-- Props : `from` (`them·me`, obligatoire) · `typing` · plus les attributs d'un `<div>`.
+- Props : `from` (`them·me`, obligatoire) · `typing` · `typingLabel` (v0.6.0) · plus les
+  attributs d'un `<div>`.
+- **`typingLabel`** (v0.6.0) : le nom accessible de l'indicateur — c'est par lui que l'app
+  le traduit et y met le prénom (« Claire écrit », « Claire is typing »). Défaut : « En
+  train d'écrire ». Un `aria-label` passé directement reste prioritaire.
 - Le cycle des points vaut `--duration-typing` (1.2s) ; `prefers-reduced-motion` le coupe.
 - Contraste mesuré par `check-contrast.mjs` : le texte blanc de `me` sur les trois arrêts
   du dégradé.
@@ -677,6 +688,12 @@ l'anatomie.
 
 - Props : `label` · `htmlFor` · `help` · `error` · `required` (astérisque `--primary`) ·
   `group` (v0.5.0).
+- **Un lien DANS un message** (v0.6.0) — « Cet e-mail a déjà un compte. Me connecter » :
+  dans `.ds-error` et `.ds-help`, le lien prend la couleur du message et se reconnaît à son
+  soulignement et sa graisse. Le rose des liens et le rouge des erreurs mesurent 1,01:1 en
+  sombre (1,03:1 en clair) : seule une nuance de teinte les séparait, sous WCAG 1.4.1. Le
+  message est enveloppé dans un `<span>` : du texte et un lien s'écrivent sur une ligne,
+  pas en deux colonnes.
 - **Les messages sont RELIÉS au contrôle** (v0.5.0) : leurs ids passent par contexte, et
   `Input`, `Textarea`, `Select`, `DatePicker`, `Checkbox` et `RangeSlider` les posent dans
   leur `aria-describedby` — erreur d'abord, puis aide, puis celui que l'appelant a passé.
@@ -849,19 +866,38 @@ sur l'`<input>` natif.
 
 ## Textarea
 
-Champ multi-lignes. Hauteur automatique — jamais de min-height. Redimensionnement
-vertical uniquement. Même règle de `surface` que l'Input. `forwardRef` sur le
-`<textarea>` natif.
+Champ multi-lignes. Hauteur portée par `rows` — en `md`, jamais de min-height.
+Redimensionnement vertical uniquement (sauf `autoResize`). Même règle de `surface` que
+l'Input. `forwardRef` sur le `<textarea>` natif — la ref reste branchée avec `autoResize`.
 
 ```tsx
 <Textarea rows={5} placeholder="Décris ton idée d'app en deux phrases." />
 <Textarea rows={3} invalid defaultValue="Trop court" />
+{/* la barre de saisie du chat */}
+<div className="flex items-end gap-space-2">
+  <Textarea size="sm" autoResize maxRows={5} className="flex-1" aria-label="Ton message"
+    value={texte} onChange={e => setTexte(e.target.value)} />
+  <IconButton label="Envoyer" variant="primary" size="sm" onClick={envoyer}><Icon name="arrow-right" /></IconButton>
+</div>
 ```
 
-- Props : `invalid` · `rows` (défaut 4) · `surface` (`auto·page·card`, voir Input) + attributs
-  natifs. Rayon `--radius-lg` : l'exception documentée de la doctrine arrondie — un pill
-  courberait la première et la dernière ligne d'un champ multi-lignes.
-- États rendus : repos, focus, invalide, désactivé.
+- Props : `invalid` · `rows` (défaut 4 en `md`, 1 en `sm`) · `surface` (`auto·page·card`,
+  voir Input) · `size` (`sm·md`, v0.6.0) · `autoResize` (v0.6.0) · `maxRows` (v0.6.0) +
+  attributs natifs. Rayon `--radius-lg` : l'exception documentée de la doctrine arrondie —
+  un pill courberait la première et la dernière ligne d'un champ multi-lignes.
+- **`size="sm"`** (v0.6.0) — la barre de saisie du chat : **40 sur une ligne**
+  (`--control-sm`, règle 48 / 40), hauteur posée comme `Input sm`. À 40, le rayon 20 rend
+  une pilule ; le champ redevient un bloc arrondi en grandissant. `md` : rendu inchangé.
+- **`autoResize`** (v0.6.0) : le champ suit son contenu, de `rows` lignes jusqu'à `maxRows`,
+  puis il défile. En JavaScript — pas `field-sizing: content`, que Safari iOS ne prend pas
+  en charge. Recalculé à la frappe, quand une valeur contrôlée change (le champ vidé après
+  envoi revient à une ligne) et quand la largeur change. La poignée est retirée.
+- **`maxRows`** : le plafond. Sans lui, le champ grandit sans limite — pour une barre de
+  chat, posez-en un (5).
+- **Le bouton d'envoi suit la barre** : `IconButton size="sm"` (40), dans un conteneur
+  `items-end` — aligné sur une ligne, et au niveau de la dernière ligne quand le champ
+  grandit. « Envoyer » au pied d'un formulaire, lui, reste un `Button` md (48).
+- États rendus : repos, focus, invalide, désactivé ; sm sur une ligne et agrandi.
 
 ---
 
@@ -870,7 +906,7 @@ vertical uniquement. Même règle de `surface` que l'Input. `forwardRef` sur le
 ## Icon
 
 LE système d'icônes : Lucide, exclusivement. Jamais un emoji, jamais un SVG dessiné à la
-main. 49 glyphes typés (`IconName`) — un nom hors du type est une erreur TypeScript, et
+main. 50 glyphes typés (`IconName`) — un nom hors du type est une erreur TypeScript, et
 c'est voulu.
 
 **Ne pas** chercher `youtube` ou `instagram` ici : les icônes de PLATEFORME vivent dans
@@ -893,7 +929,7 @@ enregistrée `inherits: false`, une règle de conteneur est inerte, et c'est vou
 ```
 
 **Ce que le catalogue ne couvre pas se passe en `glyph`.** Lucide compte ~1500 tracés ;
-le catalogue en cure 49 glyphes. Pour le reste, l'app importe le tracé et le socle lui applique
+le catalogue en cure 50 glyphes. Pour le reste, l'app importe le tracé et le socle lui applique
 ses propres règles — même grille, même épaisseur. Plus besoin de publier une version du
 design system pour une icône.
 
