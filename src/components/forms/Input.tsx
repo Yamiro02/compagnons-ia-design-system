@@ -1,5 +1,5 @@
-import { forwardRef, useEffect } from 'react';
-import type { InputHTMLAttributes, JSX, ReactNode } from 'react';
+import { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
+import type { InputHTMLAttributes, JSX, ReactNode, Ref } from 'react';
 import { cn } from '../../lib/cn';
 import { useFieldDescribedBy } from './field-context';
 
@@ -70,7 +70,14 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
   size = 'md', invalid = false, surface = 'auto', unit, icon, action, className = '',
   'aria-describedby': ariaDescribedBy, ...rest
-}: InputProps, ref): JSX.Element {
+}: InputProps, refExterne: Ref<HTMLInputElement>): JSX.Element {
+  const champ = useRef<HTMLInputElement | null>(null);
+  const bouton = useRef<HTMLButtonElement | null>(null);
+  const poserRefs = (node: HTMLInputElement | null): void => {
+    champ.current = node;
+    if (typeof refExterne === 'function') refExterne(node);
+    else if (refExterne) (refExterne as { current: HTMLInputElement | null }).current = node;
+  };
   /* Les messages du FormField parent (erreur, puis aide) — v0.5.0. */
   const describedBy = useFieldDescribedBy(undefined, ariaDescribedBy);
   useEffect(() => {
@@ -93,36 +100,55 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
     invalid && 'is-error',
     className,
   );
-  const nu = <input ref={ref} className={cls} aria-invalid={invalid || undefined} {...rest} aria-describedby={describedBy} />;
-  /* Les enveloppes n'existent QUE si leur prop est passée : sans elles, le DOM d'hier — un
-     <input> nu — ne bouge pas d'un nœud. Elles s'imbriquent dans cet ordre, l'icône à
-     l'extérieur, pour que le champ reçoive ses deux paddings sans que l'une décale l'autre. */
-  const droite = action ? (
-    <span className="ds-input-action">
-      {nu}
-      <button
-        type="button"
-        className="ds-input-action__btn"
-        aria-label={action.label}
-        title={action.label}
-        aria-pressed={action.pressed}
-        disabled={rest.disabled}
-        onClick={action.onClick}
-      >
-        {action.icon}
-      </button>
-    </span>
-  ) : unit ? (
-    <span className="ds-input-unit">
-      {nu}
-      <span className="ds-input-unit__label" aria-hidden="true">{unit}</span>
-    </span>
-  ) : nu;
-  if (!icon) return droite;
+  /* UNE ENVELOPPE, TOUJOURS RENDUE, ET L'<input> EN EST TOUJOURS LE PREMIER ENFANT — v0.7.1.
+     Avant, les enveloppes n'existaient que si leur prop était passée : l'<input> changeait
+     donc de PARENT quand `action`, `unit` ou `icon` apparaissait ou disparaissait, et React
+     le recréait. Le focus sautait, et la frappe suivante avec — la croix « Effacer » d'une
+     recherche, qui n'existe qu'avec du texte : on tapait « cla », il restait « c ».
+     Ici le parent et la position ne bougent jamais ; seuls des FRÈRES apparaissent après.
+     Sans accessoire, l'enveloppe est en `display:contents` (.ds-input-shell) : elle ne
+     produit aucune boîte, l'<input> se met en page EXACTEMENT comme un <input> nu — même
+     item de flex ou de grille, même largeur. Avec un accessoire, elle porte les classes
+     d'hier (.ds-input-icon / -unit / -action) et redevient le bloc positionné d'hier : une
+     seule enveloppe au lieu de deux imbriquées, même boîte, mêmes positions. */
+  const avecUnite = Boolean(unit) && !action;
+  /* Une action qui SE RETIRE en réponse à son propre clic (la croix qui vide le champ)
+     emporte le focus avec elle : il tomberait sur <body>. On le rend au champ — dans
+     l'effet qui suit le rendu où le bouton a disparu, pas dans une frame d'animation (que
+     le navigateur suspend sur une page cachée). Le drapeau est posé quel que soit l'élément
+     focalisé au clic : Safari ne donne pas le focus à un bouton cliqué à la souris. Si le
+     bouton est toujours là (l'œil), le drapeau tombe sans rien faire. */
+  const rendreFocus = useRef(false);
+  const surAction = (): void => {
+    rendreFocus.current = true;
+    action?.onClick();
+  };
+  useLayoutEffect(() => {
+    if (!rendreFocus.current) return;
+    rendreFocus.current = false;
+    if (bouton.current) return;
+    const actif = document.activeElement;
+    if (!actif || actif === document.body) champ.current?.focus();
+  });
   return (
-    <span className="ds-input-icon">
-      {droite}
-      <span className="ds-input-icon__glyph" aria-hidden="true">{icon}</span>
+    <span className={cn('ds-input-shell', Boolean(icon) && 'ds-input-icon', avecUnite && 'ds-input-unit', Boolean(action) && 'ds-input-action')}>
+      <input ref={poserRefs} className={cls} aria-invalid={invalid || undefined} {...rest} aria-describedby={describedBy} />
+      {action ? (
+        <button
+          ref={bouton}
+          type="button"
+          className="ds-input-action__btn"
+          aria-label={action.label}
+          title={action.label}
+          aria-pressed={action.pressed}
+          disabled={rest.disabled}
+          onClick={surAction}
+        >
+          {action.icon}
+        </button>
+      ) : null}
+      {avecUnite ? <span className="ds-input-unit__label" aria-hidden="true">{unit}</span> : null}
+      {icon ? <span className="ds-input-icon__glyph" aria-hidden="true">{icon}</span> : null}
     </span>
   );
 });

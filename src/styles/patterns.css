@@ -234,6 +234,12 @@ svg.lucide{stroke-width:1.75}
    LE RETRAIT DE L'UNITÉ SUIT LE PADDING DU CHAMP, il ne le devine pas. Depuis la doctrine
    arrondie le champ est pill et son padding latéral vaut `1.125rem` — l'unité le reprend au
    pixel près. Si le padding de `.ds-input` bouge, cette valeur bouge avec lui. */
+/* L'ENVELOPPE DU CHAMP — v0.7.1. Input la rend TOUJOURS, pour que l'<input> garde le même
+   parent quand une action, une unité ou une icône apparaît (sinon React le recrée : focus et
+   frappe perdus). Vide, elle est `display:contents` — aucune boîte : l'<input> se met en
+   page comme un <input> nu. Avec un accessoire, l'une des trois classes ci-dessous (écrites
+   APRÈS, même spécificité) la repasse en bloc positionné. */
+.ds-input-shell{display:contents}
 .ds-input-unit{position:relative;display:block;width:100%}
 .ds-input-unit .ds-input{padding-right:var(--space-7)}
 .ds-input-unit__label{position:absolute;right:1.125rem;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-muted);font-size:var(--text-body-sm)}
@@ -242,8 +248,8 @@ svg.lucide{stroke-width:1.75}
    réservé vaut --space-7 plus --space-1 : le glyphe fait 1rem, il lui faut son écart au
    texte. Elle ne se clique pas — pointer-events:none — parce qu'une ACTION dans un champ
    est un IconButton posé à côté, jamais ce repère.
-   Les deux enveloppes s'imbriquent : .ds-input-icon > .ds-input-unit > input. Le sélecteur
-   descendant couvre donc les deux cas, imbriqué ou non. */
+   Depuis la v0.7.1, une seule enveloppe porte les deux classes (.ds-input-icon.ds-input-unit,
+   ou .ds-input-icon.ds-input-action) : le sélecteur descendant couvre les deux formes. */
 .ds-input-icon{position:relative;display:block;width:100%}
 .ds-input-icon .ds-input{padding-left:calc(var(--space-7) + var(--space-1))}
 .ds-input-icon__glyph{position:absolute;left:1.125rem;top:50%;transform:translateY(-50%);pointer-events:none;display:inline-flex;color:var(--text-muted)}

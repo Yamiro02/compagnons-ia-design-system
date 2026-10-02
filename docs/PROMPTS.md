@@ -757,6 +757,19 @@ mise en page, le champ est `--card` ; dans une porteuse blanche, il repasse en
   ailleurs, ouvrir un sélecteur — reste un `IconButton` posé **à côté**. La recette du
   mot de passe : un libellé CONSTANT (« Afficher le mot de passe »), `pressed` qui suit
   l'état, l'icône (`eye` / `eye-off`) et le `type` du champ qui suivent `pressed`.
+- **Une action, une unité ou une icône CONDITIONNELLE ne coûte rien** (v0.7.1) : l'`<input>`
+  reste le même nœud quand elle apparaît ou disparaît — focus et frappe conservés. La croix
+  d'une recherche s'écrit donc simplement :
+  ```tsx
+  <Input value={q} onChange={e => setQ(e.target.value)} icon={<Icon name="search" />}
+    action={q ? { icon: <Icon name="x" />, label: 'Effacer la recherche', onClick: () => setQ('') } : undefined} />
+  ```
+  Une action qui se RETIRE en réponse à son propre clic (cette croix) rendrait le focus à
+  `<body>` : le composant le rend au champ. Le mécanisme : une enveloppe
+  `.ds-input-shell` toujours rendue, en `display:contents` sans accessoire — aucune boîte,
+  l'`<input>` se met en page comme un `<input>` nu. ⚠ `className` et `style` vont sur
+  l'`<input>` : avec un accessoire, c'est l'enveloppe (bloc, pleine largeur) qui est l'item
+  de mise en page — une largeur se pose sur un conteneur autour de l'`Input`.
 - **Hauteurs** (v0.4.0) : `md` **48** — le champ d'un formulaire ; `sm` **40** — la barre de
   recherche, la barre de saisie du chat ; `lg` **52**, site vitrine uniquement.
 - Props : `size` (`sm·md·lg`) · `invalid` · `icon` · `surface` (`auto` défaut = la déduction de

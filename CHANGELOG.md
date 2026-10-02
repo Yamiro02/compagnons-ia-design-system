@@ -11,6 +11,38 @@ concordent. Le tag n'est pas le but : c'est le péage.
 
 ---
 
+## 0.7.1 — le champ ne perd plus sa frappe
+
+Correctif, remonté par l'app (bug réel). Aucune rupture d'API ni de rendu.
+
+### Corrigé
+
+- **`Input` : l'`<input>` reste le même nœud DOM quand `action`, `unit` ou `icon`
+  apparaît ou disparaît.** Les enveloppes n'existaient que si leur prop était passée :
+  l'`<input>` changeait de parent et React le recréait. La croix « Effacer » d'une
+  recherche, qui n'existe qu'avec du texte, apparaissait au premier caractère — le focus
+  sautait, la frappe suivante était perdue (« cla » devenait « c »). Même défaut pour une
+  `unit` ou une `icon` conditionnelles.
+  Désormais une seule enveloppe, **toujours rendue**, dont l'`<input>` est toujours le
+  premier enfant ; seuls des frères apparaissent après lui. Sans accessoire, elle est en
+  `display:contents` (`.ds-input-shell`) : aucune boîte, mise en page identique à un
+  `<input>` nu. Avec un accessoire, elle porte les classes d'hier (`.ds-input-icon`,
+  `-unit`, `-action`) — une enveloppe au lieu de deux imbriquées pour `icon` + `unit` /
+  `action`, même boîte, mêmes positions.
+- **`Input` : une action qui se retire en réponse à son propre clic rend le focus au
+  champ.** Le bouton supprimé emportait le focus, qui tombait sur `<body>`. Le retour se
+  fait dans l'effet qui suit le rendu où le bouton a disparu — pas dans une frame
+  d'animation, que le navigateur suspend sur une page cachée — et vaut aussi pour un clic
+  de souris sur Safari, qui ne donne pas le focus au bouton.
+- Vérifié au vrai clavier : « c », pause, « la » → « cla », le même `<input>` du premier au
+  dernier caractère ; effacement au retour arrière ou par la croix (Entrée) → focus dans le
+  champ. Rendu : 56 champs et accessoires de la vitrine (nus, `unit`, `icon`, `icon` +
+  `unit`, `action`, sm et md) mesurés à la position et à la taille de la v0.7.0, 0 écart.
+- Vitrine : une recherche dont la croix apparaît au premier caractère et disparaît à
+  l'effacement (Formulaires § Input, action dans le champ).
+
+---
+
 ## 0.7.0 — enregistrer, annoncer
 
 Remonté par l'app. Tout est optionnel ; un changement de rendu, ciblé, signalé ⚠.

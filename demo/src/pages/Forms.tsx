@@ -104,6 +104,18 @@ function MotDePasse({ id, label, error, help, defaultValue }: { id: string; labe
   );
 }
 
+/* La recherche à effacer — l'action n'existe QUE s'il y a du texte : elle apparaît au premier
+   caractère et disparaît à l'effacement. Le <input> doit rester le même nœud (v0.7.1) : sinon
+   le focus saute et la frappe suivante est perdue (« cla » devenait « c »). */
+function RechercheEffacable({ id }: { id: string }) {
+  const [q, setQ] = useState('');
+  return (
+    <Input id={id} size="sm" surface="page" icon={<Icon name="search" />} aria-label="Rechercher une compagne"
+      placeholder="Rechercher une compagne" value={q} onChange={e => setQ(e.target.value)}
+      action={q ? { icon: <Icon name="x" />, label: 'Effacer la recherche', onClick: () => setQ('') } : undefined} />
+  );
+}
+
 /* La date de naissance en trois Select — un FormField `group`, chaque Select nommé par son
    aria-label. Grille 1 / 1.5 / 1.2, celle de la maquette AUTH 2d. */
 function DateNaissance({ id, error }: { id: string; error?: string }) {
@@ -256,6 +268,7 @@ export function FormsPage() {
               <div key={String(dark)} className={`${dark ? 'dark ' : ''}flex flex-col gap-space-4 rounded-xl bg-background p-space-4`}>
                 <span className="chip text-text-muted">{dark ? 'sombre, forcé' : 'thème courant'}</span>
                 <MotDePasse id={dark ? 'mdp-sombre' : 'mdp-clair'} label="Mot de passe" defaultValue="voilier-du-port" />
+                <RechercheEffacable id={dark ? 'recherche-sombre' : 'recherche-clair'} />
                 <Input size="sm" surface="page" icon={<Icon name="search" />} defaultValue="Claire"
                   action={{ icon: <Icon name="x" />, label: 'Effacer la recherche', onClick: () => undefined }} />
                 <Input disabled surface="page" type="password" defaultValue="indisponible"
